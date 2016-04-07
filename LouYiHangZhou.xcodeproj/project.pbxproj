@@ -108,14 +108,8 @@
 		51C1E1641CB66CAE0033F0FA /* LouYiHangZhou */ = {
 			isa = PBXGroup;
 			children = (
-				51C1E1681CB66CAE0033F0FA /* AppDelegate.h */,
-				51C1E1691CB66CAE0033F0FA /* AppDelegate.m */,
-				51C1E16B1CB66CAE0033F0FA /* ViewController.h */,
-				51C1E16C1CB66CAE0033F0FA /* ViewController.m */,
-				51C1E16E1CB66CAE0033F0FA /* Main.storyboard */,
+				51C1E19B1CB691960033F0FA /* Classes */,
 				51C1E1711CB66CAE0033F0FA /* Assets.xcassets */,
-				51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */,
-				51C1E1761CB66CAE0033F0FA /* Info.plist */,
 				51C1E1651CB66CAE0033F0FA /* Supporting Files */,
 			);
 			path = LouYiHangZhou;
@@ -124,7 +118,14 @@
 		51C1E1651CB66CAE0033F0FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1681CB66CAE0033F0FA /* AppDelegate.h */,
+				51C1E1691CB66CAE0033F0FA /* AppDelegate.m */,
+				51C1E16B1CB66CAE0033F0FA /* ViewController.h */,
 				51C1E1661CB66CAE0033F0FA /* main.m */,
+				51C1E16C1CB66CAE0033F0FA /* ViewController.m */,
+				51C1E16E1CB66CAE0033F0FA /* Main.storyboard */,
+				51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */,
+				51C1E1761CB66CAE0033F0FA /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -145,6 +146,141 @@
 				51C1E18C1CB66CAE0033F0FA /* Info.plist */,
 			);
 			path = LouYiHangZhouUITests;
+			sourceTree = "<group>";
+		};
+		51C1E19B1CB691960033F0FA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E19C1CB691960033F0FA /* Classify */,
+				51C1E1A01CB691960033F0FA /* Home */,
+				51C1E1A41CB691960033F0FA /* Profile */,
+				51C1E1A81CB691960033F0FA /* ShoppingCart */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		51C1E19C1CB691960033F0FA /* Classify */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E19D1CB691960033F0FA /* Model */,
+				51C1E19E1CB691960033F0FA /* View */,
+				51C1E19F1CB691960033F0FA /* ViewController */,
+			);
+			path = Classify;
+			sourceTree = "<group>";
+		};
+		51C1E19D1CB691960033F0FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51C1E19E1CB691960033F0FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		51C1E19F1CB691960033F0FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		51C1E1A01CB691960033F0FA /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1A11CB691960033F0FA /* Model */,
+				51C1E1A21CB691960033F0FA /* View */,
+				51C1E1A31CB691960033F0FA /* ViewController */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		51C1E1A11CB691960033F0FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51C1E1A21CB691960033F0FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		51C1E1A31CB691960033F0FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		51C1E1A41CB691960033F0FA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1A51CB691960033F0FA /* Model */,
+				51C1E1A61CB691960033F0FA /* View */,
+				51C1E1A71CB691960033F0FA /* ViewController */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		51C1E1A51CB691960033F0FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51C1E1A61CB691960033F0FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		51C1E1A71CB691960033F0FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		51C1E1A81CB691960033F0FA /* ShoppingCart */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1A91CB691960033F0FA /* Model */,
+				51C1E1AA1CB691960033F0FA /* View */,
+				51C1E1AB1CB691960033F0FA /* ViewController */,
+			);
+			path = ShoppingCart;
+			sourceTree = "<group>";
+		};
+		51C1E1A91CB691960033F0FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51C1E1AA1CB691960033F0FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		51C1E1AB1CB691960033F0FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		6D258A4F27009105A869065A /* Pods */ = {
