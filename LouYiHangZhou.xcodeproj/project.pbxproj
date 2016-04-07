@@ -16,7 +16,6 @@
 		51C1E1751CB66CAE0033F0FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */; };
 		51C1E1801CB66CAE0033F0FA /* LouYiHangZhouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E17F1CB66CAE0033F0FA /* LouYiHangZhouTests.m */; };
 		51C1E18B1CB66CAE0033F0FA /* LouYiHangZhouUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E18A1CB66CAE0033F0FA /* LouYiHangZhouUITests.m */; };
-		51C1E19A1CB679E20033F0FA /* UISearchBar+dismissBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1991CB679E20033F0FA /* UISearchBar+dismissBackground.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +52,6 @@
 		51C1E1861CB66CAE0033F0FA /* LouYiHangZhouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LouYiHangZhouUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51C1E18A1CB66CAE0033F0FA /* LouYiHangZhouUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LouYiHangZhouUITests.m; sourceTree = "<group>"; };
 		51C1E18C1CB66CAE0033F0FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		51C1E1981CB679E20033F0FA /* UISearchBar+dismissBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+dismissBackground.h"; sourceTree = "<group>"; };
-		51C1E1991CB679E20033F0FA /* UISearchBar+dismissBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+dismissBackground.m"; sourceTree = "<group>"; };
 		DB3ED9E112990A225511548B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E715E4B03A7993FD44B7C8A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,8 +112,6 @@
 				51C1E1691CB66CAE0033F0FA /* AppDelegate.m */,
 				51C1E16B1CB66CAE0033F0FA /* ViewController.h */,
 				51C1E16C1CB66CAE0033F0FA /* ViewController.m */,
-				51C1E1981CB679E20033F0FA /* UISearchBar+dismissBackground.h */,
-				51C1E1991CB679E20033F0FA /* UISearchBar+dismissBackground.m */,
 				51C1E16E1CB66CAE0033F0FA /* Main.storyboard */,
 				51C1E1711CB66CAE0033F0FA /* Assets.xcassets */,
 				51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */,
@@ -355,7 +350,6 @@
 			files = (
 				51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */,
 				51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */,
-				51C1E19A1CB679E20033F0FA /* UISearchBar+dismissBackground.m in Sources */,
 				51C1E1671CB66CAE0033F0FA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
