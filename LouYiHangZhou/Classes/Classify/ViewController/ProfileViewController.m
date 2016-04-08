@@ -49,7 +49,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 &&indexPath.section == 1) {
+    if (indexPath.section == 0 &&indexPath.row == 1) {
         [self.navigationController pushViewController:[ProfileIMForViewController instanceFromStoryboard] animated:YES];
     }
 }
