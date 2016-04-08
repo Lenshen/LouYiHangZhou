@@ -9,15 +9,13 @@
 #import "TabBarViewController.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
-//#import "HomeViewController.h"
-//#import "ClassifyViewController.h"
-//#import "ShoppingCartViewController.h"
-//#import "ProfileViewController.h"
-//#import "NavigationViewController.h"
-//#import "ShoppingCartViewController.h"
-//#import "HomeViewController2.h"
-//#include "UIViewController+StoryboardFrom.h"
-//#import "SuccessTableViewController.h"
+#import "HomeViewController.h"
+#import "ClassifyViewController.h"
+#import "ShoppingCartViewController.h"
+#import "ProfileViewController.h"
+#import "NavigationViewController.h"
+#import "ShoppingCartViewController.h"
+#include "UIViewController+StoryboardFrom.h"
 
 
 @interface TabBarViewController ()
@@ -29,23 +27,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //主页
-//    HomeViewController *home =[HomeViewController instanceFromStoryboard];
-//    [self addChildViewController:home image:@"tabbar_home" selectedImage:@"tabbar_home_selected" title:@"首页"];
-//    //消息
-//     ClassifyViewController *message = [ClassifyViewController instanceFromStoryboard];
-//    [self addChildViewController:message image:@"分类" selectedImage:@"分类2" title:@"分类"];
-//    
-//    //购物车
-////    ShoppingCartViewController *shopVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ShoppingCartViewController"];
-//    HomeViewController2 *shopVC = [HomeViewController2 new];
-//    [self addChildViewController:shopVC image:@"购物车" selectedImage:@"添加购物车" title:@"购物车"];
-//
-//    
-//   
-// 
-//    
-//
-//    [self addChildViewController:[ProfileViewController instanceFromStoryboard] image:@"tabbar_profile" selectedImage:@"tabbar_profile_selected" title:@"我"];
+    HomeViewController *home =[HomeViewController instanceFromStoryboard];
+    [self addChildViewController:home image:@"首页" selectedImage:@"红色首页" title:@"首页"];
+    //消息
+     ClassifyViewController *message = [ClassifyViewController instanceFromStoryboard];
+    [self addChildViewController:message image:@"分类" selectedImage:@"红色分类" title:@"分类"];
+    
+    //购物车
+    ShoppingCartViewController *shopVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ShoppingCartViewController"];
+    [self addChildViewController:shopVC image:@"购物车" selectedImage:@"红色购物车" title:@"购物车"];
+
+    
+   
+ 
+    
+
+    [self addChildViewController:[ProfileViewController instanceFromStoryboard] image:@"个人" selectedImage:@"红色个人" title:@"个人"];
     
     
     [BYSHttpTool GET:APP_AUTHOTIZD_API Parameters:[HttpParameters app_autorize_parameters] Success:^(id responseObject) {
@@ -94,9 +91,9 @@
     
     
 //    //导航控制器
-//    NavigationViewController *navgationVC = [[NavigationViewController alloc]initWithRootViewController:childViewController];
-//    navgationVC.navigationBarHidden = YES;
-//    [self addChildViewController:navgationVC];
+    NavigationViewController *navgationVC = [[NavigationViewController alloc]initWithRootViewController:childViewController];
+    navgationVC.navigationBarHidden = YES;
+    [self addChildViewController:navgationVC];
 
     
 }

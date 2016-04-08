@@ -10,5 +10,6 @@
 
 @interface HttpParameters : NSObject
 +(NSDictionary *)app_autorize_parameters;
++(NSDictionary *)app_MobileVerifyCode_sendMobiel:(NSString *)mobile;
 
 @end

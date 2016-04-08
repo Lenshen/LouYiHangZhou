@@ -26,6 +26,14 @@
 		51C1E1CF1CB7346F0033F0FA /* UserImformationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1CE1CB7346F0033F0FA /* UserImformationModel.m */; };
 		51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1D21CB7362D0033F0FA /* BYSHttpTool.m */; };
 		51C1E1D91CB73FCA0033F0FA /* HttpParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */; };
+		51C1E1DC1CB751960033F0FA /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1DB1CB751960033F0FA /* HomeViewController.m */; };
+		51C1E1DF1CB751AE0033F0FA /* ClassifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1DE1CB751AE0033F0FA /* ClassifyViewController.m */; };
+		51C1E1E21CB751C20033F0FA /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1E11CB751C20033F0FA /* ProfileViewController.m */; };
+		51C1E1E51CB751EA0033F0FA /* ShoppingCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1E41CB751EA0033F0FA /* ShoppingCartViewController.m */; };
+		51C1E1E81CB763D60033F0FA /* ProfileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1E71CB763D60033F0FA /* ProfileCollectionViewCell.m */; };
+		51C1E1EB1CB77C040033F0FA /* LogonVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1EA1CB77C040033F0FA /* LogonVViewController.m */; };
+		51C1E1EE1CB78C3D0033F0FA /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */; };
+		51C1E1F11CB7938B0033F0FA /* ProfileIMForViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +91,22 @@
 		51C1E1D51CB73D0B0033F0FA /* MacroDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacroDefinition.h; path = "32位md5加密出16位/MacroDefinition.h"; sourceTree = "<group>"; };
 		51C1E1D71CB73FCA0033F0FA /* HttpParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpParameters.h; sourceTree = "<group>"; };
 		51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpParameters.m; sourceTree = "<group>"; };
+		51C1E1DA1CB751960033F0FA /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		51C1E1DB1CB751960033F0FA /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		51C1E1DD1CB751AE0033F0FA /* ClassifyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassifyViewController.h; sourceTree = "<group>"; };
+		51C1E1DE1CB751AE0033F0FA /* ClassifyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassifyViewController.m; sourceTree = "<group>"; };
+		51C1E1E01CB751C20033F0FA /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileViewController.h; path = ../../Classify/ViewController/ProfileViewController.h; sourceTree = "<group>"; };
+		51C1E1E11CB751C20033F0FA /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileViewController.m; path = ../../Classify/ViewController/ProfileViewController.m; sourceTree = "<group>"; };
+		51C1E1E31CB751EA0033F0FA /* ShoppingCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartViewController.h; sourceTree = "<group>"; };
+		51C1E1E41CB751EA0033F0FA /* ShoppingCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartViewController.m; sourceTree = "<group>"; };
+		51C1E1E61CB763D50033F0FA /* ProfileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileCollectionViewCell.h; sourceTree = "<group>"; };
+		51C1E1E71CB763D60033F0FA /* ProfileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileCollectionViewCell.m; sourceTree = "<group>"; };
+		51C1E1E91CB77C040033F0FA /* LogonVViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogonVViewController.h; sourceTree = "<group>"; };
+		51C1E1EA1CB77C040033F0FA /* LogonVViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogonVViewController.m; sourceTree = "<group>"; };
+		51C1E1EC1CB78C3D0033F0FA /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		51C1E1EF1CB7938B0033F0FA /* ProfileIMForViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileIMForViewController.h; sourceTree = "<group>"; };
+		51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileIMForViewController.m; sourceTree = "<group>"; };
 		DB3ED9E112990A225511548B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E715E4B03A7993FD44B7C8A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -219,6 +243,8 @@
 		51C1E19F1CB691960033F0FA /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1DD1CB751AE0033F0FA /* ClassifyViewController.h */,
+				51C1E1DE1CB751AE0033F0FA /* ClassifyViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -250,6 +276,8 @@
 		51C1E1A31CB691960033F0FA /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1DA1CB751960033F0FA /* HomeViewController.h */,
+				51C1E1DB1CB751960033F0FA /* HomeViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -275,6 +303,8 @@
 		51C1E1A61CB691960033F0FA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1E61CB763D50033F0FA /* ProfileCollectionViewCell.h */,
+				51C1E1E71CB763D60033F0FA /* ProfileCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -282,6 +312,14 @@
 		51C1E1A71CB691960033F0FA /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1E01CB751C20033F0FA /* ProfileViewController.h */,
+				51C1E1E11CB751C20033F0FA /* ProfileViewController.m */,
+				51C1E1E91CB77C040033F0FA /* LogonVViewController.h */,
+				51C1E1EA1CB77C040033F0FA /* LogonVViewController.m */,
+				51C1E1EC1CB78C3D0033F0FA /* RegisterViewController.h */,
+				51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */,
+				51C1E1EF1CB7938B0033F0FA /* ProfileIMForViewController.h */,
+				51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -313,6 +351,8 @@
 		51C1E1AB1CB691960033F0FA /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1E31CB751EA0033F0FA /* ShoppingCartViewController.h */,
+				51C1E1E41CB751EA0033F0FA /* ShoppingCartViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -620,15 +660,23 @@
 			files = (
 				51C1E1BC1CB6969C0033F0FA /* NSArray+Log.m in Sources */,
 				51C1E1BD1CB6969C0033F0FA /* NSDictionary+Log.m in Sources */,
+				51C1E1E21CB751C20033F0FA /* ProfileViewController.m in Sources */,
 				51C1E1C81CB731D80033F0FA /* NavigationViewController.m in Sources */,
 				51C1E1D91CB73FCA0033F0FA /* HttpParameters.m in Sources */,
 				51C1E1CF1CB7346F0033F0FA /* UserImformationModel.m in Sources */,
+				51C1E1DC1CB751960033F0FA /* HomeViewController.m in Sources */,
+				51C1E1DF1CB751AE0033F0FA /* ClassifyViewController.m in Sources */,
 				51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */,
+				51C1E1E51CB751EA0033F0FA /* ShoppingCartViewController.m in Sources */,
+				51C1E1E81CB763D60033F0FA /* ProfileCollectionViewCell.m in Sources */,
+				51C1E1F11CB7938B0033F0FA /* ProfileIMForViewController.m in Sources */,
 				51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */,
 				51C1E1BE1CB6969C0033F0FA /* UIViewController+StoryboardFrom.m in Sources */,
 				51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */,
 				51C1E1BB1CB6969C0033F0FA /* NSString+MD5.m in Sources */,
+				51C1E1EE1CB78C3D0033F0FA /* RegisterViewController.m in Sources */,
 				51C1E1BF1CB6969C0033F0FA /* UIView+Extension.m in Sources */,
+				51C1E1EB1CB77C040033F0FA /* LogonVViewController.m in Sources */,
 				51C1E1C51CB731CB0033F0FA /* TabBarViewController.m in Sources */,
 				51C1E1671CB66CAE0033F0FA /* main.m in Sources */,
 			);

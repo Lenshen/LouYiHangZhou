@@ -23,8 +23,16 @@
     NSString *signmd5 = [sign md5];
     DLog(@"%@",signmd5);
     NSDictionary *dic = @{@"code":@"test1",@"ver":@"1.0",@"device_id":device_id,@"sign":signmd5};
+
     return dic;
 }
++(NSDictionary *)app_MobileVerifyCode_sendMobiel:(NSString *)mobile
+{
+    
+    NSDictionary *dic = @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"mobile":mobile,@"func_id":@"100"};
+    return dic;
+}
+
 
 
 @end
