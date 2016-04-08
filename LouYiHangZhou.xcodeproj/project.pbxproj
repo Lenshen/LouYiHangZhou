@@ -16,6 +16,16 @@
 		51C1E1751CB66CAE0033F0FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */; };
 		51C1E1801CB66CAE0033F0FA /* LouYiHangZhouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E17F1CB66CAE0033F0FA /* LouYiHangZhouTests.m */; };
 		51C1E18B1CB66CAE0033F0FA /* LouYiHangZhouUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E18A1CB66CAE0033F0FA /* LouYiHangZhouUITests.m */; };
+		51C1E1BB1CB6969C0033F0FA /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1AF1CB6969C0033F0FA /* NSString+MD5.m */; };
+		51C1E1BC1CB6969C0033F0FA /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1B21CB6969C0033F0FA /* NSArray+Log.m */; };
+		51C1E1BD1CB6969C0033F0FA /* NSDictionary+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1B41CB6969C0033F0FA /* NSDictionary+Log.m */; };
+		51C1E1BE1CB6969C0033F0FA /* UIViewController+StoryboardFrom.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1B71CB6969C0033F0FA /* UIViewController+StoryboardFrom.m */; };
+		51C1E1BF1CB6969C0033F0FA /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1BA1CB6969C0033F0FA /* UIView+Extension.m */; };
+		51C1E1C51CB731CB0033F0FA /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1C31CB731CB0033F0FA /* TabBarViewController.m */; };
+		51C1E1C81CB731D80033F0FA /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1C61CB731D80033F0FA /* NavigationViewController.m */; };
+		51C1E1CF1CB7346F0033F0FA /* UserImformationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1CE1CB7346F0033F0FA /* UserImformationModel.m */; };
+		51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1D21CB7362D0033F0FA /* BYSHttpTool.m */; };
+		51C1E1D91CB73FCA0033F0FA /* HttpParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +62,27 @@
 		51C1E1861CB66CAE0033F0FA /* LouYiHangZhouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LouYiHangZhouUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51C1E18A1CB66CAE0033F0FA /* LouYiHangZhouUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LouYiHangZhouUITests.m; sourceTree = "<group>"; };
 		51C1E18C1CB66CAE0033F0FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51C1E1AE1CB6969C0033F0FA /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		51C1E1AF1CB6969C0033F0FA /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		51C1E1B11CB6969C0033F0FA /* NSArray+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Log.h"; sourceTree = "<group>"; };
+		51C1E1B21CB6969C0033F0FA /* NSArray+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = "<group>"; };
+		51C1E1B31CB6969C0033F0FA /* NSDictionary+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Log.h"; sourceTree = "<group>"; };
+		51C1E1B41CB6969C0033F0FA /* NSDictionary+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Log.m"; sourceTree = "<group>"; };
+		51C1E1B61CB6969C0033F0FA /* UIViewController+StoryboardFrom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+StoryboardFrom.h"; sourceTree = "<group>"; };
+		51C1E1B71CB6969C0033F0FA /* UIViewController+StoryboardFrom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+StoryboardFrom.m"; sourceTree = "<group>"; };
+		51C1E1B91CB6969C0033F0FA /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		51C1E1BA1CB6969C0033F0FA /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		51C1E1C31CB731CB0033F0FA /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		51C1E1C41CB731CB0033F0FA /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
+		51C1E1C61CB731D80033F0FA /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
+		51C1E1C71CB731D80033F0FA /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
+		51C1E1CD1CB7346F0033F0FA /* UserImformationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserImformationModel.h; sourceTree = "<group>"; };
+		51C1E1CE1CB7346F0033F0FA /* UserImformationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserImformationModel.m; sourceTree = "<group>"; };
+		51C1E1D11CB7362D0033F0FA /* BYSHttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSHttpTool.h; sourceTree = "<group>"; };
+		51C1E1D21CB7362D0033F0FA /* BYSHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSHttpTool.m; sourceTree = "<group>"; };
+		51C1E1D51CB73D0B0033F0FA /* MacroDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacroDefinition.h; path = "32位md5加密出16位/MacroDefinition.h"; sourceTree = "<group>"; };
+		51C1E1D71CB73FCA0033F0FA /* HttpParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpParameters.h; sourceTree = "<group>"; };
+		51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpParameters.m; sourceTree = "<group>"; };
 		DB3ED9E112990A225511548B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E715E4B03A7993FD44B7C8A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -108,6 +139,8 @@
 		51C1E1641CB66CAE0033F0FA /* LouYiHangZhou */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1C21CB730EE0033F0FA /* Main */,
+				51C1E1AC1CB6969C0033F0FA /* Supports */,
 				51C1E19B1CB691960033F0FA /* Classes */,
 				51C1E1711CB66CAE0033F0FA /* Assets.xcassets */,
 				51C1E1651CB66CAE0033F0FA /* Supporting Files */,
@@ -234,6 +267,7 @@
 		51C1E1A51CB691960033F0FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1C91CB733C40033F0FA /* 用户个人基本信息 */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,6 +315,106 @@
 			children = (
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		51C1E1AC1CB6969C0033F0FA /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1D41CB73CEA0033F0FA /* Marco */,
+				51C1E1C01CB6A0760033F0FA /* API */,
+				51C1E1AD1CB6969C0033F0FA /* 32位md5加密出16位 */,
+				51C1E1B01CB6969C0033F0FA /* 后台打印汉字不需要倒入 */,
+				51C1E1B51CB6969C0033F0FA /* 快速访问storyboard里的控制器 */,
+				51C1E1B81CB6969C0033F0FA /* 快速访问view各个属性 */,
+			);
+			name = Supports;
+			path = Classes/Supports;
+			sourceTree = "<group>";
+		};
+		51C1E1AD1CB6969C0033F0FA /* 32位md5加密出16位 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1AE1CB6969C0033F0FA /* NSString+MD5.h */,
+				51C1E1AF1CB6969C0033F0FA /* NSString+MD5.m */,
+			);
+			path = "32位md5加密出16位";
+			sourceTree = "<group>";
+		};
+		51C1E1B01CB6969C0033F0FA /* 后台打印汉字不需要倒入 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1B11CB6969C0033F0FA /* NSArray+Log.h */,
+				51C1E1B21CB6969C0033F0FA /* NSArray+Log.m */,
+				51C1E1B31CB6969C0033F0FA /* NSDictionary+Log.h */,
+				51C1E1B41CB6969C0033F0FA /* NSDictionary+Log.m */,
+			);
+			path = "后台打印汉字不需要倒入";
+			sourceTree = "<group>";
+		};
+		51C1E1B51CB6969C0033F0FA /* 快速访问storyboard里的控制器 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1B61CB6969C0033F0FA /* UIViewController+StoryboardFrom.h */,
+				51C1E1B71CB6969C0033F0FA /* UIViewController+StoryboardFrom.m */,
+			);
+			path = "快速访问storyboard里的控制器";
+			sourceTree = "<group>";
+		};
+		51C1E1B81CB6969C0033F0FA /* 快速访问view各个属性 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1B91CB6969C0033F0FA /* UIView+Extension.h */,
+				51C1E1BA1CB6969C0033F0FA /* UIView+Extension.m */,
+			);
+			path = "快速访问view各个属性";
+			sourceTree = "<group>";
+		};
+		51C1E1C01CB6A0760033F0FA /* API */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1D11CB7362D0033F0FA /* BYSHttpTool.h */,
+				51C1E1D21CB7362D0033F0FA /* BYSHttpTool.m */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		51C1E1C21CB730EE0033F0FA /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1C71CB731D80033F0FA /* NavigationViewController.h */,
+				51C1E1C61CB731D80033F0FA /* NavigationViewController.m */,
+				51C1E1C41CB731CB0033F0FA /* TabBarViewController.h */,
+				51C1E1C31CB731CB0033F0FA /* TabBarViewController.m */,
+				51C1E1D61CB73F940033F0FA /* HttpParameters */,
+			);
+			name = Main;
+			path = "Classes/Supports/32位md5加密出16位";
+			sourceTree = "<group>";
+		};
+		51C1E1C91CB733C40033F0FA /* 用户个人基本信息 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1CD1CB7346F0033F0FA /* UserImformationModel.h */,
+				51C1E1CE1CB7346F0033F0FA /* UserImformationModel.m */,
+			);
+			name = "用户个人基本信息";
+			sourceTree = "<group>";
+		};
+		51C1E1D41CB73CEA0033F0FA /* Marco */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1D51CB73D0B0033F0FA /* MacroDefinition.h */,
+			);
+			name = Marco;
+			sourceTree = "<group>";
+		};
+		51C1E1D61CB73F940033F0FA /* HttpParameters */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1D71CB73FCA0033F0FA /* HttpParameters.h */,
+				51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */,
+			);
+			name = HttpParameters;
 			sourceTree = "<group>";
 		};
 		6D258A4F27009105A869065A /* Pods */ = {
@@ -484,8 +618,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51C1E1BC1CB6969C0033F0FA /* NSArray+Log.m in Sources */,
+				51C1E1BD1CB6969C0033F0FA /* NSDictionary+Log.m in Sources */,
+				51C1E1C81CB731D80033F0FA /* NavigationViewController.m in Sources */,
+				51C1E1D91CB73FCA0033F0FA /* HttpParameters.m in Sources */,
+				51C1E1CF1CB7346F0033F0FA /* UserImformationModel.m in Sources */,
+				51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */,
 				51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */,
+				51C1E1BE1CB6969C0033F0FA /* UIViewController+StoryboardFrom.m in Sources */,
 				51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */,
+				51C1E1BB1CB6969C0033F0FA /* NSString+MD5.m in Sources */,
+				51C1E1BF1CB6969C0033F0FA /* UIView+Extension.m in Sources */,
+				51C1E1C51CB731CB0033F0FA /* TabBarViewController.m in Sources */,
 				51C1E1671CB66CAE0033F0FA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -626,6 +770,8 @@
 			baseConfigurationReference = DB3ED9E112990A225511548B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/LouYiHangZhou/Classes/Supports/32位md5加密出16位/MacroDefinition.h";
 				INFOPLIST_FILE = LouYiHangZhou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LuoYiTECHNOLOGY.Luo-yi.LouYiHangZhou";
@@ -639,6 +785,8 @@
 			baseConfigurationReference = F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/LouYiHangZhou/Classes/Supports/32位md5加密出16位/MacroDefinition.h";
 				INFOPLIST_FILE = LouYiHangZhou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LuoYiTECHNOLOGY.Luo-yi.LouYiHangZhou";

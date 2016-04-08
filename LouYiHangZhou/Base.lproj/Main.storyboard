@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7jX-vH-kdA">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -25,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="-72.5" y="-27.5"/>
         </scene>
-        <!--Item 1-->
+        <!--首页-->
         <scene sceneID="7Vs-Sv-owU">
             <objects>
                 <viewController id="7eo-lj-Y1m" sceneMemberID="viewController">
@@ -38,17 +38,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="RGg-bP-Eo1"/>
+                    <tabBarItem key="tabBarItem" title="首页" id="RGg-bP-Eo1"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3S-kj-NSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-72.5" y="-688.5"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="wDO-8C-qpV">
             <objects>
-                <tabBarController id="7jX-vH-kdA" sceneMemberID="viewController">
+                <tabBarController id="7jX-vH-kdA" customClass="TabBarViewController" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="1E7-V8-Mg7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
