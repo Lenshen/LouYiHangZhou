@@ -14,8 +14,10 @@
 
 #import "UIViewController+StoryboardFrom.h"
 @interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@property (strong, nonatomic) IBOutlet UILabel *mobileNumbel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imagesArray;
+@property (strong, nonatomic) IBOutlet UIButton *headImage;
 @property (strong, nonatomic) NSArray *lableArray;
 @end
 
@@ -26,7 +28,19 @@
     // Do any additional setup after loading the view.
     [self imagesArray];
     [self lableArray];
-    
+        
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSData *imageData = [USER_DEFAULT objectForKey:@"headImage"];
+    if (imageData) {
+        UIImage *image = [NSKeyedUnarchiver unarchiveObjectWithData:imageData];
+        [self.headImage setBackgroundImage:image forState:UIControlStateNormal];
+        self.headImage.layer.cornerRadius = 35;
+        self.headImage.layer.masksToBounds = YES;
+        
+    }
+
 }
 -(NSArray *)imagesArray
 {
@@ -51,7 +65,17 @@
 {
     if (indexPath.section == 0 &&indexPath.row == 1) {
         [self.navigationController pushViewController:[ProfileIMForViewController instanceFromStoryboard] animated:YES];
+    }else if(indexPath.section == 0 &&indexPath.row == 4)
+    {
+        [self cellMobiel:self.mobileNumbel.text];
     }
+}
+-(void)cellMobiel:(NSString *)mobielNumbel
+{
+    NSMutableString *Str =[[NSMutableString alloc]initWithFormat:@"tel:%@",mobielNumbel];
+    UIWebView *webview = [[UIWebView alloc]init];
+    [webview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:Str]]];
+    [self.view addSubview:webview];
 }
 -(NSInteger )collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

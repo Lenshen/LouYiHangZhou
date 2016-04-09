@@ -34,6 +34,7 @@
 		51C1E1EB1CB77C040033F0FA /* LogonVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1EA1CB77C040033F0FA /* LogonVViewController.m */; };
 		51C1E1EE1CB78C3D0033F0FA /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */; };
 		51C1E1F11CB7938B0033F0FA /* ProfileIMForViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */; };
+		51F469531CB8B35000534FAE /* ForgotPassWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F469521CB8B35000534FAE /* ForgotPassWViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,8 @@
 		51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		51C1E1EF1CB7938B0033F0FA /* ProfileIMForViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileIMForViewController.h; sourceTree = "<group>"; };
 		51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileIMForViewController.m; sourceTree = "<group>"; };
+		51F469511CB8B35000534FAE /* ForgotPassWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPassWViewController.h; sourceTree = "<group>"; };
+		51F469521CB8B35000534FAE /* ForgotPassWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPassWViewController.m; sourceTree = "<group>"; };
 		DB3ED9E112990A225511548B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E715E4B03A7993FD44B7C8A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -320,6 +323,8 @@
 				51C1E1ED1CB78C3D0033F0FA /* RegisterViewController.m */,
 				51C1E1EF1CB7938B0033F0FA /* ProfileIMForViewController.h */,
 				51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */,
+				51F469511CB8B35000534FAE /* ForgotPassWViewController.h */,
+				51F469521CB8B35000534FAE /* ForgotPassWViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -668,6 +673,7 @@
 				51C1E1DF1CB751AE0033F0FA /* ClassifyViewController.m in Sources */,
 				51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */,
 				51C1E1E51CB751EA0033F0FA /* ShoppingCartViewController.m in Sources */,
+				51F469531CB8B35000534FAE /* ForgotPassWViewController.m in Sources */,
 				51C1E1E81CB763D60033F0FA /* ProfileCollectionViewCell.m in Sources */,
 				51C1E1F11CB7938B0033F0FA /* ProfileIMForViewController.m in Sources */,
 				51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */,

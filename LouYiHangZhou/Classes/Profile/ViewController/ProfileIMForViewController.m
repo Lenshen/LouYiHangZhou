@@ -7,12 +7,16 @@
 //
 
 #import "ProfileIMForViewController.h"
+#import "UIView+Extension.h"
+#import "ForgotPassWViewController.h"
+#import "UIViewController+StoryboardFrom.h"
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImagePickerController *_imagePickerController;
 
 }
+@property (strong, nonatomic) IBOutlet UILabel *dateField;
 @property (strong, nonatomic) IBOutlet UIButton *headImage;
 @property (strong, nonatomic) IBOutlet UILabel *sexLabel;
 @property (nonatomic,strong) NSMutableArray *yearArray;
@@ -21,6 +25,10 @@
 
 @property (nonatomic,strong) NSMutableArray *dayArray;
 @property (nonatomic,strong) UIPickerView *pickview;
+@property (nonatomic, strong) UIButton *canceButtonl;
+@property (nonatomic, strong) UIButton *sureButton;
+@property (nonatomic,assign) BOOL isLeapyear;//是否是闰年
+
 
 @end
 
@@ -30,6 +38,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.yearArray = [NSMutableArray array];
+    self.monthArray = [NSMutableArray array];
+    self.dayArray = [NSMutableArray array];
+   
+    [self getDateDataSource];
+    [self initPickView];
+
+
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,18 +74,57 @@
         [self initAlertController];
     }
     if (indexPath.section == 0 && indexPath.row == 2) {
-        [self initPickView];
+        _sureButton.hidden = NO;
+        _canceButtonl.hidden = NO;
+        [self.view addSubview:_pickview];
+        _pickview.hidden = NO;
+
+    }else if(indexPath.section == 0 && indexPath.row == 4)
+    {
+        [self.navigationController pushViewController:[ForgotPassWViewController instanceFromStoryboard] animated:YES];
     }
 }
 -(void)initPickView
 {
-   
+    _pickview = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.height-44-200-50,_pickview.width, _pickview.height)];
+    _pickview.backgroundColor = [UIColor whiteColor];
+    _pickview.delegate = self;
+    _pickview.dataSource = self;
+    _canceButtonl = [[UIButton alloc]initWithFrame:CGRectMake(0,_pickview.origin.y-50, 50,50 )];
+    [_canceButtonl addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    [_canceButtonl setTitle:@"取消" forState:UIControlStateNormal];
+    _canceButtonl.backgroundColor =[UIColor redColor];
     
-    
+    [self.view addSubview:_canceButtonl];
+
+    _sureButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.width-50,_pickview.origin.y-50, 50,50 )];
+    [_sureButton setTitle:@"确定" forState:UIControlStateNormal];
+    _sureButton.backgroundColor =[UIColor redColor];
+    [_sureButton addTarget:self action:@selector(sure) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:_sureButton];
+    _canceButtonl.hidden = YES;
+    _sureButton.hidden = YES;
+  
     
 }
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 3;
+-(void)cancel
+{
+    _canceButtonl.hidden = YES;
+    _sureButton.hidden = YES;
+    _pickview.hidden = YES;
+}
+-(void)sure
+{
+    _canceButtonl.hidden = YES;
+    _sureButton.hidden = YES;
+    _pickview.hidden = YES;
+    NSString *yearString = [self.yearArray objectAtIndex:[self.pickview selectedRowInComponent:0]];
+    NSString *monthString = [self.monthArray objectAtIndex:[self.pickview selectedRowInComponent:1]];
+    NSString *dayString = [self.dayArray objectAtIndex:[self.pickview selectedRowInComponent:2]];
+    self.dateField.text = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
+       [self.view endEditing:NO];
+
 }
 - (void)getDateDataSource{
     for (int i = 1970; i <= 9999; i++) {
@@ -83,7 +139,9 @@
     }
     [self.pickview reloadAllComponents];
 }
-
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 3;
+}
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     if (component == 0)
@@ -97,6 +155,33 @@
     else
         return self.dayArray.count;
 }
+
+
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    
+    if (component == 0) {
+        if ((row+1970)%4==0) {
+            self.isLeapyear = YES;
+        }
+        
+        return [self.yearArray objectAtIndex:row];
+        
+    }
+    else if (component == 1){
+        if (self.isLeapyear) {
+            if (row == 2) {
+                
+            }
+        }
+        
+        return [self.monthArray objectAtIndex:row];
+    }
+    else if (component == 2)
+        return [self.dayArray objectAtIndex:row];
+    else
+        return nil;
+}
+
 -(void)initHeadImageAlertController
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"相册或照相获取图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -109,6 +194,7 @@
             [self presentViewController:impick animated:YES completion:nil];
         }
     }];
+    
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIImagePickerController *impick = [[UIImagePickerController alloc]init];
         impick.delegate = self;
@@ -124,12 +210,16 @@
     [self presentViewController:alertController animated:YES completion:nil];
     
 }
+
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo {
-    [self.headImage setImage:editingInfo[UIImagePickerControllerEditedImage] forState:UIControlStateNormal]; 
+    [self.headImage setBackgroundImage:editingInfo[UIImagePickerControllerEditedImage] forState:UIControlStateNormal];
     NSLog(@"%@",editingInfo);
     [picker dismissViewControllerAnimated:YES completion:^{
         NSLog(@"选照片");
     }];}
+
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     NSString *mediaType=[info objectForKey:UIImagePickerControllerMediaType];
     //判断资源类型
@@ -142,9 +232,27 @@
 //        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //        //上传图片
         [self dismissViewControllerAnimated:YES completion:nil];
-    [self.headImage setImage:info[UIImagePickerControllerEditedImage] forState:UIControlStateNormal];
+    NSData *imageData = [NSKeyedArchiver archivedDataWithRootObject:info[UIImagePickerControllerEditedImage]];
+                         
+    [USER_DEFAULT setObject:imageData forKey:@"headImage"];
+   
+    }
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    NSData *imagedata = [USER_DEFAULT objectForKey:@"headImage"];
+    if (imagedata) {
+        UIImage *iamge = [NSKeyedUnarchiver unarchiveObjectWithData:imagedata];
+        [self.headImage setBackgroundImage:iamge forState:UIControlStateNormal];
+        self.headImage.layer.cornerRadius = 33;
+        self.headImage.layer.masksToBounds = YES;
 
     }
+}
+
+
 -(void)initAlertController
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择你的性别" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -160,14 +268,6 @@
     [alertController addAction:archiveAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
