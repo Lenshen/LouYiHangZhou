@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3EF219FD36AD648384835660 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E715E4B03A7993FD44B7C8A7 /* libPods.a */; };
+		51630BF51CBB491000915669 /* AddReceptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51630BF41CBB491000915669 /* AddReceptionViewController.m */; };
+		516FEF991CBB2C3000E9A980 /* ReceptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 516FEF981CBB2C3000E9A980 /* ReceptionTableViewController.m */; };
+		516FEF9F1CBB310E00E9A980 /* ReceptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 516FEF9E1CBB310E00E9A980 /* ReceptionTableViewCell.m */; };
 		51C1E1671CB66CAE0033F0FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1661CB66CAE0033F0FA /* main.m */; };
 		51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1691CB66CAE0033F0FA /* AppDelegate.m */; };
 		51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E16C1CB66CAE0033F0FA /* ViewController.m */; };
@@ -55,6 +58,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		51630BF31CBB491000915669 /* AddReceptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddReceptionViewController.h; sourceTree = "<group>"; };
+		51630BF41CBB491000915669 /* AddReceptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddReceptionViewController.m; sourceTree = "<group>"; };
+		516FEF971CBB2C3000E9A980 /* ReceptionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceptionTableViewController.h; sourceTree = "<group>"; };
+		516FEF981CBB2C3000E9A980 /* ReceptionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceptionTableViewController.m; sourceTree = "<group>"; };
+		516FEF9D1CBB310E00E9A980 /* ReceptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceptionTableViewCell.h; sourceTree = "<group>"; };
+		516FEF9E1CBB310E00E9A980 /* ReceptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceptionTableViewCell.m; sourceTree = "<group>"; };
 		51C1E1621CB66CAE0033F0FA /* LouYiHangZhou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LouYiHangZhou.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51C1E1661CB66CAE0033F0FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		51C1E1681CB66CAE0033F0FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -141,6 +150,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		516FEF961CBB2BAE00E9A980 /* 个人中心页面 */ = {
+			isa = PBXGroup;
+			children = (
+				51C1E1E01CB751C20033F0FA /* ProfileViewController.h */,
+				51C1E1E11CB751C20033F0FA /* ProfileViewController.m */,
+				516FEF971CBB2C3000E9A980 /* ReceptionTableViewController.h */,
+				516FEF981CBB2C3000E9A980 /* ReceptionTableViewController.m */,
+			);
+			name = "个人中心页面";
+			sourceTree = "<group>";
+		};
 		51C1E1591CB66CAE0033F0FA = {
 			isa = PBXGroup;
 			children = (
@@ -308,6 +328,8 @@
 			children = (
 				51C1E1E61CB763D50033F0FA /* ProfileCollectionViewCell.h */,
 				51C1E1E71CB763D60033F0FA /* ProfileCollectionViewCell.m */,
+				516FEF9D1CBB310E00E9A980 /* ReceptionTableViewCell.h */,
+				516FEF9E1CBB310E00E9A980 /* ReceptionTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -315,8 +337,7 @@
 		51C1E1A71CB691960033F0FA /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				51C1E1E01CB751C20033F0FA /* ProfileViewController.h */,
-				51C1E1E11CB751C20033F0FA /* ProfileViewController.m */,
+				516FEF961CBB2BAE00E9A980 /* 个人中心页面 */,
 				51C1E1E91CB77C040033F0FA /* LogonVViewController.h */,
 				51C1E1EA1CB77C040033F0FA /* LogonVViewController.m */,
 				51C1E1EC1CB78C3D0033F0FA /* RegisterViewController.h */,
@@ -325,6 +346,8 @@
 				51C1E1F01CB7938B0033F0FA /* ProfileIMForViewController.m */,
 				51F469511CB8B35000534FAE /* ForgotPassWViewController.h */,
 				51F469521CB8B35000534FAE /* ForgotPassWViewController.m */,
+				51630BF31CBB491000915669 /* AddReceptionViewController.h */,
+				51630BF41CBB491000915669 /* AddReceptionViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -664,6 +687,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51C1E1BC1CB6969C0033F0FA /* NSArray+Log.m in Sources */,
+				516FEF991CBB2C3000E9A980 /* ReceptionTableViewController.m in Sources */,
 				51C1E1BD1CB6969C0033F0FA /* NSDictionary+Log.m in Sources */,
 				51C1E1E21CB751C20033F0FA /* ProfileViewController.m in Sources */,
 				51C1E1C81CB731D80033F0FA /* NavigationViewController.m in Sources */,
@@ -681,10 +705,12 @@
 				51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */,
 				51C1E1BB1CB6969C0033F0FA /* NSString+MD5.m in Sources */,
 				51C1E1EE1CB78C3D0033F0FA /* RegisterViewController.m in Sources */,
+				51630BF51CBB491000915669 /* AddReceptionViewController.m in Sources */,
 				51C1E1BF1CB6969C0033F0FA /* UIView+Extension.m in Sources */,
 				51C1E1EB1CB77C040033F0FA /* LogonVViewController.m in Sources */,
 				51C1E1C51CB731CB0033F0FA /* TabBarViewController.m in Sources */,
 				51C1E1671CB66CAE0033F0FA /* main.m in Sources */,
+				516FEF9F1CBB310E00E9A980 /* ReceptionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,9 @@
 #import "ProfileIMForViewController.h"
 
 #import "UIViewController+StoryboardFrom.h"
-@interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+
+#import "ReceptionTableViewController.h"
+@interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UILabel *mobileNumbel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imagesArray;
@@ -64,11 +66,16 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 &&indexPath.row == 1) {
-        [self.navigationController pushViewController:[ProfileIMForViewController instanceFromStoryboard] animated:YES];
+        UITableViewController *v2 = [ReceptionTableViewController instanceFromStoryboard];
+        v2.hidesBottomBarWhenPushed = YES;
+
+        [self.navigationController pushViewController:v2 animated:YES];
     }else if(indexPath.section == 0 &&indexPath.row == 4)
     {
         [self cellMobiel:self.mobileNumbel.text];
     }
+//    }else if (indexPath.section == 0 && indexPath.row
+//              ==)
 }
 -(void)cellMobiel:(NSString *)mobielNumbel
 {
