@@ -45,17 +45,7 @@
     [self getDateDataSource];
     [self initPickView];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
-    UITableView *tableView = self.tableView;
-    UIView *containerView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    tableView.frame = tableView.bounds;
-    self.view = containerView;
-    [containerView addSubview:tableView];
-    
-    //add the view as a subview of the container view, it will be fixed on the top
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-    topView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    [self.view addSubview:topView];
+
 
 
 

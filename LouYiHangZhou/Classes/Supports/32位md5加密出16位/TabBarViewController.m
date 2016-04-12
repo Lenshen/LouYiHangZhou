@@ -16,6 +16,7 @@
 #import "NavigationViewController.h"
 #import "ShoppingCartViewController.h"
 #include "UIViewController+StoryboardFrom.h"
+#import "WLZ_ShoppingCarController.h"
 
 
 @interface TabBarViewController ()
@@ -34,7 +35,8 @@
     [self addChildViewController:message image:@"分类" selectedImage:@"红色分类" title:@"分类"];
     
     //购物车
-    ShoppingCartViewController *shopVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ShoppingCartViewController"];
+    WLZ_ShoppingCarController *shopVC = [[WLZ_ShoppingCarController alloc]init
+                                   ];
     [self addChildViewController:shopVC image:@"购物车" selectedImage:@"红色购物车" title:@"购物车"];
 
     

@@ -7,6 +7,7 @@
 //
 
 #import "ProfileViewController.h"
+#import "MessageTableViewController.h"
 
 #import "ProfileCollectionViewCell.h"
 
@@ -15,6 +16,8 @@
 #import "UIViewController+StoryboardFrom.h"
 
 #import "ReceptionTableViewController.h"
+
+#import "CollectTableViewController.h"
 @interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UILabel *mobileNumbel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -31,6 +34,11 @@
     [self imagesArray];
     [self lableArray];
         
+}
+- (IBAction)ProsonIMFor:(id)sender {
+    ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
+    p.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:p animated:YES];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -66,16 +74,27 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 &&indexPath.row == 1) {
-        UITableViewController *v2 = [ReceptionTableViewController instanceFromStoryboard];
+        UIViewController *v2 = [ReceptionTableViewController instanceFromStoryboard];
         v2.hidesBottomBarWhenPushed = YES;
 
         [self.navigationController pushViewController:v2 animated:YES];
     }else if(indexPath.section == 0 &&indexPath.row == 4)
     {
         [self cellMobiel:self.mobileNumbel.text];
+    }else if(indexPath.row == 0 && indexPath.section == 0)
+    {
+        UITableViewController *tab = [CollectTableViewController instanceFromStoryboard];
+        tab.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:tab animated:YES];
+    }else if(indexPath.row == 2 && indexPath.section == 0)
+    {
+        UITableViewController *tab = [MessageTableViewController instanceFromStoryboard];
+        tab.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:tab animated:YES];
     }
-//    }else if (indexPath.section == 0 && indexPath.row
-//              ==)
+    
+
+
 }
 -(void)cellMobiel:(NSString *)mobielNumbel
 {

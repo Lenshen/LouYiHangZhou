@@ -7,8 +7,10 @@
 //
 
 #import "ShoppingCartViewController.h"
+#import "ShoppingCartTableViewCell.h"
+#import "WLZ_ShoppingCarController.h"
 
-@interface ShoppingCartViewController ()
+@interface ShoppingCartViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @end
 
@@ -17,12 +19,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
+    self.title = @"购物车";
 }
-
+- (IBAction)kkk:(id)sender {
+    WLZ_ShoppingCarController *car = [[WLZ_ShoppingCarController alloc]init];
+    [self.navigationController pushViewController:car animated:YES];
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+{
+    return 2;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ShoppingCartTableViewCell"];
+    return cell;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
 #pragma mark - Navigation

@@ -7,14 +7,25 @@
 //
 
 #import "AddReceptionViewController.h"
-
+#import "CityViewController.h"
 @interface AddReceptionViewController ()
+@property (strong, nonatomic) IBOutlet UIButton *cityButton;
 
 @end
 
 @implementation AddReceptionViewController
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)getCity:(id)sender {
+    CityViewController *city = [[CityViewController alloc]init];
+    city.currentCityString = @"us";
+    city.selectString = ^(NSString *string)
+    {
+        [_cityButton setTitle:string forState:UIControlStateNormal];
+    };
+    [self presentViewController:city animated:YES completion:nil];
+    
 }
 
 - (void)viewDidLoad {

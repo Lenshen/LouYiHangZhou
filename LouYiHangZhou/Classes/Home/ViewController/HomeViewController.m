@@ -18,7 +18,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+//    self.navigationController.navigationBarHidden= NO;
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
+//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
