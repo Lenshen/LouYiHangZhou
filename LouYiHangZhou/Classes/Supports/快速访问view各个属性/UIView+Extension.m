@@ -91,5 +91,11 @@
 - (CGPoint)origin{
     return self.frame.origin;
 }
+- (void) setTop: (CGFloat) newtop
+{
+    CGRect newframe = self.frame;
+    newframe.origin.y = newtop;
+    self.frame = newframe;
+}
 
 @end

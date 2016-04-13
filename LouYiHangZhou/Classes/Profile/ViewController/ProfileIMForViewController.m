@@ -10,16 +10,20 @@
 #import "UIView+Extension.h"
 #import "ForgotPassWViewController.h"
 #import "UIViewController+StoryboardFrom.h"
+#import "UserImformationModel.h"
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImagePickerController *_imagePickerController;
 
 }
-@property (strong, nonatomic) IBOutlet UILabel *dateField;
-@property (strong, nonatomic) IBOutlet UIButton *headImage;
-@property (strong, nonatomic) IBOutlet UILabel *sexLabel;
+@property (strong, nonatomic) IBOutlet UILabel *birthLabel;
+@property (weak, nonatomic) IBOutlet UILabel *mobileLB;
+@property (weak, nonatomic) IBOutlet UILabel *dateField;
+@property (weak, nonatomic) IBOutlet UIButton *headImage;
+@property (weak, nonatomic) IBOutlet UILabel *sexLabel;
 @property (nonatomic,strong) NSMutableArray *yearArray;
+@property (nonatomic, strong)UserImformationModel *useModel;
 
 @property (nonatomic,strong) NSMutableArray *monthArray;
 
@@ -45,6 +49,10 @@
     [self getDateDataSource];
     [self initPickView];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    _useModel = [UserImformationModel sharedManager];
+    self.mobileLB.text = [USER_DEFAULT objectForKey:@"userName"];
+    self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
+    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
 
 
 

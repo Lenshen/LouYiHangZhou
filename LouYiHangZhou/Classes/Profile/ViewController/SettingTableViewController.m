@@ -50,6 +50,14 @@
     {
         [self clearCache];
         
+    }else if(indexPath.row == 0 && indexPath.section == 2)
+    {
+        [USER_DEFAULT removeObjectForKey:@"headImage"];
+        [USER_DEFAULT removeObjectForKey:@"userName"];
+        [USER_DEFAULT removeObjectForKey:@"sex"];
+        [USER_DEFAULT removeObjectForKey:@"birth"];
+        [self.navigationController popViewControllerAnimated:YES];
+        
     }
     
 }
@@ -109,6 +117,7 @@
 {
     NSLog(@"清理成功");
     [USER_DEFAULT removeObjectForKey:@"headImage"];
+    [USER_DEFAULT removeObjectForKey:@"userName"];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清除成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:cancel];

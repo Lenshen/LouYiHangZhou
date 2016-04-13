@@ -17,8 +17,12 @@
 #define JUDGE_MOBILEEXIST @"http://192.168.0.103:7021/api/user/checkmobile"
 #define JUDGE_CODETURE @"http://192.168.0.103:7021/api/MobileVerifyCode/verify"
 #define APP_REGISTER  @"http://192.168.0.103:7021/api/user/reg"
-//获取屏幕 宽度、高度#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
-#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+//获取屏幕 宽度、高度
+
+#define kScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+
+#define windowColor  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]
 
 #define VERSION_CURRENT [[[UIDevice currentDevice] systemVersion] floatValue];
 

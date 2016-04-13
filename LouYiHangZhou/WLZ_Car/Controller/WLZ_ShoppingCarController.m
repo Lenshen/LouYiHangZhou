@@ -120,72 +120,55 @@
     if (!_endView) {
         _endView = [[WLZ_ShoppingCartEndView alloc]initWithFrame:CGRectMake(0, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]-49, APPScreenWidth, [WLZ_ShoppingCartEndView getViewHeight])];
         _endView.delegate=self;
-        _endView.isEdit = _isEdit;
         
         
     }
     return _endView;
 }
 
-- (void)clickALLEnd:(UIButton *)bt
-{
-    
-    //全选 也可以在 VM里面 写  这次在Controller里面写了
-    if (bt.tag == 18) {
-        bt.selected = !bt.selected;
-        
-        BOOL btselected = bt.selected;
-        
-        NSString *checked = @"";
-        if (btselected) {
-            checked = @"YES";
-        }
-        else
-        {
-            checked = @"NO";
-        }
-        
-        if (self.isEdit) {
-            //取消
-            for (int i =0; i<_carDataArrList.count; i++) {
-                NSArray *dataList = [_carDataArrList objectAtIndex:i];
-                NSMutableDictionary *dic = [dataList lastObject];
-                
-                [dic setObject:checked forKey:@"checked"];
-                for (int j=0; j<dataList.count-1; j++) {
-                    WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
-                    if (![model.item_info.sale_state isEqualToString:@"3"]) {
-                        model.isSelect=btselected;
-                    }
-                    
-                }
-            }
-        }
-        else
-        {
-            //编辑
-            
-            
-            for (int i =0; i<_carDataArrList.count; i++) {
-                NSArray *dataList = [_carDataArrList objectAtIndex:i];
-                NSMutableDictionary *dic = [dataList lastObject];
-                [dic setObject:checked forKey:@"checked"];
-                for (int j=0; j<dataList.count-1; j++) {
-                    WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
-                    model.isSelect=btselected;
-                }
-            }
-            
-        }
-        
-        [_tableView reloadData];
-
-    }
-    
-    
-
-    
-}
+//- (void)clickALLEnd:(UIButton *)bt
+//{
+//    
+//    //全选 也可以在 VM里面 写  这次在Controller里面写了
+//    if (bt.tag == 18) {
+//        bt.selected = !bt.selected;
+//        
+//        BOOL btselected = bt.selected;
+//        
+//        NSString *checked = @"";
+//        if (btselected) {
+//            checked = @"YES";
+//        }
+//        else
+//        {
+//            checked = @"NO";
+//        }
+//        
+//        if (self.isEdit) {
+//            //取消
+//            for (int i =0; i<_carDataArrList.count; i++) {
+//                NSArray *dataList = [_carDataArrList objectAtIndex:i];
+//                NSMutableDictionary *dic = [dataList lastObject];
+//                
+//                [dic setObject:checked forKey:@"checked"];
+//                for (int j=0; j<dataList.count-1; j++) {
+//                    WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
+//                    if (![model.item_info.sale_state isEqualToString:@"3"]) {
+//                        model.isSelect=btselected;
+//                    }
+//                    
+//                }
+//            }
+//        }
+//        
+//        [_tableView reloadData];
+//
+//    }
+//    
+//    
+//
+//    
+//}
 
 
 
@@ -253,16 +236,7 @@
         self.endView.hidden=NO;
     }
 }
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    
-//    
-//    
-//    
-//    [self endViewHidden];
-//    return 1;
-//    
-//}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -293,7 +267,6 @@
         cell.delegate=self;
     }
     if (self.carDataArrList.count>0) {
-        cell.isEdit = self.isEdit;
         NSArray *list = [self.carDataArrList objectAtIndex:indexPath.section];
         cell.row = indexPath.row+1;
         [cell setModel:[list objectAtIndex:indexPath.row]];

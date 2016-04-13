@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no, minimal-ui">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+	<div class="page-goods-detail">
+		<a href="" class="icons icon-back"></a>
+		<a href="" class="icons icon-share"></a>
+		<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
+			<div id="busSlider" class="bus-slider">
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+			</div>
+			<div id="busSliderControl" class="bus-slider-control">
+				<em></em><em></em><em></em>
+			</div>
+		</section>
+		<section class="section goods-properties">
+			<header id="vueHeader" class="box">
+				<h2 class="flex clamp2">台湾进口爆浆手打麻薯如果有两行的话那么写到这里就可以了</h2>
+				<div class="bdl-y collection" :class="{'disabled': favorite}" v-cloak @click="doFavorite">
+					<span class="icons icon-collection"></span><small>{{favorite ? '已收藏' : '收藏'}}</small>
+				</div>
+			</header>
+			<div class="box prices">
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+			</div>
+			<dl>
+				<dt>口味</dt>
+				<dd class="selected">西瓜味</dd>
+				<dd>菠萝味</dd>
+				<dd>榴莲味</dd>
+				<dd>原味</dd>
+				<dd>柑橙味</dd>
+			</dl>
+			<dl>
+				<dt>其他</dt>
+				<dd class="selected">单盒装</dd>
+				<dd>家庭装</dd>
+				<dd>情侣套餐</dd>
+				<dd>混合装</dd>
+			</dl>
+		</section>
+		<section class="section comment">
+			<div class="flex box-vertical">
+				用户评价&nbsp;&nbsp;<span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-gray-small"></span>
+			</div>
+			<a class="flex link">
+				5687 个评价<span class="icons icon-arrow"></span>
+			</a>
+		</section>
+		<section class="recommend">
+			<header>
+				<h3>为您推荐</h3>
+			</header>
+			<ul>
+				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
+				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
+				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
+			</ul>
+		</section>
+		<div class="mod-order-footer-holder"></div>
+		<footer class="mod-order-footer">
+			<b class="price">￥{{price}}</b><small>共 2 件商品</small><a class="clearing" href="">加入购物车</a>
+		</footer>
+	</div>
+	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/mustache.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
+	<script src="assets/js/main.js"></script>
+	
+	<script>
+
+		var params = $.params();
+
+		page.push(function() {
+			var slider = new Slider({
+				conversion: 1
+			});
+		});
+
+		page.push(function() {
+			vues.header = new Vue({
+				el: '#vueHeader',
+				data: {
+					favorite: null
+				},
+				methods: {
+					doFavorite: function() {
+						if (vues.header.favorite) {
+							api.favoriteRemove(params.search.id).done(function(response) {
+								if (response.success) {
+									vues.header.favorite = !vues.header.favorite;
+								}
+								else {
+									Toast(response.message);
+								}
+							});
+						}
+						else {
+							api.favoriteAdd(params.search.id).done(function(response) {
+								if (response.success) {
+									vues.header.favorite = !vues.header.favorite;
+								}
+								else {
+									Toast(response.message);
+								}
+
+							});
+						}
+					}
+				}
+			});
+
+			api.goods(params.search.id).then(function(response) {
+
+			});
+
+			api.favoriteExist(params.search.id).done(function(response) {
+				if (response.success) {
+					vues.header.favorite = response.data;
+				}
+			});
+			
+		});
+	</script>
+</body>
+</html>

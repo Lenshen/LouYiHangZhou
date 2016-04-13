@@ -9,5 +9,13 @@
 #import "UserImformationModel.h"
 
 @implementation UserImformationModel
-
++ (instancetype)sharedManager
+{
+    static UserImformationModel *sharedAccountManagerInstance = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedAccountManagerInstance = [[self alloc] init];
+    });
+    return sharedAccountManagerInstance;
+}
 @end

@@ -111,46 +111,6 @@ static CGFloat CELL_HEIGHT = 100;
 
 
 
-//- (void)textFieldDidEndEditing:(UITextField *)textField
-//{
-//    _changeView.numberFD = textField;
-//    if ([self isPureInt:_changeView.numberFD.text]) {
-//        if ([_changeView.numberFD.text integerValue]<0) {
-//            _changeView.numberFD.text=@"1";
-//        }
-//        
-//    }
-//    else
-//    {
-//        _changeView.numberFD.text=@"1";
-//    }
-//    
-//    
-//    if ([_changeView.numberFD.text isEqualToString:@""] || [_changeView.numberFD.text isEqualToString:@"0"]) {
-//        self.choosedCount = 1;
-//        _changeView.numberFD.text=@"1";
-//        
-//    }
-//    NSString *numText = _changeView.numberFD.text;
-//    if ([numText intValue]>[_model.item_info.stock_quantity  intValue]) {
-//        _changeView.numberFD.text=[NSString stringWithFormat:@"%zi",[_model.item_info.stock_quantity  intValue]];
-//        
-//        
-//    }
-//    
-//    if ([numText intValue] >99) {
-//      //  [SVProgressHUD showErrorWithStatus:@"最多支持购买99个"];
-//        _changeView.numberFD.text = @"99";
-//    }
-//    
-//    _changeView.addButton.enabled=YES;
-//    _changeView.subButton.enabled=YES;
-//    self.choosedCount = [_changeView.numberFD.text integerValue];
-//    _model.count = _changeView.numberFD.text;
-//    _model.isSelect = _selectBt.selected;
-//    
-//}
-
 - (BOOL)isPureInt:(NSString*)string{
     NSScanner* scan = [NSScanner scannerWithString:string];
     int val;
@@ -179,12 +139,6 @@ static CGFloat CELL_HEIGHT = 100;
     [_shoppingImgView sd_setImageWithURL:[NSURL URLWithString:model.item_info.icon] placeholderImage:[UIImage imageNamed:@"default"]];
 
     
-    if ([model.item_info.is_spu intValue] == 1) {
-        UIImage *img = [UIImage imageNamed:@"spuIcon"];
-        _spuImgView.image = img;
-      //  _spuImgView.size = img.size;
-        _priceLab.text=[NSString stringWithFormat:@"套装价￥%@",model.item_info.sale_price];
-    } else {
         
         UIImage *level = [UIImage imageNamed:@"level2"];
         if (model.item_info.type == 5) {
@@ -202,7 +156,7 @@ static CGFloat CELL_HEIGHT = 100;
         }
         
         _priceLab.text=[NSString stringWithFormat:@"￥%@",model.item_info.sale_price];
-    }
+  
     
     
     _title.text= model.item_info.full_name;

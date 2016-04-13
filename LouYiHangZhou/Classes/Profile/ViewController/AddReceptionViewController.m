@@ -8,6 +8,8 @@
 
 #import "AddReceptionViewController.h"
 #import "CityViewController.h"
+#import "AddressPick/AddressPickView.h"
+
 @interface AddReceptionViewController ()
 @property (strong, nonatomic) IBOutlet UIButton *cityButton;
 
@@ -18,13 +20,15 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)getCity:(id)sender {
-    CityViewController *city = [[CityViewController alloc]init];
-    city.currentCityString = @"us";
-    city.selectString = ^(NSString *string)
-    {
-        [_cityButton setTitle:string forState:UIControlStateNormal];
+    AddressPickView *addressPickView = [AddressPickView shareInstance];
+    [self.view addSubview:addressPickView];
+    addressPickView.block = ^(NSString *province,NSString *city,NSString *town){
+        NSString *str = [NSString stringWithFormat:@"%@ %@ %@",province,city,town] ;
+        NSLog(@"%@",str);
+        [_cityButton setTitle:str forState:UIControlStateNormal];
+        
     };
-    [self presentViewController:city animated:YES completion:nil];
+
     
 }
 

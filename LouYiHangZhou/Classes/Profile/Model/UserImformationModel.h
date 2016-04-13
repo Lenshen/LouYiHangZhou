@@ -17,12 +17,13 @@
 @property (strong, nonatomic) NSString* full_name;
 @property (strong, nonatomic) NSString* level;
 //积分
+@property (strong, nonatomic) NSString* birth;
 @property (strong, nonatomic) NSString* point;
 @property (strong, nonatomic) NSString* sex;
 //会员头像
 @property (strong, nonatomic) NSString* avatar;
 @property (strong, nonatomic) NSString* create_time;
-
++ (instancetype)sharedManager;
 
 
 @end

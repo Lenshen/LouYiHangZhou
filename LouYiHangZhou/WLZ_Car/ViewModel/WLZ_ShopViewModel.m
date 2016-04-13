@@ -44,6 +44,7 @@
         model.type=1;
         model.isSelect=YES;
         [commonMuList addObject:model];
+        NSLog(@"%@",commonList);
         
     }
     for (int i = 0; i<kuajingList.count; i++) {
@@ -111,53 +112,6 @@
 }
 
 
--(void)clickAllBT:(NSMutableArray *)carDataArrList bt:(UIButton *)bt
-{
-    
-    
-    
-    bt.selected = !bt.selected;
-    
-    for (int i =0; i<carDataArrList.count; i++) {
-        NSArray *dataList = [carDataArrList objectAtIndex:i];
-        NSMutableDictionary *dic = [dataList lastObject];
-        for (int j=0; j<dataList.count-1; j++) {
-            WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
-            if (model.type==1 && bt.tag==100) {
-                if (bt.selected) {
-                    [dic setObject:@"YES" forKey:@"checked"];
-                }
-                else
-                {
-                    [dic setObject:@"NO" forKey:@"checked"];
-                }
-                if ([model.item_info.sale_state isEqualToString:@"3"]) {
-                    continue;
-                }
-                else{
-                    model.isSelect=bt.selected;
-                }
-                
-            }
-            else if(model.type==2 &&bt.tag==101)
-            {
-                if (bt.selected) {
-                    [dic setObject:@"YES" forKey:@"checked"];
-                }
-                else
-                {
-                    [dic setObject:@"NO" forKey:@"checked"];
-                }
-                if ([model.item_info.sale_state isEqualToString:@"3"]) {
-                    continue;
-                }
-                else{
-                    model.isSelect=bt.selected;
-                }
-            }
-        }
-    }
-}
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context

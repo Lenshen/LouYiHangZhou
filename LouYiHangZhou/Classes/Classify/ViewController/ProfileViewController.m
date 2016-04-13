@@ -8,6 +8,8 @@
 
 #import "ProfileViewController.h"
 #import "MessageTableViewController.h"
+#import "CouponViewController.h"
+#import "LogonVViewController.h"
 
 #import "ProfileCollectionViewCell.h"
 
@@ -33,15 +35,7 @@
     // Do any additional setup after loading the view.
     [self imagesArray];
     [self lableArray];
-        
-}
-- (IBAction)ProsonIMFor:(id)sender {
-    ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
-    p.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:p animated:YES];
-}
--(void)viewWillAppear:(BOOL)animated
-{
+    self.tableView.contentOffset = CGPointMake(0, 0);
     NSData *imageData = [USER_DEFAULT objectForKey:@"headImage"];
     if (imageData) {
         UIImage *image = [NSKeyedUnarchiver unarchiveObjectWithData:imageData];
@@ -50,6 +44,25 @@
         self.headImage.layer.masksToBounds = YES;
         
     }
+
+        
+}
+- (IBAction)ProsonIMFor:(id)sender {
+    
+    if ([USER_DEFAULT objectForKey:@"userName"]) {
+        ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
+        p.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:p animated:YES];
+    }else
+    {
+        LogonVViewController *Logon = [LogonVViewController instanceFromStoryboard];
+        Logon.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:Logon animated:YES];
+    }
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+       self.navigationController.navigationBarHidden = YES;
 
 }
 -(NSArray *)imagesArray
@@ -91,6 +104,11 @@
         UITableViewController *tab = [MessageTableViewController instanceFromStoryboard];
         tab.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:tab animated:YES];
+    }else if (indexPath.row == 3 && indexPath.section == 0)
+    {
+        CouponViewController *coupon = [[CouponViewController alloc]init];
+        coupon.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:coupon animated:YES];
     }
     
 
