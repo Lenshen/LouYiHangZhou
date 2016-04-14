@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>count</key>
-			<string>7</string>
+			<string>0</string>
 			<key>item_id</key>
 			<string>1000757</string>
 			<key>item_info</key>
@@ -47,7 +47,7 @@
 		</dict>
 		<dict>
 			<key>count</key>
-			<string>2</string>
+			<string>0</string>
 			<key>item_id</key>
 			<string>1005006</string>
 			<key>item_info</key>
@@ -77,7 +77,7 @@
 				<key>sale_price</key>
 				<string>99.00</string>
 				<key>sale_state</key>
-				<string>3</string>
+				<string>0</string>
 				<key>stock_quantity</key>
 				<string>55</string>
 				<key>type</key>
@@ -88,7 +88,7 @@
 		</dict>
 		<dict>
 			<key>count</key>
-			<string>2</string>
+			<string>0</string>
 			<key>item_id</key>
 			<string>1005088</string>
 			<key>item_info</key>
@@ -129,7 +129,7 @@
 		</dict>
 		<dict>
 			<key>count</key>
-			<string>1</string>
+			<string>0</string>
 			<key>item_id</key>
 			<string>1003440</string>
 			<key>item_info</key>
@@ -170,7 +170,7 @@
 		</dict>
 		<dict>
 			<key>count</key>
-			<string>1</string>
+			<string>0</string>
 			<key>item_id</key>
 			<string>1010073</string>
 			<key>item_info</key>
@@ -208,132 +208,6 @@
 			</dict>
 			<key>item_size</key>
 			<string>适用年龄3个月以上</string>
-		</dict>
-	</array>
-	<key>kuajing</key>
-	<array>
-		<dict>
-			<key>count</key>
-			<string>3</string>
-			<key>item_id</key>
-			<string>1047984</string>
-			<key>item_info</key>
-			<dict>
-				<key>auth_level</key>
-				<integer>2</integer>
-				<key>biz_wholesale_price</key>
-				<string>64.00</string>
-				<key>full_name</key>
-				<string>EARTH&apos;S BEST米粉/面食有机燕麦米粉6M+ 227g*2盒</string>
-				<key>icon</key>
-				<string>http://img03.miyabaobei.com/d1/p1/item/10/1047/1047984_topic_1.jpg</string>
-				<key>is_spu</key>
-				<string>1</string>
-				<key>item_id</key>
-				<string>1047984</string>
-				<key>item_size</key>
-				<string>SINGLE</string>
-				<key>item_state</key>
-				<string>1</string>
-				<key>market_price</key>
-				<string>178.00</string>
-				<key>name</key>
-				<string>有机燕麦米粉6M+ 227g*2盒</string>
-				<key>name_add</key>
-				<string>earth best2段有机燕麦米粉，美国进口，有机高铁燕麦米粉。宝宝的安全营养辅食，米香四溢，爱不释口~新老包装随机发货~</string>
-				<key>sale_price</key>
-				<string>72.00</string>
-				<key>sale_state</key>
-				<string>1</string>
-				<key>stock_quantity</key>
-				<integer>5298</integer>
-				<key>type</key>
-				<string>6</string>
-			</dict>
-			<key>item_size</key>
-			<string>SINGLE</string>
-		</dict>
-		<dict>
-			<key>count</key>
-			<string>12</string>
-			<key>item_id</key>
-			<string>1001097</string>
-			<key>item_info</key>
-			<dict>
-				<key>auth_level</key>
-				<integer>2</integer>
-				<key>biz_wholesale_price</key>
-				<string>78.00</string>
-				<key>full_name</key>
-				<string>California Baby 加州宝宝屁屁霜/护臀霜护臀膏 82g</string>
-				<key>icon</key>
-				<string>http://img03.miyabaobei.com/d1/p1/item/10/1001/1001097_topic_1.jpg</string>
-				<key>is_spu</key>
-				<string>0</string>
-				<key>item_id</key>
-				<string>1001097</string>
-				<key>item_size</key>
-				<string>SINGLE</string>
-				<key>item_state</key>
-				<string>1</string>
-				<key>market_price</key>
-				<string>228.00</string>
-				<key>name</key>
-				<string>护臀膏 82g</string>
-				<key>name_add</key>
-				<string>来自美国安全品牌加州宝宝，选纯羊毛脂成分，非矿物油护臀膏，给宝宝的屁屁加上天然的保护膜！</string>
-				<key>sale_price</key>
-				<string>92.00</string>
-				<key>sale_state</key>
-				<string>1</string>
-				<key>stock_quantity</key>
-				<string>12</string>
-				<key>type</key>
-				<string>6</string>
-			</dict>
-			<key>item_size</key>
-			<string>SINGLE</string>
-		</dict>
-		<dict>
-			<key>count</key>
-			<string>1</string>
-			<key>item_id</key>
-			<string>1059255</string>
-			<key>item_info</key>
-			<dict>
-				<key>auth_level</key>
-				<integer>2</integer>
-				<key>biz_wholesale_price</key>
-				<string>497.00</string>
-				<key>full_name</key>
-				<string>merries 花王纸尿裤纸尿裤 M64 片*2+L54片*2包</string>
-				<key>icon</key>
-				<string>http://img03.miyabaobei.com/d1/p1/item/10/1059/1059255_topic_1.jpg</string>
-				<key>is_spu</key>
-				<string>1</string>
-				<key>item_id</key>
-				<string>1059255</string>
-				<key>item_size</key>
-				<string>SINGLE</string>
-				<key>item_state</key>
-				<string>1</string>
-				<key>market_price</key>
-				<string>752.00</string>
-				<key>name</key>
-				<string>纸尿裤 M64 片*2+L54片*2包</string>
-				<key>name_add</key>
-				<string>花王是纸尿裤界公认的优质品牌。这几年尿裤界的后期之秀很多，各家都有各自亮点，例如moony的拉拉裤，天使的奢华质感，贝亲的性价比等等。但花王的综合性能很赞，无论是柔软性、干爽性、包裹感、立体舒适感等各方面都颇有口碑，而且使用的宝宝多，基数大，可以说是经过了广大宝爸宝妈们的检验。跨境购商品需要提交个人身份证号码以备海关审核。4包组合，实惠多多！</string>
-				<key>sale_price</key>
-				<string>499.00</string>
-				<key>sale_state</key>
-				<string>1</string>
-				<key>stock_quantity</key>
-				<integer>10000</integer>
-				<key>type</key>
-				<string>6</string>
-			</dict>
-			<key>item_size</key>
-			<string>SINGLE</string>
 		</dict>
 	</array>
 </dict>

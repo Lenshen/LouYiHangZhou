@@ -26,7 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+    self.codeButton.enabled = NO;
+
     self.codeButton.layer.cornerRadius = 5;
     [self.codeButton setBackgroundColor:[UIColor grayColor]];
 
@@ -50,7 +51,7 @@
         NSLog(@"%@",responseObject);
         NSString *message = _registerDic[@"message"];
         if ([message isEqualToString:@"注册成功"]) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
 //            NSString *str = @"http://192.168.0.103:7021/api/authorized/user";
 //            NSDictionary *parameter = @{@"login_name":@"18258435631",@"access_token":@"101",@"user_type":@"0",@"password":@"123456",@"client_ip":[USER_DEFAULT objectForKey:@"client_id"]};
 //            [BYSHttpTool GET:str Parameters:parameter Success:^(id responseObject) {
@@ -101,7 +102,6 @@
     NSString *str = @"http://192.168.0.103:7021/api/MobileVerifyCode/send";
     NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100"};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
-        NSDictionary *res = responseObject;
         NSLog(@"%@",responseObject);
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);

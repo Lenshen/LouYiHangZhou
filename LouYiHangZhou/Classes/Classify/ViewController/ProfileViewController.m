@@ -44,7 +44,9 @@
         self.headImage.layer.masksToBounds = YES;
         
     }
-
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    
         
 }
 - (IBAction)ProsonIMFor:(id)sender {

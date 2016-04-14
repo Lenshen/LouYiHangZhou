@@ -8,6 +8,7 @@
 
 #import "CollectTableViewController.h"
 #import "CollectTableViewCell.h"
+#import "BYSHttpTool.h"
 
 @interface CollectTableViewController ()
 
@@ -19,7 +20,16 @@
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.tableView.contentSize = CGSizeMake(self.view.frame.size.width, 2000);
+    NSString *str = @"http://192.168.0.103:7021/api/favorite/list";
+    NSString *str2 = [USER_DEFAULT objectForKey:@"user_access_token"];
+    NSDictionary *dic = @{@"access_token":str2};
+    [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }
+     ];
 }
 
 - (void)didReceiveMemoryWarning {

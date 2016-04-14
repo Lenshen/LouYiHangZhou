@@ -64,6 +64,8 @@
 		51B54EA11CBDD94C00F0B5D4 /* UIButton+countDown.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B54E9F1CBDD94C00F0B5D4 /* UIButton+countDown.m */; };
 		51B54EA61CBE2DE500F0B5D4 /* Address.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51B54EA31CBE2DE500F0B5D4 /* Address.plist */; };
 		51B54EA71CBE2DE500F0B5D4 /* AddressPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B54EA51CBE2DE500F0B5D4 /* AddressPickView.m */; };
+		51B54EAB1CBF19C700F0B5D4 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B54EAA1CBF19C700F0B5D4 /* UserManager.m */; };
+		51B54EB11CBF4E2900F0B5D4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B54EB01CBF4E2900F0B5D4 /* SearchViewController.m */; };
 		51C1E1671CB66CAE0033F0FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1661CB66CAE0033F0FA /* main.m */; };
 		51C1E16A1CB66CAE0033F0FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E1691CB66CAE0033F0FA /* AppDelegate.m */; };
 		51C1E16D1CB66CAE0033F0FA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C1E16C1CB66CAE0033F0FA /* ViewController.m */; };
@@ -196,6 +198,10 @@
 		51B54EA31CBE2DE500F0B5D4 /* Address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Address.plist; sourceTree = "<group>"; };
 		51B54EA41CBE2DE500F0B5D4 /* AddressPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressPickView.h; sourceTree = "<group>"; };
 		51B54EA51CBE2DE500F0B5D4 /* AddressPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressPickView.m; sourceTree = "<group>"; };
+		51B54EA91CBF19C700F0B5D4 /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		51B54EAA1CBF19C700F0B5D4 /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		51B54EAF1CBF4E2900F0B5D4 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		51B54EB01CBF4E2900F0B5D4 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		51C1E1621CB66CAE0033F0FA /* LouYiHangZhou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LouYiHangZhou.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51C1E1661CB66CAE0033F0FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		51C1E1681CB66CAE0033F0FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -487,6 +493,16 @@
 			path = AddressPick;
 			sourceTree = "<group>";
 		};
+		51B54EA81CBF194700F0B5D4 /* UserManager */ = {
+			isa = PBXGroup;
+			children = (
+				51B54EA91CBF19C700F0B5D4 /* UserManager.h */,
+				51B54EAA1CBF19C700F0B5D4 /* UserManager.m */,
+			);
+			name = UserManager;
+			path = AddressPick;
+			sourceTree = "<group>";
+		};
 		51C1E1591CB66CAE0033F0FA = {
 			isa = PBXGroup;
 			children = (
@@ -629,6 +645,8 @@
 			children = (
 				51C1E1DA1CB751960033F0FA /* HomeViewController.h */,
 				51C1E1DB1CB751960033F0FA /* HomeViewController.m */,
+				51B54EAF1CBF4E2900F0B5D4 /* SearchViewController.h */,
+				51B54EB01CBF4E2900F0B5D4 /* SearchViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -724,6 +742,8 @@
 		51C1E1AC1CB6969C0033F0FA /* Supports */ = {
 			isa = PBXGroup;
 			children = (
+				51C1E1D61CB73F940033F0FA /* HttpParameters */,
+				51B54EA81CBF194700F0B5D4 /* UserManager */,
 				51B54EA21CBE2DE500F0B5D4 /* AddressPick */,
 				51E23F7F1CBB50FD0094607F /* selectCity */,
 				51C1E1D41CB73CEA0033F0FA /* Marco */,
@@ -792,7 +812,6 @@
 				51C1E1C61CB731D80033F0FA /* NavigationViewController.m */,
 				51C1E1C41CB731CB0033F0FA /* TabBarViewController.h */,
 				51C1E1C31CB731CB0033F0FA /* TabBarViewController.m */,
-				51C1E1D61CB73F940033F0FA /* HttpParameters */,
 				512F06491CBD0BDD0017A3D7 /* html.bundle */,
 			);
 			name = Main;
@@ -823,6 +842,7 @@
 				51C1E1D81CB73FCA0033F0FA /* HttpParameters.m */,
 			);
 			name = HttpParameters;
+			path = "32位md5加密出16位";
 			sourceTree = "<group>";
 		};
 		51E23F7F1CBB50FD0094607F /* selectCity */ = {
@@ -1125,6 +1145,7 @@
 				51B54EA71CBE2DE500F0B5D4 /* AddressPickView.m in Sources */,
 				51C1E1E21CB751C20033F0FA /* ProfileViewController.m in Sources */,
 				512F05F91CBCD4760017A3D7 /* WLZ_ShoppingCartEndView.m in Sources */,
+				51B54EAB1CBF19C700F0B5D4 /* UserManager.m in Sources */,
 				51E23F951CBB50FD0094607F /* CityModel.m in Sources */,
 				512F05F61CBCD4760017A3D7 /* WLZ_ChangeCountView.m in Sources */,
 				51E23F971CBB50FD0094607F /* CustomSearchView.m in Sources */,
@@ -1134,6 +1155,7 @@
 				51C1E1CF1CB7346F0033F0FA /* UserImformationModel.m in Sources */,
 				519198641CBBA3B1006AD102 /* FeedBackViewController.m in Sources */,
 				51E23F931CBB50FD0094607F /* CityViewController.m in Sources */,
+				51B54EB11CBF4E2900F0B5D4 /* SearchViewController.m in Sources */,
 				51C1E1DC1CB751960033F0FA /* HomeViewController.m in Sources */,
 				51B54EA11CBDD94C00F0B5D4 /* UIButton+countDown.m in Sources */,
 				51AD6AE71CBCAEC300F548D5 /* ShoppingCartTableViewCell.m in Sources */,

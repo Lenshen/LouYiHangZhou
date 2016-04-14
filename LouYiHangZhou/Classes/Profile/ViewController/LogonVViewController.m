@@ -9,12 +9,15 @@
 #import "LogonVViewController.h"
 #import "BYSHttpTool.h"
 #import "UserImformationModel.h"
+#import "HttpParameters.h"
 
 @interface LogonVViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *userName;
+@property (strong, nonatomic) IBOutlet UITextField *passwordTF;
 @property (weak, nonatomic) IBOutlet UIButton *logoButton;
 @property (strong, nonatomic) UserImformationModel *useModel1;
 @property (strong, nonatomic) NSDictionary *dic;
+
 
 
 
@@ -25,37 +28,55 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+
+
+    _passwordTF.enabled = NO;
+    _passwordTF.keyboardType = UIKeyboardTypePhonePad;
+    _userName.keyboardType = UIKeyboardTypePhonePad;
+
  
-    
+    [_passwordTF addTarget:self action:@selector(logoButtonBackgroundChange) forControlEvents:UIControlEventEditingChanged];
+    [_userName addTarget:self action:@selector(passwordCanWirtte) forControlEvents:UIControlEventEditingChanged];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+}
+-(void)passwordCanWirtte
+{
+    if ( _userName.text.length == 11) {
+        _passwordTF.enabled = YES;
+
+    }else
+        _passwordTF.enabled = NO;
+
     
 }
+-(void)logoButtonBackgroundChange
+{
+    if (_passwordTF.text.length > 5 && _userName.text.length == 11) {
+        [self.logoButton setBackgroundImage:[UIImage imageNamed:@"登陆注册按钮"] forState:UIControlStateNormal];
+        [self.logoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }else
+    {
+        [self.logoButton setBackgroundImage:[UIImage imageNamed:@"登陆按钮框"] forState:UIControlStateNormal];
+        [self.logoButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    }
+}
 - (IBAction)logoEvent:(id)sender {
-    NSString *str1 = @"http://192.168.0.103:7021/api/authorized/user";
-    NSDictionary *parameter1 = @{@"login_name":@"18258435630",@"access_token":@"101",@"user_type":@"0",@"password":@"123456",@"client_ip":[USER_DEFAULT objectForKey:@"client_id"]};
-    [BYSHttpTool GET:str1 Parameters:parameter1 Success:^(id responseObject) {
+    [_userName resignFirstResponder];
+    [_passwordTF resignFirstResponder];
+    [BYSHttpTool GET:@"http://192.168.0.103:7021/api/authorized/user" Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
-        NSDictionary *dic = responseObject;
-        NSDictionary *paratemers12 = @{@"access_token":dic[@"data"]};
-        [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/get" Parameters:paratemers12 Success:^(id responseObject) {
-            NSLog(@"%@",responseObject);
-             _dic = responseObject[@"data"];
-            
-            
-            _useModel1 = [[UserImformationModel sharedManager]initWithDictionary:_dic error:nil];
-            NSLog(@"%@",_useModel1);
-            [USER_DEFAULT setObject:_useModel1.mobile forKey:@"userName"];         [USER_DEFAULT setObject:_useModel1.sex forKey:@"sex"];
-            [USER_DEFAULT setObject:_useModel1.birth forKey:@"birth"];
-
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        } Failure:^(NSError *error) {
-            NSLog(@"%@",error);
-        }];
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
    
 
-
+}
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [_userName resignFirstResponder];
+    [_passwordTF resignFirstResponder];
 }
 -(void)viewWillAppear:(BOOL)animated
 {

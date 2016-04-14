@@ -9,7 +9,7 @@
 
 
 
-//   MVVM (降低耦合) KVO(一处计算总价钱) 键盘处理(精确到每个cell) 代码适配(手动代码适配，无第三方) ，还有全选,侧滑操作等操作，仅供大家参考交流
+//   MVVM (降低耦合) KVO(一处计算总价钱) 键盘处理(精确到每个cell) 代码适配(手动代码适配，无第三方) ，还有全选,侧滑操作等操作
 
 #import "WLZ_ShoppingCarController.h"
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
@@ -44,9 +44,8 @@
     __weak typeof (WLZ_ShoppingCarController) *waks = self;
     __weak typeof (NSMutableArray)* carDataArrList =self.carDataArrList;
     __weak typeof (UITableView ) *tableView = self.tableView;
-    [_vm getShopData:^(NSArray *commonArry, NSArray *kuajingArry) {
+    [_vm getShopData:^(NSArray *commonArry) {
         [carDataArrList addObject:commonArry];
-        [carDataArrList addObject:kuajingArry];
         [tableView reloadData];
         [waks numPrice];
     } priceBlock:^{

@@ -18,20 +18,18 @@
 {
     _priceBlock = priceBlock;
 }
-
-
-- (void)getShopData:(void (^)(NSArray * commonArry, NSArray * kuajingArry))shopDataBlock  priceBlock:(void (^)()) priceBlock
+#pragma data
+- (void)getShopData:(void (^)(NSArray * commonArry))shopDataBlock  priceBlock:(void (^)()) priceBlock
 {
-    //访问网络 获取数据 block回调失败或者成功 都可以在这处理
-    
-    //本demo 直接读 本地数据了
+//    访问网络 获取数据 block回调失败或者成功 都可以在这处理
+//    
+//    本demo 直接读 本地数据了
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
     NSMutableDictionary *strategyDic = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     
     
     NSArray *commonList = [strategyDic objectForKey:@"common"];
     
-    NSArray *kuajingList = [strategyDic objectForKey:@"kuajing"];
     
     NSMutableArray *commonMuList = [NSMutableArray array];
     
@@ -47,24 +45,9 @@
         NSLog(@"%@",commonList);
         
     }
-    for (int i = 0; i<kuajingList.count; i++) {
-        WLZ_ShoppIngCarModel *model = [WLZ_ShoppIngCarModel mj_objectWithKeyValues:[kuajingList objectAtIndex:i]];
-        model.vm =self;
-        model.type=2;
-        model.isSelect=YES;
-        [kuajingMuList addObject:model];
-    }
-    if (commonMuList.count>0) {
-        
-        [commonMuList addObject:[self verificationSelect:commonMuList type:@"1"]];
-        
-    }
-    if (kuajingMuList.count>0) {
-        
-        [kuajingMuList addObject:[self verificationSelect:kuajingMuList type:@"2"]];
-    }
+    
     _priceBlock = priceBlock;
-    shopDataBlock(commonMuList,kuajingMuList);
+    shopDataBlock(commonMuList);
 }
 - (NSDictionary *)verificationSelect:(NSMutableArray *)arr type:(NSString *)type
 {
