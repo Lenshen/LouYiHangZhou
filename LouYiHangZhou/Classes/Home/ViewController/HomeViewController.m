@@ -19,7 +19,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.webView.delegate = self;
-    [self setUpWebview:@"index" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    [self setUpWebview:@"index2" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     
     
     
@@ -27,10 +27,16 @@
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
 {
     UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
-    NSString *str = [[NSBundle mainBundle] bundlePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:str];
+//    NSString *str = [[NSBundle mainBundle] bundlePath];
+    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web1"];
+    NSURL *baseURL = [NSURL fileURLWithPath:path1];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
+    NSString *str = [NSString stringWithFormat:@"web1/%@.html",htmlName];
+    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str];
+    NSLog(@"%@ %@",path1,path);
+
     NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [webview loadHTMLString:html baseURL:baseURL];
     [self.view addSubview:webview];
