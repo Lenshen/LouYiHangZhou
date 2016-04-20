@@ -19,11 +19,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    NSLog(@"%@",self.indexName);
     
 }
--(void)setUpWebview:(NSString *)htmlName
+-(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
 {
-    [super setUpWebview:htmlName];
+    [super setUpWebview:self.indexName CGRectMakeForWebview:self.view.frame];
 }
 -(void)viewWillAppear:(BOOL)animated
 {

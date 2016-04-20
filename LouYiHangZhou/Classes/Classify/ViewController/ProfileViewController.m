@@ -80,7 +80,7 @@
     
 
 }
-
+//kkdkdk
 -(NSArray *)imagesArray
 {
     if (!_imagesArray) {
@@ -153,13 +153,13 @@
 #pragma mark 点击订单状态
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *array = [NSArray arrayWithObjects:@"index2",@"index2",@"order",@"goods",nil];
+    NSArray *array = [NSArray arrayWithObjects:@"orders",@"order-confirm",@"order-detail",@"goods",nil];
  
         OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
+    order.indexName = array[indexPath.row];
 
 
-
-        [self.navigationController pushViewController:order animated:YES];
+    [self.navigationController pushViewController:order animated:YES];
 
     
 

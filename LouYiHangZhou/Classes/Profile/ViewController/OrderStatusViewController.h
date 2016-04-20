@@ -7,11 +7,8 @@
 //
 
 #import "HomeViewController.h"
-typedef void (^htmlIndex)(NSString *htmlName);
 
 @interface OrderStatusViewController : HomeViewController
-@property (nonatomic, copy)htmlIndex htmlIndex;
-
--(void)returnText:(htmlIndex)block;
+@property (nonatomic, strong)NSString *indexName;
 
 @end

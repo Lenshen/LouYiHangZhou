@@ -19,14 +19,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.webView.delegate = self;
-    [self setUpWebview:@"index"];
+    [self setUpWebview:@"index" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     
     
     
 }
--(void)setUpWebview:(NSString *)htmlName;
+-(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
 {
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
     NSString *str = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:str];
     
