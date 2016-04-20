@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3EF219FD36AD648384835660 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E715E4B03A7993FD44B7C8A7 /* libPods.a */; };
+		5125F23A1CC797BE001CAD9A /* OrderStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */; };
 		512F05F11CBCD4750017A3D7 /* WLZ_ShoppingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 512F05DC1CBCD4750017A3D7 /* WLZ_ShoppingCarController.m */; };
 		512F05F21CBCD4750017A3D7 /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = 512F05DD1CBCD4750017A3D7 /* data.plist */; };
 		512F05F31CBCD4750017A3D7 /* WLZ_CommodityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 512F05E01CBCD4750017A3D7 /* WLZ_CommodityModel.m */; };
@@ -126,6 +127,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5125F2381CC797BE001CAD9A /* OrderStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderStatusViewController.h; sourceTree = "<group>"; };
+		5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderStatusViewController.m; sourceTree = "<group>"; };
 		512F05DB1CBCD4750017A3D7 /* WLZ_ShoppingCarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLZ_ShoppingCarController.h; sourceTree = "<group>"; };
 		512F05DC1CBCD4750017A3D7 /* WLZ_ShoppingCarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLZ_ShoppingCarController.m; sourceTree = "<group>"; };
 		512F05DD1CBCD4750017A3D7 /* data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = data.plist; sourceTree = "<group>"; };
@@ -545,8 +548,8 @@
 				51C1E1681CB66CAE0033F0FA /* AppDelegate.h */,
 				51C1E1691CB66CAE0033F0FA /* AppDelegate.m */,
 				51C1E16B1CB66CAE0033F0FA /* ViewController.h */,
-				51C1E1661CB66CAE0033F0FA /* main.m */,
 				51C1E16C1CB66CAE0033F0FA /* ViewController.m */,
+				51C1E1661CB66CAE0033F0FA /* main.m */,
 				51C1E16E1CB66CAE0033F0FA /* Main.storyboard */,
 				51C1E1731CB66CAE0033F0FA /* LaunchScreen.storyboard */,
 				51C1E1761CB66CAE0033F0FA /* Info.plist */,
@@ -700,6 +703,8 @@
 				51630BF41CBB491000915669 /* AddReceptionViewController.m */,
 				519198621CBBA3B1006AD102 /* FeedBackViewController.h */,
 				519198631CBBA3B1006AD102 /* FeedBackViewController.m */,
+				5125F2381CC797BE001CAD9A /* OrderStatusViewController.h */,
+				5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -977,7 +982,7 @@
 				TargetAttributes = {
 					51C1E1611CB66CAE0033F0FA = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = SA22UC7R9N;
+						DevelopmentTeam = 8VCU7TP4B4;
 					};
 					51C1E17A1CB66CAE0033F0FA = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -1162,6 +1167,7 @@
 				51C1E1DF1CB751AE0033F0FA /* ClassifyViewController.m in Sources */,
 				51C1E1D31CB7362D0033F0FA /* BYSHttpTool.m in Sources */,
 				51C1E1E51CB751EA0033F0FA /* ShoppingCartViewController.m in Sources */,
+				5125F23A1CC797BE001CAD9A /* OrderStatusViewController.m in Sources */,
 				51F469531CB8B35000534FAE /* ForgotPassWViewController.m in Sources */,
 				51E23F961CBB50FD0094607F /* CityTableViewCell.m in Sources */,
 				512F05F11CBCD4750017A3D7 /* WLZ_ShoppingCarController.m in Sources */,
@@ -1323,7 +1329,8 @@
 			baseConfigurationReference = DB3ED9E112990A225511548B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 779822644@qq.com (Q5HHBR36NG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LouYiHangZhou/Classes/Supports/32位md5加密出16位/MacroDefinition.h";
 				INFOPLIST_FILE = LouYiHangZhou/Info.plist;
@@ -1360,6 +1367,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LuoYiTECHNOLOGY.Luo-yi.LouYiHangZhou";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -1369,7 +1377,8 @@
 			baseConfigurationReference = F52B20ADD99EBDBA6AFA93AE /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 779822644@qq.com (Q5HHBR36NG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LouYiHangZhou/Classes/Supports/32位md5加密出16位/MacroDefinition.h";
 				INFOPLIST_FILE = LouYiHangZhou/Info.plist;
@@ -1406,6 +1415,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LuoYiTECHNOLOGY.Luo-yi.LouYiHangZhou";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;

@@ -11,6 +11,7 @@
 #import "ForgotPassWViewController.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "UserImformationModel.h"
+#import "UIButton+WebCache.h"
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -78,18 +79,19 @@
         return 100;
     
 }
+#pragma mark tableview 点击
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 3) {
+    if (indexPath.section == 0 && indexPath.row == 2) {
         [self initAlertController];
     }
-    if (indexPath.section == 0 && indexPath.row == 2) {
+    if (indexPath.section == 0 && indexPath.row == 1) {
         _sureButton.hidden = NO;
         _canceButtonl.hidden = NO;
         [self.view addSubview:_pickview];
         _pickview.hidden = NO;
 
-    }else if(indexPath.section == 0 && indexPath.row == 4)
+    }else if(indexPath.section == 0 && indexPath.row == 3)
     {
         [self.navigationController pushViewController:[ForgotPassWViewController instanceFromStoryboard] animated:YES];
     }
@@ -248,18 +250,25 @@
    
     }
 
+#pragma mark viewViewAppear
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    NSData *imagedata = [USER_DEFAULT objectForKey:@"headImage"];
-    if (imagedata) {
-        UIImage *iamge = [NSKeyedUnarchiver unarchiveObjectWithData:imagedata];
-        [self.headImage setBackgroundImage:iamge forState:UIControlStateNormal];
-        self.headImage.layer.cornerRadius = 33;
-        self.headImage.layer.masksToBounds = YES;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    
+    NSString *imagedata = [USER_DEFAULT objectForKey:@"avatar"];
+    NSURL *url = [NSURL URLWithString:imagedata];
+    [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
+     self.headImage.layer.cornerRadius = 33;
+    self.headImage.layer.masksToBounds = YES;
+    
+    
+    self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
+    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
+    self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
+    
 
-    }
 }
 
 
@@ -279,5 +288,5 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-
+\
 @end

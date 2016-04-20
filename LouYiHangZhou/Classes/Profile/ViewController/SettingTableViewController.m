@@ -10,6 +10,8 @@
 #import "ProfileIMForViewController.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "FeedBackViewController.h"
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
 
 @interface SettingTableViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *clearCacheLabel;
@@ -39,6 +41,9 @@
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+#pragma mark  tableview点击
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0 && indexPath.section == 0) {
@@ -52,11 +57,19 @@
         
     }else if(indexPath.row == 0 && indexPath.section == 2)
     {
-        [USER_DEFAULT removeObjectForKey:@"headImage"];
-        [USER_DEFAULT removeObjectForKey:@"userName"];
+    
+        [self.navigationController popViewControllerAnimated:YES];
+        [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/signout" Parameters:[HttpParameters exitLogon:nil] Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            
+        } Failure:^(NSError *error) {
+            
+        }];
+        [USER_DEFAULT removeObjectForKey:@"avatar"];
+        [USER_DEFAULT removeObjectForKey:@"mobile"];
         [USER_DEFAULT removeObjectForKey:@"sex"];
         [USER_DEFAULT removeObjectForKey:@"birth"];
-        [self.navigationController popViewControllerAnimated:YES];
+        [USER_DEFAULT removeObjectForKey:@"user_token"];
         
     }
     

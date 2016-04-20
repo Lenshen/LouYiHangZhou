@@ -10,6 +10,8 @@
 #import "MessageTableViewController.h"
 #import "CouponViewController.h"
 #import "LogonVViewController.h"
+#import "UIButton+WebCache.h"
+#import "OrderStatusViewController.h"
 
 #import "ProfileCollectionViewCell.h"
 
@@ -49,9 +51,10 @@
     
         
 }
+#pragma mark 点击跳转
 - (IBAction)ProsonIMFor:(id)sender {
     
-    if ([USER_DEFAULT objectForKey:@"userName"]) {
+    if ([USER_DEFAULT objectForKey:@"user_token"]) {
         ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
         p.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:p animated:YES];
@@ -62,11 +65,22 @@
         [self.navigationController pushViewController:Logon animated:YES];
     }
 }
+
+
+#pragma mark viewVillAppear
 -(void)viewWillAppear:(BOOL)animated
 {
-       self.navigationController.navigationBarHidden = YES;
+  self.navigationController.navigationBarHidden = YES;
+    NSURL *url = [NSURL URLWithString:[USER_DEFAULT objectForKey:@"avatar"]];
+    [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
+    self.headImage.layer.cornerRadius =  self.headImage.frame.size.width/2;
+    self.headImage.layer.masksToBounds = YES;
+                  
+    
+    
 
 }
+
 -(NSArray *)imagesArray
 {
     if (!_imagesArray) {
@@ -135,6 +149,23 @@
     
     return cell;
 }
+
+#pragma mark 点击订单状态
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *array = [NSArray arrayWithObjects:@"index2",@"index2",@"order",@"goods",nil];
+ 
+        OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
+
+
+
+        [self.navigationController pushViewController:order animated:YES];
+
+    
+
+    
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     return CGSizeMake(self.view.frame.size.width/3.99999,self.collectionView.frame.size.height) ;

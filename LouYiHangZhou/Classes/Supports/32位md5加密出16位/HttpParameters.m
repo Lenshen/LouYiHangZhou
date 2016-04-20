@@ -10,6 +10,7 @@
 #import "NSString+MD5.h"
 
 @implementation HttpParameters
+#pragma mark 程序令牌
 +(NSDictionary *)app_Token
 {
     CFUUIDRef puuid = CFUUIDCreate( nil );
@@ -26,15 +27,17 @@
 
     return dic;
 }
+
 +(NSDictionary *)user_autoSendMobiel:(NSString *)mobile password:(NSString *)password
 {
     
-    NSDictionary *dic = @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"login_name":mobile,@"user_type":@"0",@"password":password};
+    NSDictionary *dic = @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"login_name":mobile,@"user_type":@"0",@"password":password,@"client_ip":[USER_DEFAULT objectForKey:@"client_ip"]};
+
     return dic;
 }
 +(NSDictionary *)app_get_userImformation:(NSString *)userToken
 {
-    NSDictionary *dic = @{@"access_token":userToken};
+    NSDictionary *dic = @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"]};
     return dic;
     
 }
@@ -52,7 +55,7 @@
 }
 +(NSDictionary *)exitLogon:(NSString *)userToken
 {
-    NSDictionary *dic =  @{@"access_token":userToken};
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"]};
     return dic;
 }
 +(NSDictionary *)change_password:(NSString *)userToken newpassword:(NSString *)newpassword oldpassword:(NSString *)oldpassword
