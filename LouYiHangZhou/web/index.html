@@ -8,69 +8,83 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
-		<div id="busSlider" class="bus-slider">
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
+	<div id="vue-view">
+		<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
+			<div id="busSlider" class="bus-slider">
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+			</div>
+			<div id="busSliderControl" class="bus-slider-control">
+				<em></em><em></em><em></em>
+			</div>
+		</section>
+		<section class="mod-classify">
+			<a href="">
+				<img src="assets/img/icon-1.png">
+				<span>订单查询</span>
 			</a>
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
+			<a href="">
+				<img src="assets/img/icon-2.png">
+				<span>会员专享</span>
 			</a>
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
+			<a href="">
+				<img src="assets/img/icon-3.png">
+				<span>每日特价</span>
 			</a>
-		</div>
-		<div id="busSliderControl" class="bus-slider-control">
-			<em></em><em></em><em></em>
-		</div>
-	</section>
-	<section class="mod-classify">
-		<a href="">
-			<img src="assets/img/icon-1.png">
-			<span>订单查询</span>
-		</a>
-		<a href="">
-			<img src="assets/img/icon-2.png">
-			<span>会员专享</span>
-		</a>
-		<a href="">
-			<img src="assets/img/icon-3.png">
-			<span>每日特价</span>
-		</a>
-		<a href="">
-			<img src="assets/img/icon-4.png">
-			<span>手机签到</span>
-		</a>
-	</section>
-	<div class="space10"></div>
-	<header>
-		<a class="title-bar" href="">
-			<h3>精品特卖</h3>
-			<div class="icon-arrow"></div>
-		</a>
-	</header>
-	<section class="mod-hotlist">
-		<a href=""><img src="assets/img/banner2.jpg"></a>
-		<a href=""><img src="assets/img/banner3.jpg"></a>
-		<a href=""><img src="assets/img/banner4.jpg"></a>
-	</section>
-	<div class="space10"></div>
-	<header>
-		<a class="title-bar" href="">
-			<h3>进口热销</h3>
-			<div class="icon-arrow"></div>
-		</a>
-	</header>
-	<section class="mod-hotlist">
-		<a href=""><img src="assets/img/banner2.jpg"></a>
-		<a href=""><img src="assets/img/banner3.jpg"></a>
-		<a href=""><img src="assets/img/banner4.jpg"></a>
-	</section>
-	<script src="assets/js/lib/angular.min.js"></script>
+			<a href="">
+				<img src="assets/img/icon-4.png">
+				<span>手机签到</span>
+			</a>
+		</section>
+		<div class="space10"></div>
+		<header>
+			<a class="title-bar" href="">
+				<h3>精品特卖</h3>
+				<div class="icon-arrow"></div>
+			</a>
+		</header>
+		<section class="mod-hotlist">
+			<a href=""><img src="assets/img/banner2.jpg"></a>
+			<a href=""><img src="assets/img/banner3.jpg"></a>
+			<a href=""><img src="assets/img/banner4.jpg"></a>
+		</section>
+		<div class="space10"></div>
+		<header>
+			<a class="title-bar" href="">
+				<h3>进口热销</h3>
+				<div class="icon-arrow"></div>
+			</a>
+		</header>
+		<section class="mod-hotlist">
+			<a href=""><img src="assets/img/banner2.jpg"></a>
+			<a href=""><img src="assets/img/banner3.jpg"></a>
+			<a href=""><img src="assets/img/banner4.jpg"></a>
+		</section>
+	</div>
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/mustache.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script>
 		var slider = new Slider();
+		page.push(function() {
+			api.spaceGoods('index_1').done(function(response) {
+				console.log(response)
+			});
+			api.spaceGoods('index_2').done(function(response) {
+				console.log(response)
+			});
+			api.spaceGoods('index_3').done(function(response) {
+				console.log(response)
+			});
+		})
 	</script>
 </body>
 </html>

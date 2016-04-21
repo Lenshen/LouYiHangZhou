@@ -1,6 +1,21 @@
 
 
-var vues = {};
+var log = function(msg) {
+	if (typeof console != 'undefined') {
+		console.log(msg);
+	}
+};
+
+
+Vue.filter('substring', function (string, max) {
+	return string.substring(0, max);
+});
+Vue.filter('datetime', function (string) {
+	if (!string) {
+		return;
+	}
+	return string.replace(/T/g, ' ').replace(/.\d+$/, '');
+});
 
 // Ajax = function(configs) {
 // 	var defaults = {
@@ -86,6 +101,12 @@ var vues = {};
 // });
 
 
+var maps = {
+	goods: function(id) {
+		location.href = 'goods-detail.html?id=' + id;
+	}
+}
+
 // app接口
 window.app = {
 	_hasMethod: function(name) {
@@ -99,6 +120,12 @@ window.app = {
 	},
 	showWaiting: function(message) {
 		return this._callMethod('ShowWaiting', message);
+	},
+	getToken: function() {
+		return this._callMethod('GetToken') || '8237C82CC50EED5688668E7EFB7538BC2EC8FB2432F0B0EDD10052B5848294F17EFD86C7EBBDF41F';
+	},
+	getUserID: function() {
+		return this._callMethod('GetUserID') || '10027';
 	},
 	// ajax: function(configs) {
 	// 	console.log(configs)
@@ -254,7 +281,7 @@ var page = {
 		var id = typeof arguments[0] == 'function' ? parseInt(Math.random() * (999999 - 100000 + 1) + 100000) : arguments[0];
 		var fn = typeof arguments[1] == 'function' ? arguments[1] : arguments[0];
 		this.events[id] = fn;
-		return id;
+		return this.events[id];
 	}
 	
 };
@@ -262,55 +289,319 @@ var page = {
 
 var api = {
 	domain: 'http://192.168.0.103:7021',
-	getToken: function() {
-		return '8237C82CC50EED56A4E46190338BCBB83C9A3D32EC554273F006ED66FE1F1A4C';
-	},
 	ajax: function(conf) {
 		return $.ajax(conf).fail(function(response) {
-			Toast(Mustache.render('Status: {{status}}', response));
+			// console.error(this + Mustache.render('{{url}}\nStatus: {{status}}', this, response));
 		});
 	},
+	// 获得商品详情
 	goods: function(id) {
 		return this.ajax({
 			type: 'GET',
 			url: this.domain + '/api/goods/get',
 			data: {
-				access_token: this.getToken(),
+				access_token: app.getToken(),
 				goods_id: id
 			}
 		});
 	},
+	// 获得商品规格
+	spec: function(id) {
+		return this.ajax({
+			type: 'GET',
+			url: this.domain + '/api/goods/spec',
+			data: {
+				goods_id: id
+			}
+		});
+	},
+	goodsOptional: function(id) {
+		return this.ajax({
+			type: 'GET',
+			url: this.domain + '/api/goods/optional',
+			data: {
+				access_token: app.getToken(),
+				goods_id: id
+			}
+		});
+	},
+	// 添加到购物车
+	cartAdd: function(options) {
+		return this.ajax({
+			type: 'POST',
+			url: this.domain + '/api/cart/add',
+			data: $.extend({
+				token: app.getToken(),
+				goods_id: 0,
+				qty: 1,
+				sku: '',
+				customized: ''
+			}, options)
+		});
+	},
+	// 更新购物车商品数量
+	cartUpdate: function(options) {
+		return this.ajax({
+			type: 'POST',
+			url: this.domain + '/api/cart/update',
+			data: $.extend({
+				token: app.getToken(),
+				cart_id: 0,
+				qty: 1
+			}, options)
+		});
+	},
+	// 删除购物车内的物品
+	cartRemove: function(options) {
+		return this.ajax({
+			type: 'POST',
+			url: this.domain + '/api/cart/remove',
+			data: $.extend({
+				access_token: app.getToken(),
+				cart_id: 0
+			}, options)
+		});
+	},
+	// 获取购物车列表
+	cartList: function() {
+		return this.ajax({
+			type: 'GET',
+			url: this.domain + '/api/cart/getall',
+			data: {
+				access_token: app.getToken()
+			}
+		});
+	},
+	// 收藏商品
 	favoriteAdd: function(id) {
 		return this.ajax({
 			type: 'POST',
 			url: this.domain + '/api/favorite/add',
 			data: {
-				access_token: this.getToken(),
+				token: app.getToken(),
 				goods_id: id
 			}
 		});
 
 	},
+	// 取消收藏商品
 	favoriteRemove: function(id) {
 		return this.ajax({
 			type: 'POST',
 			url: this.domain + '/api/favorite/remove',
 			data: {
-				access_token: this.getToken(),
+				access_token: app.getToken(),
 				goods_id: id
 			}
 		});
 
 	},
+	// 检测商品是否收藏
 	favoriteExist: function(id) {
 		return this.ajax({
 			url: this.domain + '/api/favorite/exist',
 			data: {
-				access_token: this.getToken(),
+				access_token: app.getToken(),
 				goods_id: id
 			}
 		});
-
+	},
+	// 获取用户优惠券列表
+	couponList: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/coupon/list',
+			data: {
+				access_token: app.getToken()
+			}
+		});
+	},
+	// 添加优惠券
+	couponAdd: function(code) {
+		return this.ajax({
+			url: this.domain + '/api/coupon/add',
+			data: {
+				access_token: app.getToken(),
+				code: code,
+				user_id: app.getUserID()
+			}
+		});
+		// api/coupon/validate
+		// coupon_code
+		// user_ticket
+		// user_id
+	},
+	// 验证优惠券号码
+	couponValidate: function(code) {
+		return this.ajax({
+			url: this.domain + '/api/coupon/validate',
+			data: {
+				coupon_code: code,
+				user_ticket: '',
+				user_id: ''
+			}
+		});
+		// api/coupon/validate
+		// coupon_code
+		// user_ticket
+		// user_id
+	},
+	// 获取订单支付方式
+	payment: function() {
+		return this.ajax({
+			url: this.domain + '/api/config/payment',
+			data: {
+				access_token: app.getToken()
+			}
+		});
+	},
+	// 获取订单配送方式
+	shipping: function() {
+		return this.ajax({
+			url: this.domain + '/api/config/shipping',
+			data: {
+				access_token: app.getToken()
+			}
+		});
+	},
+	// 获取一条用户地址
+	getAddress: function() {
+		return this.ajax({
+			url: this.domain + '/api/address/get',
+			data: {
+				access_token: app.getToken()
+			}
+		});
+	},
+	// 计算运费
+	shippingFee: function(id, region) {
+		return this.ajax({
+			url: this.domain + '/api/config/shippingfee',
+			data: {
+				access_token: app.getToken(),
+				regionname: region,
+				shipping_id: id
+			}
+		});
+	},
+	// 获得购物车已选商品信息
+	cartSelected: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/cart/getselected',
+			data: {
+				access_token: app.getToken(),
+				goods_id: id
+			}
+		});
+	},
+	// 提交订单
+	orderSubmit: function(data) {
+		return this.ajax({
+			url: this.domain + '/api/order/add',
+			type: 'POST',
+			data: $.extend({
+				access_token: app.getToken(),
+				country: '',   // 国家
+				province: '',   // 省份
+				city: '',   // 城市
+				area: '',   // 城市
+				address: '',   // 街道地址
+				zip: '',   // 邮编
+				email: '',   // 电子邮箱
+				phone: '',   // 电话号码
+				mobile: '',   // 手机号码
+				remark: '',   // 补充说明
+				coupon_code: '',   // 优惠券号码
+				payment_id: '',   // 支付方式
+				shipping_id: ''   // 运输方式
+			}, data)
+		});
+		
+	},
+	// 订单列表
+	orders: function(status) {
+		return this.ajax({
+			url: this.domain + '/api/order/mylist',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				status: status   // 运输方式
+			}
+		});
+		
+	},
+	// 订单详情
+	orderDetail: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/get',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+		
+	},
+	// 调用位链接数据
+	spaceLink: function(code) {
+		return this.ajax({
+			url: this.domain + '/api/space/link',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				code: code
+			}
+		});
+		
+	},
+	// 调用位商品数据
+	spaceGoods: function(code) {
+		return this.ajax({
+			url: this.domain + '/api/space/goods',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				code: code
+			}
+		});
+		
+	},
+	// 商品分类列表页，获取子分类
+	brandlist: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/goods/brandlist',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				goodstype_id: id
+			}
+		});
+		
+	},
+	// 通过分类id获取商品列表
+	// getGoodslist: function(id) {
+	// 	return this.ajax({
+	// 		url: this.domain + '/api/goods/filter',
+	// 		type: 'GET',
+	// 		data: {
+	// 			access_token: app.getToken(),
+	// 			goodstype_id: id
+	// 		}
+	// 	});
+	// },
+	search: function(options) {
+		return this.ajax({
+			url: this.domain + '/api/goods/search',
+			type: 'POST',
+			data: $.extend({
+				access_token: app.getToken(),
+				keyword: '',
+				goods_type_id: '',
+				brand_id: '',
+				sort_index: '', // 售价 1、2，销量 6、7
+				page_index: 1,
+				page_size: 20
+			}, options)
+		});
 	}
 }
 

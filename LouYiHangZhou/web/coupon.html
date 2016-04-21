@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="App">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title></title>
@@ -8,38 +8,70 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-coupon" ng-controller="PageCoupon">
+	<div id="vue-view" class="page-coupon">
 		<section class="search">
-			<input class="input" type="text" placeholder="输入优惠码">
-			<div class="button">添加优惠券</div>
+			<input v-model="code" class="input" type="text" placeholder="输入优惠码">
+			<div class="button" @click="coupon()">添加优惠券</div>
 		</section>
 		<section class="tips box">
-			<div class="flex">有 <b>1</b> 张优惠券即将过期</div>
+			<!-- <div class="flex" v-if="coupons.length">有 <b></b> 张优惠券即将过期</div> -->
 			<div class="flex tar"><span class="icons icon-question"></span> 优惠券使用说明</div>
 		</section>
-		<div class="mod-coupon-item">
+		<div class="mod-coupon-item" v-for="item in coupons">
 			<div class="amount">
-				￥<b>5</b>
+				￥<b>{{Math.floor(item.amount)}}</b>
 			</div>
 			<div class="flex">
-				<h3>5元优惠券</h3>
-				<p>5元优惠券的说明5元优惠券的说明5元优惠5元优惠券的说明5元优惠券的说明</p>
-				<p>使用期限：2016-03-05~2016-03-08</p>
+				<h3>{{Math.floor(item.amount)}}元优惠券</h3>
+				<p>{{item.remark}}</p>
+				<p class="ended">使用期限：{{item.expired}}</p>
 			</div>
 		</div>
-		<div class="mod-coupon-item">
-			<div class="amount">
-				￥<b>5</b>
-			</div>
-			<div class="flex">
-				<h3>5元优惠券</h3>
-				<p>5元优惠券的说明5元优惠券的说明5元优惠5元优惠券的说明5元优惠券的说明</p>
-				<p>使用期限：2016-03-05~2016-03-08</p>
-			</div>
+
+		<div class="mod-empty" v-if="!coupons.length">
+			暂无优惠券
 		</div>
 	</div>
-	<script src="assets/js/lib/angular.min.js"></script>
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/mustache.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script>
+
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				coupons: []
+			},
+			methods: {
+				coupon: function() {
+					if (!vm.code) {
+						return;
+					}
+
+					api.couponAdd(vm.code).done(function(response) {
+						if (response.success) {
+							Toast('添加成功');
+
+							getList();
+						}
+						else {
+							Toast(response.message);
+						}
+					});
+				}
+			}
+		});
+
+
+		var getList = page.push(function() {
+			api.couponList().done(function(response) {
+				if (response.success) {
+					vm.coupons = response.data;
+				}
+			});
+		});
+
+	</script>
 </body>
 </html>

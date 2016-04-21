@@ -8,57 +8,123 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="mod-goods">
+	<div id="vue-view" class="mod-goods">
 		<div id="nav" class="nav">
-			<div class="scroll">
-				<ul>
-					<li class="current"><a href="">全部商品</a></li><li><a href="">进口食品</a></li><li><a href="">出口食品</a></li><li><a href="">当地特产</a></li><li><a href="">热卖单品</a></li><li><a href="">热卖单品</a></li><li><a href="">热卖单品</a></li>
-				</ul>
-			</div>
+			<a @click="changeSort('');" :class="{'current': sorttype == ''}"><span>默认</span></a>
+			<a @click="changeSort(7);" :class="{'current': sorttype == 6 || sorttype == 7}"><span>销量</span></a>
+			<a @click="changeSort(2);" :class="{'current': sorttype == 1 || sorttype == 2}"><span>价格</span></a>
 		</div>
 		<div class="mod-goodslist">
 			<ul>
-				<li>
-					<div class="img"><a href="goods-detail.html"><img src="assets/img/goods1.jpg" alt=""></a></div>
-					<h3>台湾进口SODA热卖单品如果有两行的话</h3>
-					<p><b>￥110.9</b><s>￥138.8</s></p>
-					<a class="addcart" href=""></a>
-				</li>
-				<li>
-					<div class="img"><a href="goods-detail.html"><img src="assets/img/goods1.jpg" alt=""></a></div>
-					<h3>台湾进口SODA热卖单品如果有两行的话</h3>
-					<p><b>￥110.9</b><s>￥138.8</s></p>
-					<a class="addcart" href=""></a>
-				</li>
-				<li>
-					<div class="img"><a href="goods-detail.html"><img src="assets/img/goods1.jpg" alt=""></a></div>
-					<h3>台湾进口SODA热卖单品如果有两行的话</h3>
-					<p><b>￥110.9</b><s>￥138.8</s></p>
-					<a class="addcart" href=""></a>
-				</li>
-				<li>
-					<div class="img"><a href="goods-detail.html"><img src="assets/img/goods1.jpg" alt=""></a></div>
-					<h3>台湾进口SODA热卖单品如果有两行的话</h3>
-					<p><b>￥110.9</b><s>￥138.8</s></p>
-					<a class="addcart" href=""></a>
+				<li v-for="item in goods">
+					<div class="img" @click="goDetail(item.goods_id);"><img src="{{item.image || 'assets/img/placeholder-goods.png'}}" alt=""></div>
+					<h3>{{item.goods_name}}</h3>
+					<p><b>￥{{item.sales_price}}</b><s>￥{{item.market_price}}</s></p>
+					<a class="addcart" @click="addCart(item.goods_id);"></a>
 				</li>
 			</ul>
+			<div class="clear-text" v-show="loading">加载中...</div>
+			<div class="clear-text" v-show="last">已经是最后一页了...</div>
 		</div>
 	</div>
-	<script src="assets/js/lib/angular.min.js"></script>
 	<script src="assets/js/lib/jquery.min.js"></script>
-	<script src="assets/js/lib/iscroll.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
 
 	<script type="text/javascript">
-		window.onload = function() {
-			var pScroll = new IScroll('#nav', {
-				snap: true,
-				scrollX: true,
-				scrollY: false,
-				mouseWheel: true
+
+		var params = $.params();
+
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				last: false,
+				loading: false,
+				sorttype: '',
+				goods: [],
+				classify: [],
+				pageindex: 1,
+				pagesize: 20
+			},
+			methods: {
+				changeSort: function(type) {
+					this.sorttype = type;
+					this.pageindex = 1;
+
+					vm.getGoods();
+				},
+				goDetail: function(id) {
+					maps.goods(id);
+				},
+				getGoods: function() {
+					if (vm.last || vm.loading) {
+						return;
+					}
+					vm.loading = true;
+					api.search({
+						brand_id: params.search.id,
+						sort_index: vm.sorttype,
+						page_index: vm.pageindex,
+						page_size: vm.pagesize
+					}).done(function(response) {
+						if (!response.success) {
+							Toast(response.message || response.Message);
+							return;
+						}
+						if (vm.pageindex == 1) {
+							vm.goods = response.data;
+						}
+						else {
+							vm.goods = vm.goods.concat(response.data);
+						}
+						var max = Math.ceil(response.code / vm.pagesize);
+						if (max < vm.pageindex + 1) {
+							vm.last = true;
+							return;
+						}
+						vm.pageindex ++;
+
+					}).always(function() {
+						vm.loading = false;
+					});
+				},
+				addCart: function(id) {
+
+					// api.spec(id).done(function(response) {
+					// 	console.log(response)
+					// });
+					api.cartAdd({
+						goods_id: id,
+						qty: 1
+					}).done(function(response) {
+						if (response.success) {
+							Toast('添加成功！');
+						}
+						else {
+							Toast(response.message);
+						}
+					});
+				}
+			}
+		});
+
+		page.push(function() {
+
+
+			vm.getGoods();
+			var clientHeight = $(window).height();
+			$(window).on('scroll', function() {
+				if (vm.last || vm.loading) {
+					return;
+				}
+				var scrollTop = $('body').scrollTop();
+				var pageHeight = $('body').height();
+				if (scrollTop >= pageHeight - clientHeight) {
+					vm.getGoods();
+				}
 			});
-		};
+		});
+		
 
 	</script>
 </body>

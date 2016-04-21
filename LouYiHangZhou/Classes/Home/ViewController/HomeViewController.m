@@ -29,11 +29,11 @@
     UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
 //    NSString *str = [[NSBundle mainBundle] bundlePath];
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web1"];
+    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
     NSURL *baseURL = [NSURL fileURLWithPath:path1];
     
 //    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
-    NSString *str = [NSString stringWithFormat:@"web1/%@.html",htmlName];
+    NSString *str = [NSString stringWithFormat:@"web/%@.html",htmlName];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str];
     NSLog(@"%@ %@",path1,path);
 

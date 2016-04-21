@@ -1795,12 +1795,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Gk-fG-3lL">
-                                        <rect key="frame" x="327" y="21" width="40" height="35"/>
+                                        <rect key="frame" x="8" y="21" width="359" height="35"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="g6j-4M-bYM"/>
-                                            <constraint firstAttribute="width" constant="40" id="lsR-ZO-f2i"/>
+                                            <constraint firstAttribute="height" constant="35" id="PNd-Jo-Hzg"/>
                                         </constraints>
-                                        <state key="normal" image="搜索"/>
+                                        <state key="normal" image="搜索框"/>
                                         <connections>
                                             <segue destination="eN5-Ey-jbq" kind="push" id="pJF-AE-E4t"/>
                                         </connections>
@@ -1809,8 +1808,9 @@
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="GF5-Rj-aqY"/>
-                                    <constraint firstItem="8Gk-fG-3lL" firstAttribute="top" secondItem="yz4-qd-r1H" secondAttribute="top" constant="21" id="Lqz-Iv-FzI"/>
-                                    <constraint firstAttribute="trailing" secondItem="8Gk-fG-3lL" secondAttribute="trailing" constant="8" id="aMQ-u5-QdW"/>
+                                    <constraint firstItem="8Gk-fG-3lL" firstAttribute="leading" secondItem="yz4-qd-r1H" secondAttribute="leading" constant="8" id="K0D-Uh-2lb"/>
+                                    <constraint firstItem="8Gk-fG-3lL" firstAttribute="top" secondItem="yz4-qd-r1H" secondAttribute="top" constant="21" id="Phh-js-z6x"/>
+                                    <constraint firstAttribute="trailing" secondItem="8Gk-fG-3lL" secondAttribute="trailing" constant="8" id="iiv-9n-BdH"/>
                                 </constraints>
                             </view>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FQX-Nh-hNA">
@@ -2474,7 +2474,7 @@
         <image name="减" width="20" height="20"/>
         <image name="加" width="20" height="20"/>
         <image name="手机" width="12" height="18"/>
-        <image name="搜索" width="18" height="18"/>
+        <image name="搜索框" width="601" height="62"/>
         <image name="收货人" width="12" height="13"/>
         <image name="收货定位" width="10" height="13"/>
         <image name="收货手机" width="9" height="13"/>

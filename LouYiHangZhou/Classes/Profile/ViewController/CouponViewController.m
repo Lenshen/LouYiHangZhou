@@ -22,14 +22,20 @@
     self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    NSString *str = [[NSBundle mainBundle] bundlePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:str];
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:self.view.frame];
+    //    NSString *str = [[NSBundle mainBundle] bundlePath];
+    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
+    NSURL *baseURL = [NSURL fileURLWithPath:path1];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"coupon" ofType:@"html"];
+    //    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
+    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:@"web/coupon.html"];
+    NSLog(@"%@ %@",path1,path);
+    
     NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [webview loadHTMLString:html baseURL:baseURL];
     [self.view addSubview:webview];
+    
 }
 -(void)viewWillDisappear:(BOOL)animated
 {

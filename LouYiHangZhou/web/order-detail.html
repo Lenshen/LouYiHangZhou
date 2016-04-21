@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="App">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>结算</title>
@@ -8,79 +8,85 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-order-detail" ng-controller="PageOrderConfirm">
+	<div id="vue-view" class="page-order-detail">
 		<section class="section top">
 			<div class="title">
-				<p class="fl">订单编号：2016030312222<br>下单时间：2016-03-03 12：22</p>
-				<b class="fr">待支付</b>
+				<p class="fl">订单编号：{{order.order_id}}<br>下单时间：{{order.create_time | datetime}}</p>
+				<b class="fr">{{order.status}}</b>
 			</div>
 			<div class="bdt-x address">
 				<div class="box">
-					<div class="label"><span class="icons icon-user"></span>收货人：</div><div class="flex">东哥</div>
+					<div class="label"><span class="icons icon-user"></span>收货人：</div><div class="flex">{{order.full_name}}</div>
 				</div>
 				<div class="box">
-					<div class="label"><span class="icons icon-phone"></span>联系电话：</div><div class="flex">18888888888</div>
+					<div class="label"><span class="icons icon-phone"></span>联系电话：</div><div class="flex">{{order.mobile}}</div>
 				</div>
 				<div class="box">
-					<div class="label"><span class="icons icon-location"></span>收货地址：</div><div class="flex">杭州市滨江区秋溢路228号江虹国际创意园    6e605</div>
+					<div class="label"><span class="icons icon-location"></span>收货地址：</div><div class="flex">{{order.province}}{{order.city}}{{order.area}}{{order.address}}</div>
 				</div>
 				<div class="box">
-					<div class="label"><span class="icons icon-truck"></span>物流信息：</div><div class="flex"></div><span class="icons icon-arrow"></span>
+					<div class="label"><span class="icons icon-truck"></span>物流信息：</div><div class="flex">{{order.ship_name}}</div><span class="icons icon-arrow"></span>
 				</div>
 			</div>
 		</section>
 		<header>
 			<h3 class="section-title">购买的商品</h3>
 		</header>
-		<section class="section goods">
+		<section class="section goods" v-for="goods in order.order_goods">
 			<div class="box">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+				<div class="img"><a href="goods-detail.html?id={{goods.goods_id}}"><img src="{{goods.image}}" alt=""></a></div>
 				<div class="flex">
-					<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
+					<a href="goods-detail.html?id={{goods.goods_id}}"><h3>{{goods.goods_name}}</h3></a>
 					<div class="box">
 						<div class="flex">
-							<span class="tag">3包</span><span class="tag">3包</span><span class="tag">3包</span><span class="tag">麻辣味</span>
+							<span class="tag" v-for="sku in goods.sku_name.split(',')">{{sku}}</span>
 						</div>
 						<div class="price tar">
-							<b>￥103.00</b>
-							<span>*3</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="section goods">
-			<div class="box">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-				<div class="flex">
-					<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
-					<div class="box">
-						<div class="flex">
-							<span class="tag">3包</span><span class="tag">3包</span><span class="tag">3包</span><span class="tag">麻辣味</span>
-						</div>
-						<div class="price tar">
-							<b>￥103.00</b>
-							<span>*3</span>
+							<b>￥{{goods.total}}</b>
+							<span>*{{goods.qty}}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 		<div class="section total">
-			<p>订单金额：<span>￥430.00</span></p>
-			<p>配送费用：<span>￥430.00</span></p>
-			<p>优惠减免：<span>￥430.00</span></p>
-			<p>实付金额：<span class="red">￥430.00</span></p>
+			<p>订单金额：<span>￥{{order.total_amount}}</span></p>
+			<p>配送费用：<span>￥{{order.ship_amount}}</span></p>
+			<p>优惠减免：<span>￥{{order.coupon_amount}}</span></p>
+			<p>实付金额：<span class="red">￥{{order.payment_amount}}</span></p>
 		</div>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥438.6</b><small>共 2 件商品</small><a class="clearing" href="">去结算</a>
+			<b class="price">￥{{order.payment_amount}}</b><small>共 {{order.order_goods.length}} 件商品</small><a class="btn" href="javascript:;" v-if="order.status_id == 10">去支付</a>
 		</footer>
 	</div>
 
-	<script src="assets/js/lib/angular.min.js"></script>
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script>
 
+		var params = $.params();
+		
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				order: {}
+			}
+		});
+
+		page.push(function() {
+
+			api.orderDetail(params.search.id).done(function(response) {
+				if (response.success) {
+					vm.order = response.data;
+				}
+				else {
+					Toast(response.message);
+				}
+			});
+
+		});
+	</script>
 </body>
 </html>

@@ -8,10 +8,10 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-goods-detail">
+	<div id="vue-view" class="page-goods-detail">
 		<a href="" class="icons icon-back"></a>
-		<a href="" class="icons icon-share"></a>
-		<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
+		<!-- <a href="" class="icons icon-share"></a> -->
+		<!-- <section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
 			<div id="busSlider" class="bus-slider">
 				<a class="bus-slider-cell" href="javascript:;">
 					<img src="assets/img/banner.jpg">
@@ -26,41 +26,41 @@
 			<div id="busSliderControl" class="bus-slider-control">
 				<em></em><em></em><em></em>
 			</div>
-		</section>
-		<section class="section goods-properties">
+		</section> -->
+		<div class="goods-img">
+			<img src="{{goods.middle_image}}" width="100%" alt="">
+		</div>
+		<section class="section goods-header">
 			<header id="vueHeader" class="box">
-				<h2 class="flex clamp2">台湾进口爆浆手打麻薯如果有两行的话那么写到这里就可以了</h2>
-				<div class="bdl-y collection" :class="{'disabled': favorite}" v-cloak @click="doFavorite">
-					<span class="icons icon-collection"></span><small>{{favorite ? '已收藏' : '收藏'}}</small>
+				<h2 class="flex clamp2">{{goods.goods_name}}</h2>
+				<div class="bdl-y collection" :class="{'disabled': goods.is_favorite}" v-cloak @click="doFavorite">
+					<span class="icons icon-collection"></span><small>{{goods.is_favorite ? '已收藏' : '收藏'}}</small>
 				</div>
 			</header>
 			<div class="box prices">
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<strong>￥{{goods.sale_price}}</strong>
 			</div>
-			<dl>
-				<dt>口味</dt>
-				<dd class="selected">西瓜味</dd>
-				<dd>菠萝味</dd>
-				<dd>榴莲味</dd>
-				<dd>原味</dd>
-				<dd>柑橙味</dd>
-			</dl>
-			<dl>
-				<dt>其他</dt>
-				<dd class="selected">单盒装</dd>
-				<dd>家庭装</dd>
-				<dd>情侣套餐</dd>
-				<dd>混合装</dd>
+			<!-- <div class="box prices">
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+			</div> -->
+		</section>
+		<section class="section goods-production box">
+			<div class="flex">产地：<span>{{goods.place_origin}}</span></div><div class="flex">重量：<span>{{goods.weight / 1000}}kg</span></div>
+		</section>
+		<section class="section goods-spec">
+			<dl class="spec-list" v-for="spec in goods.spec">
+				<dt>{{spec.spec_name}}</dt>
+				<dd class="{{index == 0 && 'selected'}}" v-for="(index, item) in spec.spec_item" key="{{item.valueids}}" @click="chooseSpec">{{item.sku_name}}</dd>
 			</dl>
 		</section>
 		<section class="section comment">
 			<div class="flex box-vertical">
-				用户评价&nbsp;&nbsp;<span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-yellow-small"></span><span class="icons icon-star-gray-small"></span>
+				用户评价&nbsp;&nbsp;{{{star(goods.comment_star)}}}
 			</div>
-			<a class="flex link">
-				5687 个评价<span class="icons icon-arrow"></span>
+			<a href="comment-list.html?id={{goods.goods_id}}" class="flex link">
+				{{goods.comment_times}} 个评价<span class="icons icon-arrow"></span>
 			</a>
 		</section>
 		<section class="recommend">
@@ -75,7 +75,7 @@
 		</section>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥{{price}}</b><small>共 2 件商品</small><a class="clearing" href="">加入购物车</a>
+			<div class="ctl-qty"><span @click="qtyMinus" class="icons icon-minus"></span><input class="ipt-qty" v-model="qty" type="text" readonly="readonly" value="1"><span @click="qtyPlus" class="icons icon-plus"></span></div><a class="btn" href="javascript:;" @click="cartAdd(goods.goods_id)">加入购物车</a>
 		</footer>
 	</div>
 	<script src="assets/js/lib/jquery.min.js"></script>
@@ -87,54 +87,110 @@
 
 		var params = $.params();
 
-		page.push(function() {
-			var slider = new Slider({
-				conversion: 1
-			});
-		});
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				goods: {}
+			},
+			methods: {
+				doFavorite: function() {
+					if (vm.goods.is_favorite) {
+						api.favoriteRemove(params.search.id).done(function(response) {
+							if (response.success) {
+								vm.goods.is_favorite = false;
+							}
+							else {
+								Toast(response.message);
+							}
+						});
+					}
+					else {
+						api.favoriteAdd(params.search.id).done(function(response) {
+							if (response.success) {
+								vm.goods.is_favorite = true;
+							}
+							else {
+								Toast(response.message);
+							}
 
-		page.push(function() {
-			vues.header = new Vue({
-				el: '#vueHeader',
-				data: {
-					favorite: null
+						});
+					}
 				},
-				methods: {
-					doFavorite: function() {
-						if (vues.header.favorite) {
-							api.favoriteRemove(params.search.id).done(function(response) {
-								if (response.success) {
-									vues.header.favorite = !vues.header.favorite;
-								}
-								else {
-									Toast(response.message);
-								}
-							});
+				chooseSpec: function(event) {
+					var $target = $(event.target);
+					$target.addClass('selected').siblings('dd').removeClass('selected');
+				},
+				star: function(lv) {
+					var lv = Math.ceil(lv);
+					var stars = [];
+					for (var i = 1, l = 5; i <= l; i++) {
+						if (lv >= i) {
+							stars.push('<span class="icons icon-star-yellow-small"></span>');
 						}
 						else {
-							api.favoriteAdd(params.search.id).done(function(response) {
-								if (response.success) {
-									vues.header.favorite = !vues.header.favorite;
-								}
-								else {
-									Toast(response.message);
-								}
-
-							});
+							stars.push('<span class="icons icon-star-gray-small"></span>');
 						}
 					}
-				}
-			});
 
+					return stars.join('');
+				},
+				cartAdd: function(id) {
+					var specId = [];
+					var specName = [];
+					$('.spec-list').each(function() {
+						var $this = $(this).find('.selected');
+						specId.push($this.attr('key'));
+						specName.push($this.html());
+					});
+					
+					api.cartAdd({
+						goods_id: id,
+						qty: vm.qty,
+						sku: specId.join(';') + (specId.length > 0 ? ';' : ''),
+						customized: specName.join(';') + (specName.length > 0 ? ';' : '')
+					}).done(function(response) {
+						if (response.success) {
+							Toast('添加成功！');
+						}
+						else {
+							Toast(response.message);
+						}
+					});
+				},
+				qtyMinus: function() {
+					if (vm.qty <= 1) {
+						return;
+					}
+					vm.qty = parseInt(vm.qty) - 1;
+				},
+				qtyPlus: function() {
+					vm.qty = parseInt(vm.qty) + 1;
+				}
+			}
+		});
+
+		// page.push(function() {
+		// 	var slider = new Slider({
+		// 		conversion: 1
+		// 	});
+		// });
+
+		page.push(function() {
 			api.goods(params.search.id).then(function(response) {
-
-			});
-
-			api.favoriteExist(params.search.id).done(function(response) {
 				if (response.success) {
-					vues.header.favorite = response.data;
+					vm.goods = response.data;
 				}
 			});
+
+			// api.favoriteExist(params.search.id).done(function(response) {
+			// 	if (response.success) {
+			// 		vm.favorite = response.data;
+			// 	}
+			// });
+
+			// api.goodsOptional(params.search.id).done(function(response) {
+			// 	console.log(response)
+			// })
 			
 		});
 	</script>

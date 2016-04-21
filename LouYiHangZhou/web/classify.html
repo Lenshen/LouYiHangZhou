@@ -6,69 +6,178 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no, minimal-ui">
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<style>
+		html, body, .page-classify, .nav, .content { height: 100%; }
+		.nav, .content { overflow: auto; }
+	</style>
 </head>
 <body class="bg-white">
-	<div class="page-classify">
+	<div id="vue-view" class="page-classify">
 		<div class="nav">
 			<ul>
-				<li class="classify1 selected">
+				<li @click="href(117)" class="classify1" :class="{'selected': typeid == 117}">
 					<span class="icon"></span>
-					全球美食
+					午后茶点
 				</li>
-				<li class="classify2">
+				<li @click="href(118)" class="classify2" :class="{'selected': typeid == 118}">
 					<span class="icon"></span>
-					当季果蔬
+					魅力爆款
 				</li>
-				<li class="classify3">
+				<li @click="href(119)" class="classify3" :class="{'selected': typeid == 119}">
 					<span class="icon"></span>
-					生鲜食材
+					恋爱小食
 				</li>
-				<li class="classify4">
+				<li @click="href(120)" class="classify4" :class="{'selected': typeid == 120}">
 					<span class="icon"></span>
-					甜点蛋糕
+					妈咪天下
 				</li>
-				<li class="classify5">
+				<li @click="href(121)" class="classify5" :class="{'selected': typeid == 121}">
 					<span class="icon"></span>
-					快餐速食
+					缤纷礼盒
 				</li>
-				<li class="classify6">
+				<li @click="href(122)" class="classify6" :class="{'selected': typeid == 122}">
 					<span class="icon"></span>
-					极速便当
+					海货归来
 				</li>
-				<li class="classify7">
+				<li @click="href(123)" class="classify7" :class="{'selected': typeid == 123}">
 					<span class="icon"></span>
-					酒水饮品
+					全家分享
+				</li>
+				<li @click="href(124)" class="classify8" :class="{'selected': typeid == 124}">
+					<span class="icon"></span>
+					猛兽专区
 				</li>
 			</ul>
 		</div>
 		<div class="content">
-			<div class="menu">
-				<a class="selected" href="">全部商品</a>
-				<a href="">进口食品</a>
-				<a href="">出口食品</a>
-				<a href="">当地特产</a>
-			</div>
-			<div class="list">
-				<ul>
-					<li>
-						<a href=""><div class="img"><img src="assets/img/goods1.jpg" alt=""></div>
-						<p>台湾进口SODA热卖单</p></a>
-					</li>
-					<li>
-						<a href=""><div class="img"><img src="assets/img/goods1.jpg" alt=""></div>
-						<p>台湾进口SODA热卖单</p></a>
-					</li>
-					<li>
-						<a href=""><div class="img"><img src="assets/img/goods1.jpg" alt=""></div>
-						<p>台湾进口SODA热卖单</p></a>
-					</li>
-				</ul>
+			<div class="body">
+				<div class="menu">
+					<a v-for="item in brands" data-id="{{item.id}}">{{item.name}}</a>
+				</div>
+				<div class="list">
+					<ul>
+						<li v-for="item in goods" data-id="{{item.goods_id}}" @click="goDetail(item.goods_id);">
+							<div class="img"><img src="{{item.image || 'assets/img/placeholder-goods.png'}}" alt=""></div>
+							<p>{{item.goods_name}}</p></a>
+						</li>
+					</ul>
+					<div class="clear-text" v-show="loading">加载中...</div>
+					<div class="clear-text" v-show="last">已经是最后一页了...</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<script src="assets/js/lib/angular.min.js"></script>
-	<script src="assets/js/lib/jquery.js"></script>
+	<script src="assets/js/lib/jquery.min.js"></script>
 	<script src="assets/js/lib/iscroll.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script>
+		var params = $.params();
+
+		// $('.nav, .content').on('touchmove', function(e) {
+		// 	e.stopPropagation();
+		// 	e.preventDefault();
+		// });
+
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				last: false,
+				loading: false,
+				typeid: 0,
+				brands: [],
+				brandid: 0,
+				goods: [],
+				pageindex: 1,
+				pagesize: 20
+			},
+			methods: {
+				href: function(id) {
+					this.typeid = id;
+					getBrandlist();
+				},
+				clickBrand: function(id) {
+					if (this.brandid == id) {
+						return;
+					}
+					this.brandid = id;
+					this.pageindex = 1;
+
+					this.getGoods();
+
+				},
+				getGoods: function() {
+					if (this.last || this.loading) {
+						return;
+					}
+					this.loading = true;
+					api.search({
+						brand_id: this.brandid,
+						page_index: this.pageindex,
+						page_size: this.pagesize
+					}).done(function(response) {
+						if (!response.success) {
+							Toast(response.message || response.Message);
+							return;
+						}
+						if (vm.pageindex == 1) {
+							vm.goods = response.data;
+						}
+						else {
+							vm.goods = vm.goods.concat(response.data);
+						}
+						var max = Math.ceil(response.code / vm.pagesize);
+						if (max < vm.pageindex + 1) {
+							vm.last = true;
+							return;
+						}
+						vm.pageindex ++;
+					}).always(function() {
+						vm.loading = false;
+					});
+				},
+				goDetail: function(id) {
+					maps.goods(id);
+				}
+			}
+		});
+
+		vm.typeid = params.search.typeid;
+
+		$('.menu').on('click', 'a', function() {
+			$(this).addClass('selected').siblings().removeClass('selected');
+			vm.clickBrand($(this).attr('data-id'));
+		});
+
+		var getBrandlist = page.push(function() {
+			api.brandlist(vm.typeid).done(function(response) {
+				if (!response.success) {
+					Toast(response.message || response.Message);
+					return;
+				}
+				
+				vm.brands = response.data;
+
+				vm.$nextTick(function() {
+					$('.menu').find('a').first().trigger('click');
+				});
+			});
+		});
+
+		page.push(function() {
+
+			var clientHeight = $('.content').height();
+			$('.content').on('scroll', function() {
+				if (vm.last || vm.loading) {
+					return;
+				}
+				var scrollTop = $('.content').scrollTop();
+				var pageHeight = $('.content .body').height();
+				if (scrollTop >= pageHeight - clientHeight) {
+					vm.getGoods();
+				}
+			});
+		});
+	</script>
 </body>
 </html>

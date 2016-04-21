@@ -8,48 +8,114 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-cart" ng-controller="PageCart">
-
-		<section class="section goods">
+	<div id="vue-view" class="page-cart">
+		<section class="section goods" v-for="item in list">
 			<div class="box">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+				<div class="img"><a href="goods-detail.html?id={{item.goods_id}}"><img src="{{item.image}}" alt=""></a></div>
 				<div class="flex">
-					<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
+					<h3><a href="goods-detail.html?id={{item.goods_id}}">{{item.goods_name}}</a></h3>
 					<div class="tags">
-						<span class="tag">3包</span><span class="tag">麻辣味</span>
+						<span class="tag" v-for="tag in item.sku_name.split(',')">{{tag}}</span>
 					</div>
 					<div class="box">
-						<div class="flex price">￥103.00</div>
-						<div class="num"><span class="icons icon-reduced disabled" ng-click="reduced($event);"></span><b>1</b><span class="icons icon-addition" ng-click="addition($event);"></span></div>
+						<div class="flex price">￥<span id="goods-{{item.goods_id}}">{{item.total}}</span></div>
+						<div class="num"><span class="icons icon-reduced" @click="minus($event, item.goods_id, item.original_price);"></span><b amount="{{item.original_price}}">{{item.qty}}</b><span class="icons icon-addition" @click="plus($event, item.goods_id, item.original_price);"></span></div>
 					</div>
 				</div>
 			</div>
 		</section>
-		<section class="section goods">
-			<div class="box">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-				<div class="flex">
-					<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
-					<div class="tags">
-						<span class="tag">3包</span><span class="tag">麻辣味</span>
-					</div>
-					<div class="box">
-						<div class="flex price">￥103.00</div>
-						<div class="num"><span class="icons icon-reduced disabled" ng-click="reduced($event);"></span><b>1</b><span class="icons icon-addition" ng-click="addition($event);"></span></div>
-					</div>
-				</div>
-			</div>
-		</section>
-		
-		<div class="mod-order-footer-holder"></div>
-		<footer class="mod-order-footer">
-			<b class="price">￥438.6</b><small>共 2 件商品</small><a class="clearing" href="">去结算</a>
+		<div class="mod-empty" v-if="!list.length">
+			暂无商品
+		</div>
+		<div class="mod-order-footer-holder" v-if="list.length"></div>
+		<footer class="mod-order-footer" v-if="list.length">
+			<b class="price">￥{{count()}}</b><!-- <small>共 {{list.length}} 件商品</small> --><a class="btn" href="javascript:;" @click="goOrder();">去结算</a>
 		</footer>
 	</div>
 
-	<script src="assets/js/lib/angular.min.js"></script>
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/mustache.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
+	
+	<script>
+		
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				list: []
+			},
+			methods: {
+				goOrder: function() {
+					if (vm.list) {
+						location.href = 'order-confirm.html';
+					}
+				},
+				count: function() {
+					var count = 0;
+					$.each(this.list, function() {
+						count += this.total;
+					});
+					return count;
+				},
+				minus: function(event, id, price) {
+					var $target = $(event.target),
+						$num = $target.next(),
+						num = parseInt($num.html());
 
+					if (num > 1) {
+						num -= 1;
+						$num.html(num);
+						api.cartUpdate({
+							cart_id: id,
+							qty: num
+						}).done(function(response) {
+							// if (response.success) {
+								$('#goods-' + id).html(price * num);
+							// }
+						});
+						return;
+					}
+					else if (num == 1) {
+						api.cartRemove({
+							cart_id: id
+						}).done(function(response) {
+							
+						});
+
+					}
+				},
+				plus: function(event, id, price) {
+					var $target = $(event.target),
+						$num = $target.prev(),
+						num = parseInt($num.html());
+
+					num += 1;
+					$num.html(num);
+					api.cartUpdate({
+						cart_id: id,
+						qty: num
+					}).done(function(response) {
+						// if (response.success) {
+							$('#goods-' + id).html(price * num);
+						// }
+					});
+					return;
+
+				}
+			}
+		});
+
+		page.push(function() {
+			api.cartList().done(function(response) {
+				if (response.success) {
+					vm.list = response.data;
+				}
+				else {
+					Toast(response.message);
+				}
+			});
+		});
+	</script>
 </body>
 </html>

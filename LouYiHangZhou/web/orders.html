@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="App">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title></title>
@@ -8,50 +8,26 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-orders" ng-controller="PageOrders">
+	<div id="vue-view" class="page-orders">
 		<nav class="bdb-x nav">
-			<div ng-class="{'selected': tab == 1}" ng-click="tab = 1;">全部订单</div>
-			<div ng-class="{'selected': tab == 2}" ng-click="tab = 2;">待支付</div>
-			<div ng-class="{'selected': tab == 3}" ng-click="tab = 3;">待收货</div>
-			<div ng-class="{'selected': tab == 4}" ng-click="tab = 4;">待评价</div>
+			<div :class="{'selected': tabIndex == 1}" @click="tabIndex = 1;">全部订单</div>
+			<div :class="{'selected': tabIndex == 2}" @click="tabIndex = 2;">待支付</div>
+			<div :class="{'selected': tabIndex == 3}" @click="tabIndex = 3;">待收货</div>
+			<div :class="{'selected': tabIndex == 4}" @click="tabIndex = 4;">待评价</div>
 		</nav>
-		<section class="item">
-			<div class="top"><div class="fl">订单号：2016030312222</div><div class="fr">待支付</div></div>
-			<div class="goods">
+		<section class="item" v-for="order in orders">
+			<div class="top"><a href="order-detail.html?id={{order.order_id}}" class="fl">订单号：{{order.order_id}}</a><div class="fr">{{order.status}}</div></div>
+			<div class="goods" v-if="order.order_goods.length > 0">
 				<ul>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
+					<li class="img" v-for="goods in order.order_goods"><a href="goods-detail.html?id={{goods.goods_id}}"><img src="{{goods.image}}" alt=""></a><span v-if="goods.qty > 0">{{goods.qty}}</span></li>
 				</ul>
 			</div>
 			<div class="buttom">
-				<p>共 6 件商品&#12288;商品金额：99.99<span class="fr">2016-03-05</span></p>
+				<p>共 {{order.order_goods.length}} 件商品&#12288;商品金额：{{order.payment_amount}}<span class="fr">{{order.create_time | substring '10')}}</span></p>
 				<div class="bdt-x button">
 					<a href="" class="button-black">取消订单</a>
 					<a href="" class="button-black">重新下单</a>
-					<a href="" class="button-black">去支付</a>
-				</div>
-			</div>
-		</section>
-		<section class="item">
-			<div class="top"><div class="fl">订单号：2016030312222</div><div class="fr">待支付</div></div>
-			<div class="goods">
-				<ul>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-					<li class="img"><a href=""><img src="assets/img/goods2.jpg" alt=""></a><span>1</span></li>
-				</ul>
-			</div>
-			<div class="buttom">
-				<p>共 6 件商品&#12288;商品金额：99.99<span class="fr">2016-03-05</span></p>
-				<div class="bdt-x button">
-					<a href="" class="button-black">取消订单</a>
-					<a href="" class="button-black">重新下单</a>
-					<a href="" class="button-black">去支付</a>
+					<a href="" class="button-black" v-if="order.status_id == 0">去支付</a>
 				</div>
 			</div>
 		</section>
@@ -60,10 +36,52 @@
 		</div> -->
 	</div>
 
-	<script src="assets/js/lib/angular.min.js"></script>
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/lib/iscroll.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script>
+		
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				tabIndex: 1,
+				orders: []
 
+			},
+			methods: {
+				substring: function(string, num) {
+					return string.substring(0, num);
+				}
+			}
+		});
+
+
+		page.push(function() {
+			api.orders(0).done(function(response) {
+				if (response.success) {
+					vm.orders = response.data;
+
+					vm.$nextTick(function() {
+						$('.item').each(function() {
+							if (!$(this).find('.goods').get(0)) {
+								return;
+							}
+							var pScroll = new IScroll($(this).find('.goods').get(0), {
+								snap: true,
+								scrollX: true,
+								scrollY: false,
+								mouseWheel: true
+							});
+						});
+					});
+				}
+				else {
+					Toast(response.message);
+				}
+			});
+		});
+
+	</script>
 </body>
 </html>

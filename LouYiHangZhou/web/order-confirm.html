@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="App">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>结算</title>
@@ -8,71 +8,261 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-order-confirm" ng-controller="PageOrderConfirm">
-		<section class="section address">
+	<div id="vue-view" class="page-order-confirm">
+		<section class="section address" v-if="address" @click="selectAddress();">
 			<span class="icons icon-arrow"></span>
-			<div class="box"><div class="flex"><span class="icons icon-user"></span>收货人</div><div class="flex"><span class="icons icon-phone"></span>18858868878</div></div>
+			<div class="box"><div class="flex"><span class="icons icon-user"></span>{{address.full_name}}</div><div class="flex"><span class="icons icon-phone"></span>{{address.mobile}}</div></div>
 			<div class="box">
-				<div class="flex street"><span class="icons icon-location"></span>杭州市滨江区秋溢路228号江虹国际创意园6e605</div>
+				<div class="flex street"><span class="icons icon-location"></span>{{address.province}}{{address.city}}{{address.area}}{{address.address}}</div>
+			</div>
+		</section>
+		<!-- <section class="section address-choose" @click="selectAddress();" v-if="!address">
+			<span class="icons icon-arrow"></span>
+			选择一个收货地址
+		</section> -->
+		<section class="section mod-table">
+			<div class="row">
+				<div class="cell icon"><span class="icons icon-clock"></span>配送时间</div><div class="cell r"><select dir="rtl"><option value="">工作日配送</option></select></div>
+			</div>
+			<div class="row">
+				<div class="cell icon"><span class="icons icon-truck"></span>配送方式</div><div class="cell r"><select v-model="vmShipping" dir="rtl" @change="changeShipping();"><option v-for="ship in shippings" :value="ship.shipping_id">{{ship.shipping_name}}</option></select></div>
+			</div>
+			<div class="row">
+				<div class="cell icon"><span class="icons icon-coupon"></span>优惠券</div><div class="cell r"><select v-model="vmCoupon" dir="rtl" @change="changeCoupon();"><option v-for="coupon in coupons" :value="coupon.code" amount="{{coupon.amount}}">{{Math.floor(coupon.amount)}}元优惠券</option></select></div>
 			</div>
 		</section>
 		<section class="section mod-table">
-			<div class="row">
-				<div class="cell icon"><span class="icons icon-clock"></span>配送时间</div><div class="cell r">工作日配送</div>
+			<div class="row" @click="paytype = pay.payment_id" v-for="pay in payments">
+				<div class="cell"><!-- <span class="icons icon-wechat"></span> -->{{pay.payment_name}}</div><div class="cell r"><span class="icons icon-checkbox" :class="{'icon-checkbox-checked': paytype == pay.payment_id}" pay="{{pay.payment_id}}"></span></div>
 			</div>
-			<div class="row">
-				<div class="cell icon"><span class="icons icon-truck"></span>配送方式</div><div class="cell r">快递包邮</div>
+			<!-- <div class="row" @click="payment = 'alipay'">
+				<div class="cell icon"><span class="icons icon-alipay"></span>支付宝</div><div class="cell r"><span class="icons icon-checkbox" :class="{'icon-checkbox-checked': payment == 'alipay'}"></span></div>
 			</div>
-			<div class="row">
-				<div class="cell icon"><span class="icons icon-coupon"></span>优惠券</div><div class="cell r">优惠券 5 元</div>
+			<div class="row" @click="payment = 'balance'">
+				<div class="cell icon"><span class="icons icon-balance"></span>账户余额</div><div class="cell r"><span class="icons icon-checkbox" :class="{'icon-checkbox-checked': payment == 'balance'}"></span></div>
 			</div>
-		</section>
-		<section class="section mod-table">
-			<div class="row" ng-click="payment = 'wechat'">
-				<div class="cell icon"><span class="icons icon-wechat"></span>微信支付</div><div class="cell r"><span class="icons icon-checkbox" ng-class="{'icon-checkbox-checked': payment == 'wechat'}"></span></div>
-			</div>
-			<div class="row" ng-click="payment = 'alipay'">
-				<div class="cell icon"><span class="icons icon-alipay"></span>支付宝</div><div class="cell r"><span class="icons icon-checkbox" ng-class="{'icon-checkbox-checked': payment == 'alipay'}"></span></div>
-			</div>
-			<div class="row" ng-click="payment = 'balance'">
-				<div class="cell icon"><span class="icons icon-balance"></span>账户余额</div><div class="cell r"><span class="icons icon-checkbox" ng-class="{'icon-checkbox-checked': payment == 'balance'}"></span></div>
-			</div>
+			<div class="row" @click="payment = 'balance'">
+				<div class="cell icon"><span class="icons icon-balance"></span>账户余额</div><div class="cell r"><span class="icons icon-checkbox" :class="{'icon-checkbox-checked': payment == 'balance'}"></span></div>
+			</div> -->
 		</section>
 		<section class="section">
 			<div class="goods">
-				<div class="bdb-x box">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+				<div class="bdb-x box" v-for="item in list">
+					<div class="img"><a href="goods-detail.html?id={{item.goods_id}}"><img src="{{item.image}}" alt=""></a></div>
 					<div class="flex">
-						<h3>台湾进口SODA单品只能写一行</h3>
-						<span class="num">×3</span>
-						<b class="price">￥110.9</b>
-					</div>
-				</div>
-				<div class="bdb-x box">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-					<div class="flex">
-						<h3>台湾进口SODA单品只能写一行</h3>
-						<span class="num">×3</span>
-						<b class="price">￥110.9</b>
+						<a href="goods-detail.html?id={{item.goods_id}}"><h3>{{item.goods_name}}</h3></a>
+						<span class="num">×{{item.qty}}</span>
+						<b class="price">￥{{item.total}}</b>
 					</div>
 				</div>
 			</div>
 			<div class="total">
-				<p>订单金额：<span>￥430.00</span></p>
-				<p>配送费用：<span>￥430.00</span></p>
-				<p>优惠减免：<span>￥430.00</span></p>
-				<p>实付金额：<span class="red">￥430.00</span></p>
+				<p>订单金额：<span>￥{{goodsAmount}}</span></p>
+				<p>配送费用：<span>{{'￥' + (shippingAmount > 0 ? shippingAmount : '0.00')}}</span></p>
+				<p>优惠减免：<span>{{'￥' + (couponAmount > 0 ? couponAmount : '0.00')}}</span></p>
+				<p>实付金额：<span class="red">￥{{goodsAmount + shippingAmount - couponAmount}}</span></p>
 			</div>
 		</section>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥438.6</b><small>共 2 件商品</small><a class="clearing" href="">去结算</a>
+			<b class="price">￥{{goodsAmount + shippingAmount - couponAmount}}</b><!-- <small>共 2 件商品</small> --><a class="btn" href="javascript:;" @click="clearing();">去结算</a>
 		</footer>
+
+		<div class="dialogChoose" style="display:none;">
+			<div class="content">
+				<ul class="list">
+					<li class="bdb-x" :class="{'selected': $index == 0}" v-for="item in addressList" dataid="{{item.address_id}}">{{item.province}}{{item.city}}{{item.area}}{{item.address}}</li>
+				</ul>
+				<a href="javascript:;" class="btn" @click="setAddress();">选 择</a>
+			</div>
+		</div>
 	</div>
-
-	<script src="assets/js/lib/angular.min.js"></script>
+	
 	<script src="assets/js/lib/jquery.min.js"></script>
+	<script src="assets/js/lib/vue.min.js"></script>
+	<script src="assets/js/lib/mustache.min.js"></script>
+	<script src="assets/js/dialog.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script>
 
+		var params = $.params();
+
+		var $dialog = $('.dialogChoose');
+
+		$dialog.on('click', function() {
+			$dialog.hide();
+		});
+		$dialog.on('click', '.content', function(e) {
+			e.stopPropagation();
+		});
+		
+		$dialog.on('click', 'li', function() {
+			$(this).addClass('selected').siblings().removeClass('selected');
+		});
+
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				list: [],
+				addressList: [],
+				address: null,
+				coupons: [],
+				shippings: [],
+				payments: [],
+				shippingAmount: '',
+				couponAmount: '',
+				goodsAmount: '',
+				vmShipping: '',
+				vmCoupon: '',
+				paytype: ''
+			},
+			methods: {
+				selectAddress: function() {
+					$dialog.show();
+					if (vm.addressList.length) {
+						return;
+					}
+					api.getAddress().done(function(response) {
+						if (response.success) {
+							vm.addressList = response.data;
+						}
+					});
+				},
+				setAddress: function() {
+					var id = $dialog.find('.selected').attr('dataid');
+					$.each(this.addressList, function() {
+						if (this.address_id == id) {
+							vm.address = this;
+						}
+					});
+					$dialog.hide();
+
+					// vm.shippingFee();
+				},
+				changeCoupon: function() {
+					$.each(vm.coupons, function() {
+						if (vm.vmCoupon == this.code) {
+							vm.couponAmount = this.amount;
+						}
+					});
+				},
+				changeShipping: function() {
+					vm.shippingFee();
+				},
+				shippingFee: function() {
+					if (!vm.vmShipping || !vm.address) {
+						return;
+					}
+
+					api.shippingFee(vm.vmShipping, vm.address.province).done(function(response) {
+						if (response.success) {
+							vm.shippingAmount = response.data;
+						}
+						else {
+							Toast('运费查询失败，请稍后重试！');
+						}
+					});
+				},
+				getGoodsAmount: function() {
+
+				},
+				clearing: function() {
+					if (!vm.address) {
+						Toast('请选择收货地址！');
+						return;
+					}
+
+					if (!vm.paytype) {
+						Toast('请选择支付方式！');
+						return;
+					}
+
+					api.orderSubmit({
+						full_name: vm.address.full_name,
+						province: vm.address.province,
+						city: vm.address.city,
+						area: vm.address.area,
+						address: vm.address.address,
+						mobile: vm.address.mobile,
+						zip: vm.zip,
+						coupon_code: vm.vmCoupon,
+						payment_id: vm.paytype,
+						shipping_id: vm.vmShipping
+					}).done(function(response) {
+						if (response.success) {
+							// location.replace('orders.html');
+						}
+						else {
+							Toast(response.message);
+						}
+					});
+				},
+
+			}
+		});
+
+
+		page.push(function() {
+
+			vm.$watch('address', function() {
+				vm.shippingFee();
+			})
+
+
+			api.payment().done(function(response) {
+				if (response.success) {
+					vm.payments = response.data;
+				}
+			});
+
+			api.shipping().done(function(response) {
+				if (response.success) {
+					vm.shippings = response.data;
+					if (vm.shippings.length) {
+						vm.vmShipping = vm.shippings[0].shipping_id;
+						vm.changeShipping();
+					}
+				}
+			});
+
+			api.getAddress().done(function(response) {
+				if (response.success) {
+					vm.addressList = response.data;
+
+					if (vm.addressList.length) {
+						vm.address = vm.addressList[0];
+					}
+				}
+			});
+
+			api.couponList().done(function(response) {
+				if (response.success) {
+					vm.coupons = response.data;
+
+					if (vm.coupons.length) {
+						vm.vmCoupon = vm.coupons[0].code;
+						vm.changeCoupon();
+					}
+
+				}
+			});
+
+			api.cartList().done(function(response) {
+				if (response.success) {
+					vm.list = response.data;
+					var count = 0;
+					$.each(vm.list, function() {
+						count += this.total;
+					});
+					vm.goodsAmount = count;
+				}
+				else {
+					Toast(response.message);
+				}
+			});
+			
+		});
+
+	</script>
 </body>
 </html>
