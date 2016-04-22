@@ -7,9 +7,12 @@
 //
 
 #import "HomeViewController.h"
+#import <JavaScriptCore/JavaScriptCore.h>
+
 
 @interface HomeViewController ()<UIWebViewDelegate>
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) JSContext *jsContext;
 
 @end
 

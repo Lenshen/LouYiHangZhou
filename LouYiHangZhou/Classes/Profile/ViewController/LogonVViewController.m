@@ -10,6 +10,7 @@
 #import "BYSHttpTool.h"
 #import "UserImformationModel.h"
 #import "HttpParameters.h"
+#import "NSString+MD5.h"
 
 @interface LogonVViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *userName;
@@ -67,28 +68,49 @@
     [_passwordTF resignFirstResponder];
     [BYSHttpTool GET:@"http://192.168.0.103:7021/api/authorized/user" Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
-        [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
-        [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/get" Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
-            NSLog(@"%@",responseObject);
-            [self.navigationController popToRootViewControllerAnimated:YES];
-            NSDictionary *dic = responseObject[@"data"];
-            _useModel = [[UserImformationModel alloc]initWithDictionary:dic error:nil];
-            [USER_DEFAULT setObject:_useModel.mobile forKey:@"mobile"];
-            [USER_DEFAULT setObject:_useModel.sex forKey:@"sex"];
-            [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
-            [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
-            [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
+        if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
+        {
+            [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
+            [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/get" Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
+                NSLog(@"%@",responseObject);
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                NSDictionary *dic = responseObject[@"data"];
+                _useModel = [[UserImformationModel alloc]initWithDictionary:dic error:nil];
+                [USER_DEFAULT setObject:_useModel.mobile forKey:@"mobile"];
+                [USER_DEFAULT setObject:_useModel.sex forKey:@"sex"];
+                [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
+                [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
+                [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
+                
+            } Failure:^(NSError *error) {
+               
+            }];
+            
+        }
+        if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]]) {
+            {
+               NSString *message = responseObject[@"message"];
+                [self alert:message];
+            }
+        }
+        
             
             
             
-        } Failure:^(NSError *error) {
-            
-        }];
+      
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
+
     }];
    
 
+}
+-(void)alert:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {

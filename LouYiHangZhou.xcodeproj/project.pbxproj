@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3EF219FD36AD648384835660 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E715E4B03A7993FD44B7C8A7 /* libPods.a */; };
+		5102EDA61CC8985600F97A10 /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5102EDA51CC8985600F97A10 /* AddressModel.m */; };
+		5102EDA81CC8A47100F97A10 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5102EDA71CC8A47100F97A10 /* JavaScriptCore.framework */; };
 		5125F23A1CC797BE001CAD9A /* OrderStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */; };
 		512F05F11CBCD4750017A3D7 /* WLZ_ShoppingCarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 512F05DC1CBCD4750017A3D7 /* WLZ_ShoppingCarController.m */; };
 		512F05F21CBCD4750017A3D7 /* data.plist in Resources */ = {isa = PBXBuildFile; fileRef = 512F05DD1CBCD4750017A3D7 /* data.plist */; };
@@ -91,6 +93,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5102EDA41CC8985600F97A10 /* AddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressModel.h; sourceTree = "<group>"; };
+		5102EDA51CC8985600F97A10 /* AddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressModel.m; sourceTree = "<group>"; };
+		5102EDA71CC8A47100F97A10 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		5125F2381CC797BE001CAD9A /* OrderStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderStatusViewController.h; sourceTree = "<group>"; };
 		5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderStatusViewController.m; sourceTree = "<group>"; };
 		512F05DB1CBCD4750017A3D7 /* WLZ_ShoppingCarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLZ_ShoppingCarController.h; sourceTree = "<group>"; };
@@ -222,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5102EDA81CC8A47100F97A10 /* JavaScriptCore.framework in Frameworks */,
 				3EF219FD36AD648384835660 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,6 +249,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5102EDA31CC8930000F97A10 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			path = "32位md5加密出16位";
+			sourceTree = "<group>";
+		};
 		512F05D91CBCD4750017A3D7 /* WLZ_Car */ = {
 			isa = PBXGroup;
 			children = (
@@ -590,6 +604,7 @@
 		51C1E1AC1CB6969C0033F0FA /* Supports */ = {
 			isa = PBXGroup;
 			children = (
+				5102EDA31CC8930000F97A10 /* New Group */,
 				51C1E1D61CB73F940033F0FA /* HttpParameters */,
 				51B54EA81CBF194700F0B5D4 /* UserManager */,
 				51B54EA21CBE2DE500F0B5D4 /* AddressPick */,
@@ -671,6 +686,8 @@
 			children = (
 				51C1E1CD1CB7346F0033F0FA /* UserImformationModel.h */,
 				51C1E1CE1CB7346F0033F0FA /* UserImformationModel.m */,
+				5102EDA41CC8985600F97A10 /* AddressModel.h */,
+				5102EDA51CC8985600F97A10 /* AddressModel.m */,
 			);
 			name = "用户个人基本信息";
 			sourceTree = "<group>";
@@ -750,6 +767,7 @@
 		C1287CB7DD5859EFD1480E57 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5102EDA71CC8A47100F97A10 /* JavaScriptCore.framework */,
 				E715E4B03A7993FD44B7C8A7 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -996,6 +1014,7 @@
 				51E23F9B1CBB671C0094607F /* SettingTableViewController.m in Sources */,
 				51C1E1C51CB731CB0033F0FA /* TabBarViewController.m in Sources */,
 				51C1E1671CB66CAE0033F0FA /* main.m in Sources */,
+				5102EDA61CC8985600F97A10 /* AddressModel.m in Sources */,
 				516FEF9F1CBB310E00E9A980 /* ReceptionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

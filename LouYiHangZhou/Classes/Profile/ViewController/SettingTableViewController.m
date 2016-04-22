@@ -129,9 +129,7 @@
 -(void)clearCacheSuccess
 {
     NSLog(@"清理成功");
-    [USER_DEFAULT removeObjectForKey:@"headImage"];
-    [USER_DEFAULT removeObjectForKey:@"userName"];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清除成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
+       UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清除成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];

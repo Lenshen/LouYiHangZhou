@@ -7,9 +7,15 @@
 //
 
 #import "ReceptionTableViewController.h"
+#import "ReceptionTableViewCell.h"
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
+#import "AddressModel.h"
 
 @interface ReceptionTableViewController ()
-
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) AddressModel *model;
+@property (nonatomic,strong)NSMutableArray *addressArrayM;
 @end
 
 @implementation ReceptionTableViewController
@@ -28,12 +34,27 @@
     
 
 }
-//-(void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:YES];
-//    self.tabBarController.hidesBottomBarWhenPushed = YES;
-//
-//}
+-(void)getAddress
+{
+    [BYSHttpTool GET:@"http://192.168.0.103:7021/api/address/get" Parameters:[HttpParameters app_get_userImformation:nil ] Success:^(id responseObject) {
+        NSArray *array = responseObject[@"data"];
+
+        self.addressArrayM = [NSMutableArray arrayWithArray:array];
+        NSLog(@"%@",_addressArrayM);
+        
+        [self.tableView reloadData];
+        
+        
+    } Failure:^(NSError *error) {
+        
+    }];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+   
+    [self getAddress];
+
+}
 - (IBAction)black:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
@@ -45,18 +66,26 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+        return self.addressArrayM.count;
+
+
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceptionTableViewCell" forIndexPath:indexPath];
+    ReceptionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceptionTableViewCell" forIndexPath:indexPath];
+    NSDictionary *dic = self.addressArrayM[indexPath.row];
+    _model = [[AddressModel alloc]initWithDictionary:dic error:nil];
+    NSLog(@"%@",_model);
+    NSString *address = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.area,_model.address];
     
+
+    cell.addressLable.text = address;
+    cell.full_nameLable.text = _model.full_name;
+    cell.mobileLable.text = _model.mobile;
     
     return cell;
 }
@@ -68,10 +97,29 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        [self.addressArrayM removeObjectAtIndex:indexPath.row];
+        [self deleteTableviewCell:indexPath.row];
+        [self.addressArrayM removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+
+        [self.tableView reloadData];
         
     }
     
 }
+-(void)deleteTableviewCell:(NSInteger )index;
+{
+    
+    NSDictionary *dic = self.addressArrayM[index];
+    
+    [BYSHttpTool POST:@"http://192.168.0.103:7021/api/address/delete" Parameters:[HttpParameters delete_address:nil address_id:dic[@"address_id"]] Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } Failure:^(NSError *error) {
+        
+    }];
+    }
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"删除";

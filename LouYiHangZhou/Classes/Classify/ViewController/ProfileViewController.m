@@ -13,6 +13,7 @@
 #import "UIButton+WebCache.h"
 #import "OrderStatusViewController.h"
 
+
 #import "ProfileCollectionViewCell.h"
 
 #import "ProfileIMForViewController.h"
@@ -22,7 +23,8 @@
 #import "ReceptionTableViewController.h"
 
 #import "CollectTableViewController.h"
-@interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate>
+@interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UIWebViewDelegate>
+@property (weak, nonatomic) IBOutlet UIView *hideview;
 @property (strong, nonatomic) IBOutlet UILabel *mobileNumbel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imagesArray;
@@ -56,10 +58,12 @@
     
     if ([USER_DEFAULT objectForKey:@"user_token"]) {
         ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
+        self.hideview.hidden = NO;
         p.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:p animated:YES];
     }else
     {
+        self.hideview.hidden = YES;
         LogonVViewController *Logon = [LogonVViewController instanceFromStoryboard];
         Logon.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:Logon animated:YES];
@@ -70,9 +74,17 @@
 #pragma mark viewVillAppear
 -(void)viewWillAppear:(BOOL)animated
 {
+    if ([USER_DEFAULT objectForKey:@"user_token"]) {
+ 
+        self.hideview.hidden = NO;
+    }else
+    {
+        self.hideview.hidden = YES;
+    }
   self.navigationController.navigationBarHidden = YES;
     NSURL *url = [NSURL URLWithString:[USER_DEFAULT objectForKey:@"avatar"]];
     [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
+    self.mobileNumbel.text = [USER_DEFAULT objectForKey:@"mobile"];
     self.headImage.layer.cornerRadius =  self.headImage.frame.size.width/2;
     self.headImage.layer.masksToBounds = YES;
                   
@@ -155,7 +167,7 @@
 #pragma mark 点击订单状态
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *array = [NSArray arrayWithObjects:@"orders",@"order-confirm",@"order-detail",@"goods",nil];
+    NSArray *array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",nil];
  
         OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
     order.indexName = array[indexPath.row];

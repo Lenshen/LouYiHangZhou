@@ -12,6 +12,8 @@
 #import "UIViewController+StoryboardFrom.h"
 #import "UserImformationModel.h"
 #import "UIButton+WebCache.h"
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -21,11 +23,13 @@
 @property (strong, nonatomic) IBOutlet UILabel *birthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mobileLB;
 @property (weak, nonatomic) IBOutlet UILabel *dateField;
+@property (strong, nonatomic)NSString *dateString;
 @property (weak, nonatomic) IBOutlet UIButton *headImage;
 @property (weak, nonatomic) IBOutlet UILabel *sexLabel;
+@property (strong, nonatomic)NSString *sexString;
 @property (nonatomic,strong) NSMutableArray *yearArray;
 @property (nonatomic, strong)UserImformationModel *useModel;
-
+@property (nonatomic, strong)NSString *imageStr;
 @property (nonatomic,strong) NSMutableArray *monthArray;
 
 @property (nonatomic,strong) NSMutableArray *dayArray;
@@ -67,6 +71,31 @@
 - (IBAction)changHeadImage:(id)sender {
     
     [self initHeadImageAlertController];
+}
+#pragma mark dianji
+- (IBAction)sureAdd:(id)sender {
+    if (self.imageStr) {
+        [BYSHttpTool POST:@"http://192.168.0.103:7021/api/upload/avatar" Parameters:[HttpParameters uploadAvatar:_imageStr] Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            NSLog(@"%@",responseObject[@"data"]);
+            [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"avatar"];
+            [self.navigationController popViewControllerAnimated:YES];
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+
+    }
+    if (self.sexString && self.dateString) {
+        [BYSHttpTool POST:@"http://192.168.0.103:7021/api/user/update" Parameters:[HttpParameters uploadImformation:self.dateString sexStr:self.sexString] Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            NSLog(@"%@",responseObject[@"data"]);
+            [self.navigationController popViewControllerAnimated:YES];
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+
+    }
+
 }
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -134,10 +163,16 @@
     NSString *yearString = [self.yearArray objectAtIndex:[self.pickview selectedRowInComponent:0]];
     NSString *monthString = [self.monthArray objectAtIndex:[self.pickview selectedRowInComponent:1]];
     NSString *dayString = [self.dayArray objectAtIndex:[self.pickview selectedRowInComponent:2]];
+    self.dateString = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
+    
+
+  
     self.dateField.text = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
        [self.view endEditing:NO];
+    
 
 }
+
 - (void)getDateDataSource{
     for (int i = 1970; i <= 9999; i++) {
         [self.yearArray addObject:[NSString stringWithFormat:@"%d",i]];
@@ -244,12 +279,18 @@
 //        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //        //上传图片
         [self dismissViewControllerAnimated:YES completion:nil];
-    NSData *imageData = [NSKeyedArchiver archivedDataWithRootObject:info[UIImagePickerControllerEditedImage]];
+  
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    [self base64:image];
                          
-    [USER_DEFAULT setObject:imageData forKey:@"headImage"];
    
     }
-
+-(void)base64:(UIImage *)image
+{
+    NSData *imagedata = UIImageJPEGRepresentation(image, 1.0);
+    NSString *imageStr = [imagedata base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    self.imageStr = imageStr;
+    }
 #pragma mark viewViewAppear
 
 -(void)viewWillAppear:(BOOL)animated
@@ -277,9 +318,11 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择你的性别" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         _sexLabel.text = @"男";
+        self.sexString = @"男";
     }];
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"女" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         _sexLabel.text = @"女";
+        self.sexString = @"女";
     }];
     UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];

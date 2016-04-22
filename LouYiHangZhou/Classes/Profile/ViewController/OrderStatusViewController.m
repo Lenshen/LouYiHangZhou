@@ -20,11 +20,27 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"%@",self.indexName);
+    [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     
 }
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
 {
-    [super setUpWebview:self.indexName CGRectMakeForWebview:self.view.frame];
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
+    //    NSString *str = [[NSBundle mainBundle] bundlePath];
+    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
+    NSURL *baseURL = [NSURL fileURLWithPath:path1];
+    
+    //    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
+    NSString *str = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
+    NSString *str2 = [NSString stringWithFormat:@"web/orders.html"];
+    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str2];
+    NSLog(@"%@ %@",path1,path);
+    
+    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    [webview loadHTMLString:html baseURL:baseURL];
+    [self.view addSubview:webview];
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {

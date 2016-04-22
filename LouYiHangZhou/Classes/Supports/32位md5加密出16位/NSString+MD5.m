@@ -38,7 +38,13 @@
              ] lowercaseString];
     
 }
-
+-(void)alert:(NSString *)message viewcontroller:(UIViewController *)viewcontroller;
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:action];
+    [viewcontroller presentViewController:alert animated:YES completion:nil];
+}
 
 
 @end

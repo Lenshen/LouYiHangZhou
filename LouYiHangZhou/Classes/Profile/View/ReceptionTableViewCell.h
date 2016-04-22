@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ReceptionTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *mobileLable;
+@property (weak, nonatomic) IBOutlet UIView *hideView;
+@property (weak, nonatomic) IBOutlet UILabel *full_nameLable;
+@property (weak, nonatomic) IBOutlet UILabel *addressLable;
 
 @end

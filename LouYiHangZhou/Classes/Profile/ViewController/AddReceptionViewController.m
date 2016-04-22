@@ -10,12 +10,22 @@
 #import "CityViewController.h"
 #import "AddressPick/AddressPickView.h"
 #import <CoreLocation/CoreLocation.h>
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
 
 @interface AddReceptionViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *address;
 @property (weak, nonatomic) IBOutlet UIButton *cityButton;
-@property (strong, nonatomic) CLGeocoder *geocoder;
+@property (weak, nonatomic) IBOutlet UITextField *mobile;
+@property (weak, nonatomic) IBOutlet UITextField *full_name;
 @property (weak, nonatomic) NSString *longitude;
 @property (weak, nonatomic) NSString *latitude;
+@property (weak, nonatomic) NSString *province;
+@property (weak, nonatomic) NSString *city;
+@property (weak, nonatomic) NSString *area;
+
+
+
 
 
 @end
@@ -24,63 +34,36 @@
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+- (IBAction)sureAddButton:(id)sender {
+    
+    [BYSHttpTool POST:@"http://192.168.0.103:7021/api/address/add" Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:@"yes"] Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+
+        [self.navigationController popViewControllerAnimated:YES];
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+
+    }];
+    
+    
+}
 - (IBAction)getCity:(id)sender {
     AddressPickView *addressPickView = [AddressPickView shareInstance];
     [self.view addSubview:addressPickView];
     addressPickView.block = ^(NSString *province,NSString *city,NSString *town){
         NSString *str = [NSString stringWithFormat:@"%@ %@ %@",province,city,town] ;
+        self.province  = province;
+        self.city = city;
+        self.area = town;
         NSLog(@"%@",str);
         [_cityButton setTitle:str forState:UIControlStateNormal];
-        [self geocoderPostalCode:str];
         
     };
 
     
 }
--(NSString *)geocoderPostalCode:(NSString *)address
-{
-    [self.geocoder geocodeAddressString:@"安徽六安金安区" completionHandler:^(NSArray *placemarks, NSError *error) {
-        //如果有错误信息，或者是数组中获取的地名元素数量为0，那么说明没有找到
-        if (error || placemarks.count==0) {
-            NSLog(@"%@",error);
-        }else   //  编码成功，找到了具体的位置信息
-        {
-            //打印查看找到的所有的位置信息
-            /*
-             name:名称
-             locality:城市
-             country:国家
-             postalCode:邮政编码
-             */
-            for (CLPlacemark *placemark in placemarks) {
-                NSLog(@"name=%@ locality=%@ country=%@ postalCode=%@",placemark.name,placemark.locality,placemark.country,placemark.postalCode);
-            }
-            
-            //取出获取的地理信息数组中的第一个显示在界面上
-            CLPlacemark *firstPlacemark=[placemarks firstObject];
-            //详细地址名称
-            //纬度
-            CLLocationDegrees latitude=firstPlacemark.location.coordinate.latitude;
-            //经度
-            CLLocationDegrees longitude=firstPlacemark.location.coordinate.longitude;
-            self.latitude = [NSString stringWithFormat:@"%.2f",latitude];
-            self.longitude = [NSString stringWithFormat:@"%.2f",longitude];
-            NSLog(@"%f%f",longitude,latitude);
-           
-        }
-    }];
 
-    return nil;
-}
-
-
--(CLGeocoder *)geocoder
-{
-    if (_geocoder==nil) {
-        _geocoder=[[CLGeocoder alloc]init];
-    }
-    return _geocoder;
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
