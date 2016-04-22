@@ -44,7 +44,7 @@
 }
 - (IBAction)registerEvent:(id)sender {
    
-    NSString *str = @"http://192.168.0.103:7021/api/user/reg";
+    NSString *str = APP_REGISTER;
     NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100",@"password":_passwordTF.text,@"code":_codeTF.text};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
         _registerDic = responseObject;
@@ -52,13 +52,7 @@
         NSString *message = _registerDic[@"message"];
         if ([message isEqualToString:@"注册成功"]) {
             [self.navigationController popViewControllerAnimated:YES];
-//            NSString *str = @"http://192.168.0.103:7021/api/authorized/user";
-//            NSDictionary *parameter = @{@"login_name":@"18258435631",@"access_token":@"101",@"user_type":@"0",@"password":@"123456",@"client_ip":[USER_DEFAULT objectForKey:@"client_id"]};
-//            [BYSHttpTool GET:str Parameters:parameter Success:^(id responseObject) {
-//                NSLog(@"%@",responseObject);
-//            } Failure:^(NSError *error) {
-//                NSLog(@"%@",error);
-//            }];
+
         }else
         {
             [self alert:message];
@@ -99,7 +93,7 @@
 
 - (IBAction)getCode:(id)sender {
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
-    NSString *str = @"http://192.168.0.103:7021/api/MobileVerifyCode/send";
+    NSString *str = APP_MOBILEVERIFY;
     NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100"};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);

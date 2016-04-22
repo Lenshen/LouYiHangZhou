@@ -33,7 +33,6 @@
     
     NSMutableArray *commonMuList = [NSMutableArray array];
     
-    NSMutableArray *kuajingMuList = [NSMutableArray array];
     
     
     for (int i = 0; i<commonList.count; i++) {

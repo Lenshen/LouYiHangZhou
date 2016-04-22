@@ -20,7 +20,7 @@
     if (nil != inColorString)
     {
         NSScanner *scanner = [NSScanner scannerWithString:inColorString];
-        (void) [scanner scanHexInt:&colorCode]; // ignore error
+       [scanner scanHexInt:&colorCode]; // ignore error
     }
     redByte = (unsigned char) (colorCode >> 16);
     greenByte = (unsigned char) (colorCode >> 8);

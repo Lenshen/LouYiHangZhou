@@ -83,7 +83,7 @@
 #pragma mark dianji
 - (IBAction)sureAdd:(id)sender {
     if (self.imageStr) {
-        [BYSHttpTool POST:@"http://192.168.0.103:7021/api/upload/avatar" Parameters:[HttpParameters uploadAvatar:_imageStr] Success:^(id responseObject) {
+        [BYSHttpTool POST:APP_USER_UNLOAD_AVATAR Parameters:[HttpParameters uploadAvatar:_imageStr] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"avatar"];
@@ -94,7 +94,7 @@
 
     }
     if (self.sexString && self.dateString) {
-        [BYSHttpTool POST:@"http://192.168.0.103:7021/api/user/update" Parameters:[HttpParameters uploadImformation:self.dateString sexStr:self.sexString] Success:^(id responseObject) {
+        [BYSHttpTool POST:APP_USER_UPDATE Parameters:[HttpParameters uploadImformation:self.dateString sexStr:self.sexString] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
             [self.navigationController popViewControllerAnimated:YES];

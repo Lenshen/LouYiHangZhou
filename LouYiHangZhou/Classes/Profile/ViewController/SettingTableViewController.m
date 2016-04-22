@@ -59,7 +59,7 @@
     {
     
         [self.navigationController popViewControllerAnimated:YES];
-        [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/signout" Parameters:[HttpParameters exitLogon:nil] Success:^(id responseObject) {
+        [BYSHttpTool GET:APP_USER_SIGOUT Parameters:[HttpParameters exitLogon:nil] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             
         } Failure:^(NSError *error) {

@@ -36,7 +36,7 @@
 }
 - (IBAction)sureAddButton:(id)sender {
     
-    [BYSHttpTool POST:@"http://192.168.0.103:7021/api/address/add" Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:@"yes"] Success:^(id responseObject) {
+    [BYSHttpTool POST:APP_ADDRESS_ADD Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:@"yes"] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
 
         [self.navigationController popViewControllerAnimated:YES];

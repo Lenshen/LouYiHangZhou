@@ -36,7 +36,7 @@
 }
 -(void)getAddress
 {
-    [BYSHttpTool GET:@"http://192.168.0.103:7021/api/address/get" Parameters:[HttpParameters app_get_userImformation:nil ] Success:^(id responseObject) {
+    [BYSHttpTool GET:APP_ADDRESS_GET Parameters:[HttpParameters app_get_userImformation:nil ] Success:^(id responseObject) {
         NSArray *array = responseObject[@"data"];
 
         self.addressArrayM = [NSMutableArray arrayWithArray:array];
@@ -113,7 +113,7 @@
     
     NSDictionary *dic = self.addressArrayM[index];
     
-    [BYSHttpTool POST:@"http://192.168.0.103:7021/api/address/delete" Parameters:[HttpParameters delete_address:nil address_id:dic[@"address_id"]] Success:^(id responseObject) {
+    [BYSHttpTool POST:APP_ADDRESS_DELETE Parameters:[HttpParameters delete_address:nil address_id:dic[@"address_id"]] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         
     } Failure:^(NSError *error) {

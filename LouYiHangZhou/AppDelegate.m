@@ -11,7 +11,8 @@
 #import "HttpParameters.h"
 #include <ifaddrs.h>
 #include <arpa/inet.h>
-
+#import "JPUSHService.h"
+#define JPUSH @"658ca7514482fdd33fda4f13"
 @interface AppDelegate ()
 
 @end
@@ -23,8 +24,45 @@
     // Override point for customization after application launch.
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self getApptokenAndClientIP];
+    //极光推送
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
+    } else {
+        //categories 必须为nil
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                          UIRemoteNotificationTypeSound |
+                                                          UIRemoteNotificationTypeAlert)
+                                              categories:nil];
+    }
+    //JAppKey : 是你在极光推送申请下来的appKey Jchannel : 可以直接设置默认值即可 Publish channel
+    [JPUSHService setupWithOption:launchOptions appKey:JPUSH channel:nil apsForProduction:NO
+                ];
 
     return YES;
+}
+//hdjkhfadsf
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {    // 
+    [JPUSHService registerDeviceToken:deviceToken];
+}
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    NSString *alert = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    NSLog(@"%@",alert);
+    if (application.applicationState == UIApplicationStateActive) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"推送消息"
+                                                            message:alert
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
+    [application setApplicationIconBadgeNumber:0];
+    [JPUSHService handleRemoteNotification:userInfo];
 }
 -(void)getApptokenAndClientIP
 {

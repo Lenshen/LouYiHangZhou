@@ -50,7 +50,7 @@
 }
 
 - (IBAction)registerEvent:(id)sender {
-    [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/password" Parameters:[HttpParameters change_password:nil newpassword:_passwordTF.text oldpassword:_codeTF.text] Success:^(id responseObject) {
+    [BYSHttpTool GET:APP_USER_PASSWORD Parameters:[HttpParameters change_password:nil newpassword:_passwordTF.text oldpassword:_codeTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]]) {
             

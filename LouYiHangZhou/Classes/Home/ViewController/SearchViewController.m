@@ -81,7 +81,7 @@
         [self.searchList removeAllObjects];
     }
     //过滤数据
-    [BYSHttpTool POST:@"http://192.168.0.103:7021/api/goods/search" Parameters:[HttpParameters search_goods:searchString page_index:@"1" page_size:@"10"] Success:^(id responseObject) {
+    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:searchString page_index:@"1" page_size:@"10"] Success:^(id responseObject) {
         NSDictionary *dic = responseObject;
         _responseArray  = dic[@"data"];
         NSLog(@"%@",_responseArray);

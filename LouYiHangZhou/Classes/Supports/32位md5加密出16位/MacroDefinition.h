@@ -8,15 +8,38 @@
 
 #ifndef MacroDefinition_h
 #define MacroDefinition_h
+#define TESTSERVERSAPI  @"192.168.0.103:7021"
 
 //-------------------获取设备大小-------------------------
 //NavBar高度
 #define NavigationBar_HEIGHT 44
-#define APP_AUTHOTIZD_API @"http://192.168.0.103:7021/api/authorized/app"
-#define APP_MOBILEVERIFY @"http://192.168.0.103:7021/api/MobileVerifyCode/send"
-#define JUDGE_MOBILEEXIST @"http://192.168.0.103:7021/api/user/checkmobile"
-#define JUDGE_CODETURE @"http://192.168.0.103:7021/api/MobileVerifyCode/verify"
-#define APP_REGISTER  @"http://192.168.0.103:7021/api/user/reg"
+#define APP_AUTHOTIZD_API @"http://"TESTSERVERSAPI"/api/authorized/app"
+#define APP_USER_API   @"http://"TESTSERVERSAPI"/api/authorized/user"
+#define APP_MOBILEVERIFY @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/send"
+#define JUDGE_MOBILEEXIST @"http://"TESTSERVERSAPI"/api/user/checkmobile"
+#define JUDGE_CODETURE @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/verify"
+#define APP_REGISTER  @"http://"TESTSERVERSAPI"/api/user/reg"
+#define APP_ADDRESS_GET @"http://"TESTSERVERSAPI"/api/address/get"
+#define APP_ADDRESS_DELETE @"http://"TESTSERVERSAPI"/api/address/delete"
+#define APP_USER_GET @"http://"TESTSERVERSAPI"/api/user/get"
+#define APP_USER_UNLOAD_AVATAR  @"http://"TESTSERVERSAPI"/api/upload/avatar"
+#define APP_USER_FINDPASSWORD  @"http://"TESTSERVERSAPI"/api/user/findpassword"
+#define APP_USER_PASSWORD  @"http://"TESTSERVERSAPI"/api/user/password"
+#define APP_GOOD_SEARCH  @"http://"TESTSERVERSAPI"/api/goods/search"
+#define APP_USER_SIGOUT  @"http://"TESTSERVERSAPI"api/user/signout"
+#define APP_USER_UPDATE  @"http://"TESTSERVERSAPI"/api/user/update"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+
+
+
+
+
+
+
 //获取屏幕 宽度、高度
 
 #define kScreenWidth  [UIScreen mainScreen].bounds.size.width

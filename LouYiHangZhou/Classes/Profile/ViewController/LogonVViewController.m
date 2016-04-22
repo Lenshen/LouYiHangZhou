@@ -66,12 +66,12 @@
 - (IBAction)logoEvent:(id)sender {
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
-    [BYSHttpTool GET:@"http://192.168.0.103:7021/api/authorized/user" Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
+    [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
         {
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
-            [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/get" Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
+            [BYSHttpTool GET:APP_USER_GET Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
                 NSLog(@"%@",responseObject);
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 NSDictionary *dic = responseObject[@"data"];
