@@ -52,6 +52,15 @@
 - (IBAction)registerEvent:(id)sender {
     [BYSHttpTool GET:@"http://192.168.0.103:7021/api/user/password" Parameters:[HttpParameters change_password:nil newpassword:_passwordTF.text oldpassword:_codeTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
+        if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]]) {
+            
+                NSString *message = responseObject[@"message"];
+                [USER_DEFAULT removeObjectForKey:@"user_token"];
+        
+                [self alert:message];
+            
+        }
+        
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -60,7 +69,9 @@
 -(void)alert:(NSString *)message
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
     [alert addAction:action];
     [self presentViewController:alert animated:YES completion:nil];
 }

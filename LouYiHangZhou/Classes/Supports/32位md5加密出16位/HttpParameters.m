@@ -65,7 +65,7 @@
 }
 +(NSDictionary *)find_password:(NSString *)userToken newpassword:(NSString *)newpassword code:(NSString *)code mobile:(NSString *)mobile
 {
-    NSDictionary *dic =  @{@"access_token":userToken,@"newpassword":newpassword,@"code":code,@"mobile":mobile};
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"newpassword":newpassword,@"code":code,@"mobile":mobile};
     return dic;
 }
 +(NSDictionary *)remove_favorite:(NSString *)userToken goods_id:(NSString *)goods_id

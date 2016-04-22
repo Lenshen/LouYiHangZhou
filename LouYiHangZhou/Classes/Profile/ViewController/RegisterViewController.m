@@ -120,6 +120,10 @@
     self.navigationController.navigationBarHidden = YES;
     
 }
+- (IBAction)blackRegister:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

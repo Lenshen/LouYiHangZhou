@@ -1,33 +1,30 @@
 //
-//  HomeViewController.m
-//  LouYiHangZhou
+//  WebViewJSBridge.m
+//  SHUO
 //
-//  Created by 远深 on 16/4/8.
-//  Copyright © 2016年 Luo Yi TECHNOLOGY. All rights reserved.
+//  Created by XL on 14-8-7.
+//  Copyright (c) 2014年 XL. All rights reserved.
 //
 
-#import "HomeViewController.h"
-#import <JavaScriptCore/JavaScriptCore.h>
-#define JSBridgeName @"MALLJSBridge"
+#import "WebViewJSBridge.h"
+
+#define JSBridgeName @"SHUOJSBridge"
 #define JSBridgeProtocol @"bridge://"
 
+@implementation WebViewJSBridge
 
-@interface HomeViewController ()<UIWebViewDelegate,WebViewJSBridgeDelegate>
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
-@property (nonatomic, weak) JSContext *jsContext;
-
-
-@end
-
-@implementation HomeViewController
-
++ (instancetype)bridgeForWebView:(UIWebView *)webView withSuperDelegate:(id)superDelegate
+{
+    WebViewJSBridge *bridge = [self new];
+    [bridge initBridge:webView withSuperDelegate:superDelegate];
+    return bridge;
+}
 
 - (void)initBridge:(UIWebView *)webView withSuperDelegate:(id)superDelegate
 {
     _superDelegate = superDelegate;
     _webView = webView;
     _webView.delegate = self;
-
 }
 
 - (void)converters:(NSString *)type name:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback
@@ -57,6 +54,17 @@
     [_webView stringByEvaluatingJavaScriptFromString:script];
 }
 
+// 组装Javascript函数格式
+- (void)executeScriptFunction:(NSString *)function withArgs:(NSArray *)args
+{
+    NSMutableArray *argsArray = [[NSMutableArray alloc] init];
+    for (int i = 0, len = [args count]; i < len; i++) {
+        [argsArray addObject:[NSString stringWithFormat:@"'%@'", [args objectAtIndex:i]]];
+    }
+    NSString *argsString = [argsArray componentsJoinedByString:@","];
+    NSString *script = [NSString stringWithFormat:@"%@(%@);", function, argsString];
+    [self executeScript:script];
+}
 
 #pragma mark - UIWebViewDelegate
 
@@ -68,10 +76,10 @@
     BOOL bridgeIsNotEval = ![[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"typeof window.%@ == 'object'", JSBridgeName]] isEqualToString:@"true"];
     if (bridgeIsNotEval) {
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WebViewJSBridge" ofType:@"js"];
-        //        LOG(@"filePath: %@", filePath);
+//        LOG(@"filePath: %@", filePath);
         NSString *fileContent = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
         NSString *JSScript = [NSString stringWithFormat:fileContent, JSBridgeName, JSBridgeProtocol];
-             NSLog(@"JSScript: %@",  fileContent);
+//        LOG(@"JSScript: %@", JSScript);
         [webView stringByEvaluatingJavaScriptFromString:JSScript];
     }
     
@@ -96,11 +104,10 @@
         if (![jsonString isEqualToString:@""]) {
             NSString *jsonDecodeString = [self decodeURIComponent:jsonString];
             NSData *jsonData = [jsonDecodeString dataUsingEncoding:NSUTF8StringEncoding];
-            
+        
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
             NSDictionary *args = [json objectForKey:@"args"];
             [self converters:[json objectForKey:@"type"] name:[json objectForKey:@"name"] args:args callback:[json objectForKey:@"callback"]];
-            NSLog(@"%@",json);
             
         }
         return NO;
@@ -153,65 +160,6 @@
 }
 
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
-    [self initBridge:_webView withSuperDelegate:_superDelegate];
-
-    
-    [self setUpWebview:@"index2" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
-    
-    
-    
-}
--(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
-{
-    _webView = [[UIWebView alloc]initWithFrame:webviewFrame];
-//    NSString *str = [[NSBundle mainBundle] bundlePath];
-    _webView.delegate = self;
-    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-    NSURL *baseURL = [NSURL fileURLWithPath:path1];
-    
-//    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
-    NSString *str = [NSString stringWithFormat:@"web/%@.html",htmlName];
-    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str];
-    NSLog(@"%@ %@",path1,path);
-
-    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [_webView loadHTMLString:html baseURL:baseURL];
-//    NSURL *url = [NSURL URLWithString:@"http://lmmm0013.gotoip55.com/Bridge/bridge.html"];
-    
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
-    
-    [self.view addSubview:_webView];
-
-    
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
-  
-
-//    self.navigationController.navigationBarHidden= NO;
-//    [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
-//    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end
+
+

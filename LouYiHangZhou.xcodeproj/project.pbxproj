@@ -22,6 +22,9 @@
 		512F05FA1CBCD4760017A3D7 /* WLZ_ShopViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 512F05F01CBCD4750017A3D7 /* WLZ_ShopViewModel.m */; };
 		512F064A1CBD0BDD0017A3D7 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 512F06491CBD0BDD0017A3D7 /* html.bundle */; };
 		512F072D1CBD4EB50017A3D7 /* CouponViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 512F072C1CBD4EB50017A3D7 /* CouponViewController.m */; };
+		514C33D31CC9BACA0058F644 /* WebViewJSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 514C33D01CC9BACA0058F644 /* WebViewJSBridge.m */; };
+		514C33D41CC9BACA0058F644 /* WebViewJSBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 514C33D11CC9BACA0058F644 /* WebViewJSBridge.js */; };
+		514C33D71CC9D2530058F644 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 514C33D61CC9D2530058F644 /* ChangePasswordViewController.m */; };
 		51630BF51CBB491000915669 /* AddReceptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51630BF41CBB491000915669 /* AddReceptionViewController.m */; };
 		516FEF991CBB2C3000E9A980 /* ReceptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 516FEF981CBB2C3000E9A980 /* ReceptionTableViewController.m */; };
 		516FEF9F1CBB310E00E9A980 /* ReceptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 516FEF9E1CBB310E00E9A980 /* ReceptionTableViewCell.m */; };
@@ -118,6 +121,11 @@
 		512F06491CBD0BDD0017A3D7 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 		512F072B1CBD4EB50017A3D7 /* CouponViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouponViewController.h; sourceTree = "<group>"; };
 		512F072C1CBD4EB50017A3D7 /* CouponViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouponViewController.m; sourceTree = "<group>"; };
+		514C33D01CC9BACA0058F644 /* WebViewJSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJSBridge.m; sourceTree = "<group>"; };
+		514C33D11CC9BACA0058F644 /* WebViewJSBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewJSBridge.js; sourceTree = "<group>"; };
+		514C33D21CC9BACA0058F644 /* WebViewJSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJSBridge.h; sourceTree = "<group>"; };
+		514C33D51CC9D2530058F644 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
+		514C33D61CC9D2530058F644 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		51630BF31CBB491000915669 /* AddReceptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddReceptionViewController.h; sourceTree = "<group>"; };
 		51630BF41CBB491000915669 /* AddReceptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddReceptionViewController.m; sourceTree = "<group>"; };
 		516FEF971CBB2C3000E9A980 /* ReceptionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceptionTableViewController.h; sourceTree = "<group>"; };
@@ -252,6 +260,9 @@
 		5102EDA31CC8930000F97A10 /* New Group */ = {
 			isa = PBXGroup;
 			children = (
+				514C33D21CC9BACA0058F644 /* WebViewJSBridge.h */,
+				514C33D01CC9BACA0058F644 /* WebViewJSBridge.m */,
+				514C33D11CC9BACA0058F644 /* WebViewJSBridge.js */,
 			);
 			name = "New Group";
 			path = "32位md5加密出16位";
@@ -562,6 +573,8 @@
 				519198631CBBA3B1006AD102 /* FeedBackViewController.m */,
 				5125F2381CC797BE001CAD9A /* OrderStatusViewController.h */,
 				5125F2391CC797BE001CAD9A /* OrderStatusViewController.m */,
+				514C33D51CC9D2530058F644 /* ChangePasswordViewController.h */,
+				514C33D61CC9D2530058F644 /* ChangePasswordViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -890,6 +903,7 @@
 				51C1E1721CB66CAE0033F0FA /* Assets.xcassets in Resources */,
 				51C1E1701CB66CAE0033F0FA /* Main.storyboard in Resources */,
 				51E23F911CBB50FD0094607F /* cancelBtn@2x.png in Resources */,
+				514C33D41CC9BACA0058F644 /* WebViewJSBridge.js in Resources */,
 				51B54EA61CBE2DE500F0B5D4 /* Address.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -971,11 +985,13 @@
 				516FEF991CBB2C3000E9A980 /* ReceptionTableViewController.m in Sources */,
 				51E23F981CBB50FD0094607F /* CustomTopView.m in Sources */,
 				51C1E1BD1CB6969C0033F0FA /* NSDictionary+Log.m in Sources */,
+				514C33D71CC9D2530058F644 /* ChangePasswordViewController.m in Sources */,
 				51E23F9E1CBB732B0094607F /* CollectTableViewController.m in Sources */,
 				51B54EA71CBE2DE500F0B5D4 /* AddressPickView.m in Sources */,
 				51C1E1E21CB751C20033F0FA /* ProfileViewController.m in Sources */,
 				512F05F91CBCD4760017A3D7 /* WLZ_ShoppingCartEndView.m in Sources */,
 				51B54EAB1CBF19C700F0B5D4 /* UserManager.m in Sources */,
+				514C33D31CC9BACA0058F644 /* WebViewJSBridge.m in Sources */,
 				51E23F951CBB50FD0094607F /* CityModel.m in Sources */,
 				512F05F61CBCD4760017A3D7 /* WLZ_ChangeCountView.m in Sources */,
 				51E23F971CBB50FD0094607F /* CustomSearchView.m in Sources */,

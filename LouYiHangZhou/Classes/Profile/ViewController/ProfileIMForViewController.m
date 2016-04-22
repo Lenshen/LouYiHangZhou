@@ -50,6 +50,14 @@
     self.yearArray = [NSMutableArray array];
     self.monthArray = [NSMutableArray array];
     self.dayArray = [NSMutableArray array];
+    
+    NSString *imagedata = [USER_DEFAULT objectForKey:@"avatar"];
+    NSURL *url = [NSURL URLWithString:imagedata];
+    [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
+    self.headImage.layer.cornerRadius = 33;
+    self.headImage.layer.masksToBounds = YES;
+    
+
    
     [self getDateDataSource];
     [self initPickView];
@@ -278,9 +286,13 @@
 //        //保存图片至相册
 //        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //        //上传图片
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    [self.headImage setBackgroundImage:image forState:UIControlStateNormal];
+    self.headImage.layer.cornerRadius = 33;
+    self.headImage.layer.masksToBounds = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
   
-    UIImage *image = info[UIImagePickerControllerEditedImage];
+  
     [self base64:image];
                          
    
@@ -298,12 +310,6 @@
     [super viewWillAppear:YES];
     self.tableView.showsVerticalScrollIndicator = NO;
     
-    NSString *imagedata = [USER_DEFAULT objectForKey:@"avatar"];
-    NSURL *url = [NSURL URLWithString:imagedata];
-    [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
-     self.headImage.layer.cornerRadius = 33;
-    self.headImage.layer.masksToBounds = YES;
-    
     
     self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
     self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
@@ -311,6 +317,7 @@
     
 
 }
+
 
 
 -(void)initAlertController

@@ -1,14 +1,19 @@
 //
-//  HomeViewController.h
-//  LouYiHangZhou
+//  WebViewJSBridge.h
+//  SHUO
 //
-//  Created by 远深 on 16/4/8.
-//  Copyright © 2016年 Luo Yi TECHNOLOGY. All rights reserved.
+//  Created by XL on 14-8-7.
+//  Copyright (c) 2014年 XL. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UIViewController
+//@protocol WebViewJSBridgeDelegate;
+
+@interface WebViewJSBridge : NSObject <UIWebViewDelegate>
+
+@property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) id superDelegate;
 
 + (instancetype)bridgeForWebView:(UIWebView *)webView withSuperDelegate:(id)superDelegate;
@@ -24,10 +29,8 @@
 - (void)converters:(NSString *)type name:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback;
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback;
 
-
--(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
-
 @end
+
 
 @protocol WebViewJSBridgeDelegate <NSObject>
 

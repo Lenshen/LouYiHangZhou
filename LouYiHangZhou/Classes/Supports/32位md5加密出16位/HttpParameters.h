@@ -21,4 +21,5 @@
 +(NSDictionary *)uploadAvatar:(NSString *)base64;
 +(NSDictionary *)uploadImformation:(NSString *)dataString sexStr:(NSString *)sexStr;
 +(NSDictionary *)change_password:(NSString *)userToken newpassword:(NSString *)newpassword oldpassword:(NSString *)oldpassword;
++(NSDictionary *)find_password:(NSString *)userToken newpassword:(NSString *)newpassword code:(NSString *)code mobile:(NSString *)mobile;
 @end
