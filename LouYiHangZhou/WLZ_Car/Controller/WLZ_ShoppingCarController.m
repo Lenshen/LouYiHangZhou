@@ -10,7 +10,7 @@
 
 
 //   MVVM (降低耦合) KVO(一处计算总价钱) 键盘处理(精确到每个cell) 代码适配(手动代码适配，无第三方) ，还有全选,侧滑操作等操作
-
+#import "PayViewController.h"
 #import "WLZ_ShoppingCarController.h"
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
 
@@ -168,7 +168,8 @@
     }
     else if (bt.tag==18)
     {
-        NSLog(@"dhfakjsdhfajdshfadsfa");
+        PayViewController *pay = [[PayViewController alloc]init];
+        [self.navigationController pushViewController:pay animated:YES];
         
     }
     
