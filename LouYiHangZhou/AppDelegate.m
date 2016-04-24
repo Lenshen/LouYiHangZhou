@@ -60,7 +60,9 @@
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
         [alertView show];
+        
     }
+    
     [application setApplicationIconBadgeNumber:0];
     [JPUSHService handleRemoteNotification:userInfo];
 }

@@ -34,8 +34,8 @@
     self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     self.title = @"购物车";
-    [self.view addSubview:self.tableView];
-    [self.view addSubview:self.endView];
+   
+
     
     
     //获取数据
@@ -57,7 +57,10 @@
     }];
     
     
-   
+    if (self.carDataArrList.count != 0) {
+        [self.view addSubview:self.tableView];
+        [self.view addSubview:self.endView];
+    }
     
 }
 

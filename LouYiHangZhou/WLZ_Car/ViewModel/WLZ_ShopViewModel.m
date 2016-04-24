@@ -23,30 +23,32 @@
 {
 //    访问网络 获取数据 block回调失败或者成功 都可以在这处理
 //    
-//    本demo 直接读 本地数据了
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
     NSMutableDictionary *strategyDic = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     
     
     NSArray *commonList = [strategyDic objectForKey:@"common"];
     
-    
+    NSLog(@"%@",commonList);
     NSMutableArray *commonMuList = [NSMutableArray array];
     
-    
+   
     
     for (int i = 0; i<commonList.count; i++) {
         WLZ_ShoppIngCarModel *model = [WLZ_ShoppIngCarModel mj_objectWithKeyValues:[commonList objectAtIndex:i]];
         model.vm =self;
         model.type=1;
         model.isSelect=YES;
-        [commonMuList addObject:model];
-        NSLog(@"%@",commonList);
+//        [commonMuList addObject:model];
         
     }
     
     _priceBlock = priceBlock;
-    shopDataBlock(commonMuList);
+    if (commonMuList.count != 0) {
+        shopDataBlock(commonMuList);
+        
+    }
+
 }
 - (NSDictionary *)verificationSelect:(NSMutableArray *)arr type:(NSString *)type
 {
