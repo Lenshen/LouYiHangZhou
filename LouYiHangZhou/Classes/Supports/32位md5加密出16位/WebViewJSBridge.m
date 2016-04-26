@@ -7,8 +7,11 @@
 //
 
 #import "WebViewJSBridge.h"
+#import "SVProgressHUD.h"
+#import "LogonViewController.h"
+#import "UIViewController+StoryboardFrom.h"
 
-#define JSBridgeName @"SHUOJSBridge"
+#define JSBridgeName @"MallJSBridge"
 #define JSBridgeProtocol @"bridge://"
 
 @implementation WebViewJSBridge
@@ -30,15 +33,85 @@
 - (void)converters:(NSString *)type name:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback
 {
     if ([type isEqualToString:@"function"]) {
-        [self executeSelector:name args:args callback:callback];
+       [self executeSelector:name args:args callback:callback];
+        
+        
         
     }
     [_superDelegate converters:type name:name args:args callback:callback];
+
 }
+
+- (void)getToken:(NSString *)callback
+{
+    NSString *str = [USER_DEFAULT objectForKey:@"user_token"];
+    NSLog(@"%@",str);
+    [self executeCallback:callback withArgs: @[str]];
+}
+- (void)showWaiting:(NSDictionary *)args
+{
+    
+    
+    [SVProgressHUD showWithStatus:@"请稍等...."];
+    
+}
+-(void)closeWebview
+{
+    
+}
+-(void)openWebview:(NSURL *)url
+{
+   }
+-(void)hideWaiting
+{
+    [SVProgressHUD dismiss];
+}
+
+-(void)signin
+{
+   
+//    [self presentViewController:[LogonViewController instanceFromStoryboard] animated:YES completion:nil];
+
+}
+-(void)getUser:(NSString *)callback
+{
+    NSDictionary *dic = [USER_DEFAULT objectForKey:@"userimformation"];
+    NSLog(@"%@",dic);
+    
+    [self executeCallback:callback withArgs:@[dic]];
+}
+
+
 
 // 执行OC函数
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback
 {
+    
+    
+    if ([name isEqualToString:@"getToken"]) {
+        [self getToken:callback];
+    }
+    else if ([name isEqualToString:@"showWaiting"]) {
+        [self showWaiting:args  ];
+    }else if ([name isEqualToString:@"hideWaiting"])
+    {
+        [self closeWebview];
+        
+    }else if ([name isEqualToString:@"getUser"])
+    {
+        [self getUser:callback];
+    }else if ([name isEqualToString:@"openWebview"])
+    {
+        NSURL *url = [NSURL URLWithString:callback];
+        [self openWebview:url];
+    }else if ([name isEqualToString:@"closeWebview"])
+    {
+        [self closeWebview];
+    }else if ([name isEqualToString:@"signin"])
+    {
+        [self signin];
+    }
+
     [_superDelegate executeSelector:name args:args callback:callback];
 }
 
@@ -58,7 +131,7 @@
 - (void)executeScriptFunction:(NSString *)function withArgs:(NSArray *)args
 {
     NSMutableArray *argsArray = [[NSMutableArray alloc] init];
-    for (int i = 0, len = [args count]; i < len; i++) {
+    for (NSInteger i = 0, len = [args count]; i < len; i++) {
         [argsArray addObject:[NSString stringWithFormat:@"'%@'", [args objectAtIndex:i]]];
     }
     NSString *argsString = [argsArray componentsJoinedByString:@","];
@@ -78,6 +151,7 @@
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WebViewJSBridge" ofType:@"js"];
 //        LOG(@"filePath: %@", filePath);
         NSString *fileContent = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        NSLog(@"%@",fileContent);
         NSString *JSScript = [NSString stringWithFormat:fileContent, JSBridgeName, JSBridgeProtocol];
 //        LOG(@"JSScript: %@", JSScript);
         [webView stringByEvaluatingJavaScriptFromString:JSScript];
@@ -99,7 +173,7 @@
     
     NSString *url = [[request URL] absoluteString];
     if ([url hasPrefix:JSBridgeProtocol]) {
-        int protocolLength = [JSBridgeProtocol length];
+        NSInteger protocolLength = [JSBridgeProtocol length];
         NSString *jsonString = [url substringFromIndex:protocolLength];
         if (![jsonString isEqualToString:@""]) {
             NSString *jsonDecodeString = [self decodeURIComponent:jsonString];
@@ -107,6 +181,8 @@
         
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
             NSDictionary *args = [json objectForKey:@"args"];
+            NSLog(@"args-------%@",[json objectForKey:@"name"]);
+            
             [self converters:[json objectForKey:@"type"] name:[json objectForKey:@"name"] args:args callback:[json objectForKey:@"callback"]];
             
         }

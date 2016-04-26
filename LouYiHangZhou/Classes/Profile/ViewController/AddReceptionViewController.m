@@ -34,6 +34,13 @@
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [_address resignFirstResponder];
+    [_mobile resignFirstResponder];
+    [_full_name resignFirstResponder];
+    
+}
 - (IBAction)sureAddButton:(id)sender {
     
     [BYSHttpTool POST:APP_ADDRESS_ADD Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:@"yes"] Success:^(id responseObject) {

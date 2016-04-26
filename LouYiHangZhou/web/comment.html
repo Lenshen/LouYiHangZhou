@@ -8,49 +8,29 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-comment">
-		<section class="item">
+	<div id="vue-view" class="page-comment">
+		<section class="item" data-id="{{item.comment_id}}" v-for="item in goods">
 			<div class="top">
 				<div class="box">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+					<div class="img"><img src="{{item.images || 'assets/img/placeholder-goods.png'}}" alt=""></div>
 					<div class="flex">
-						<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
-						<span class="tag">3包</span><span class="tag">麻辣味</span>
+						<h3>{{item.goods_name}}</h3>
+						{{{sku_name | tag}}}
 					</div>
 				</div>
-				<div class="content bdt-x">
-					<textarea placeholder="请输入评价内容 …"></textarea>
-				</div>
-			</div>
-			<div class="stars box">
-				<div class="flex label tal">满意度：</div>
-				<div class="flex tar star-control">
-					<span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
-				</div>
-			</div>
-		</section>
-		<section class="item">
-			<div class="top">
-				<div class="box">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-					<div class="flex">
-						<h3>台湾进口SODA热卖单品只写一行卖单品只写一行卖单品只写一行</h3>
-						<span class="tag">3包</span><span class="tag">麻辣味</span>
+				<div class="stars box">
+					<div class="flex label tal">满意度：</div>
+					<div class="flex tar star-control">
+						<span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
 					</div>
 				</div>
-				<div class="content bdt-x">
+				<div class="content">
 					<textarea placeholder="请输入评价内容 …"></textarea>
-				</div>
-			</div>
-			<div class="stars box">
-				<div class="flex label tal">满意度：</div>
-				<div class="flex tar star-control">
-					<span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
 				</div>
 			</div>
 		</section>
 		<div class="button-bar">
-			<a class="button-submit" href="">确认提交评价</a>
+			<a class="button-submit" id="buttonSubmit">确认提交评价</a>
 		</div>
 	</div>
 	<script src="assets/js/lib/jquery.min.js"></script>
@@ -59,23 +39,96 @@
 	<script src="assets/js/lib/iscroll.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script type="text/javascript">
-		$('.page-comment .item').each(function() {
-			var $this = $(this);
-			$this.find('.star').on('click', function() {
+
+		var params = $.params();
+
+		
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				goods: [],
+				pageindex: 1,
+				pagesize: 20
+			},
+			methods: {
+
+			}
+
+		});
+
+		page.push(function() {
+			api.getByOrder(params.search.id).done(function(response) {
+				if (!response.success) {
+					Toast(response.message);
+					return;
+				}
+				vm.goods = response.data;
+			});
+
+			$('.page-comment').on('click', '.item .star', function() {
 				$(this).addClass('solid').prevAll('.star').addClass('solid');
 				$(this).nextAll().removeClass('solid');
+
 			});
 
-			var pScroll = new IScroll($this.find('.pictures').get(0), {
-				snap: true,
-				scrollX: true,
-				scrollY: false,
-				mouseWheel: true
+			$('#buttonSubmit').on('click', function() {
+				var error = false;
+				var datas = [];
+				$('.item').each(function() {
+					if (!$(this).find('.star.solid').size()) {
+						error = true;
+						return false;
+					}
+					datas.push({
+						comment_id: $(this).attr('data-id'),
+						content: $(this).find('textarea').val(),
+						star: $(this).find('.star.solid').size()
+					});
+				});
+				if (error) {
+					Toast('请选择星级');
+					return;
+				}
+				
+				var submitComment = function() {
+					if (!datas.length) {
+						return;
+					}
+					api.submitComment({
+						comment_id: datas[0].comment_id,
+						content: datas[0].content,
+						star: datas[0].star
+					}).done(function() {
+
+					}).always(function() {
+						datas.shift();
+						if (!datas.length) {
+							Toast('评价成功！');
+							history.go(-1);
+							return;
+						}
+						submitComment();
+					});
+				};
+				submitComment();
 			});
 
-
-			// pScroll.reset();
 		});
+
+
+
+		
+
+		// 	var pScroll = new IScroll($this.find('.pictures').get(0), {
+		// 		snap: true,
+		// 		scrollX: true,
+		// 		scrollY: false,
+		// 		mouseWheel: true
+		// 	});
+
+
+		// 	// pScroll.reset();
+		// });
 
 	</script>
 </body>

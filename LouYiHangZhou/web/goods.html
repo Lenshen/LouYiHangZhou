@@ -90,20 +90,30 @@
 				},
 				addCart: function(id) {
 
-					// api.spec(id).done(function(response) {
-					// 	console.log(response)
-					// });
-					api.cartAdd({
-						goods_id: id,
-						qty: 1
-					}).done(function(response) {
+					api.spec(id).done(function(response) {
 						if (response.success) {
-							Toast('添加成功！');
+							var data = response.data[0] || {}
+							var specId = data.spec_code || '';
+							var specName = data.spec_name || '';
+							api.cartAdd({
+								goods_id: id,
+								qty: 1,
+								sku: specId + ';',
+								customized: specName + ';'
+							}).done(function(response) {
+								if (response.success) {
+									Toast('添加成功！');
+								}
+								else {
+									Toast(response.message);
+								}
+							});
 						}
 						else {
 							Toast(response.message);
 						}
 					});
+					
 				}
 			}
 		});

@@ -66,6 +66,8 @@
     }];
     
 }
+
+
 -(void)alert:(NSString *)message
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];

@@ -14,6 +14,7 @@
 #import "UIButton+WebCache.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import "SVProgressHUD.h"
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -51,21 +52,20 @@
     self.monthArray = [NSMutableArray array];
     self.dayArray = [NSMutableArray array];
     
+    
     NSString *imagedata = [USER_DEFAULT objectForKey:@"avatar"];
     NSURL *url = [NSURL URLWithString:imagedata];
     [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
     self.headImage.layer.cornerRadius = 33;
     self.headImage.layer.masksToBounds = YES;
+
     
 
    
     [self getDateDataSource];
     [self initPickView];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    _useModel = [UserImformationModel sharedManager];
-    self.mobileLB.text = [USER_DEFAULT objectForKey:@"userName"];
-    self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
-    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
+  
 
 
 
@@ -87,7 +87,10 @@
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"avatar"];
+            [SVProgressHUD showSuccessWithStatus:@"上传图成功"];
+
             [self.navigationController popViewControllerAnimated:YES];
+            
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
@@ -276,7 +279,6 @@
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    NSString *mediaType=[info objectForKey:UIImagePickerControllerMediaType];
     //判断资源类型
 //    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]){
 //        //如果是图片
@@ -310,7 +312,7 @@
     [super viewWillAppear:YES];
     self.tableView.showsVerticalScrollIndicator = NO;
     
-    
+   
     self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
     self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
     self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];

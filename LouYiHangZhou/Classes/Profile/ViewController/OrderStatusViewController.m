@@ -33,7 +33,7 @@
     NSURL *baseURL = [NSURL fileURLWithPath:path1];
     
     //    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
-    NSString *str = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
+//    NSString *str = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
     NSString *str2 = [NSString stringWithFormat:@"web/orders.html"];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str2];
     NSLog(@"%@ %@",path1,path);

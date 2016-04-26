@@ -51,9 +51,7 @@
 			</a>
 		</header>
 		<section class="mod-hotlist">
-			<a href=""><img src="assets/img/banner2.jpg"></a>
-			<a href=""><img src="assets/img/banner3.jpg"></a>
-			<a href=""><img src="assets/img/banner4.jpg"></a>
+			<a href="goods-detail.html?id={{item.goods_id}}" v-for="item in boutique"><img src="{{item.image}}"></a>
 		</section>
 		<div class="space10"></div>
 		<header>
@@ -63,28 +61,34 @@
 			</a>
 		</header>
 		<section class="mod-hotlist">
-			<a href=""><img src="assets/img/banner2.jpg"></a>
-			<a href=""><img src="assets/img/banner3.jpg"></a>
-			<a href=""><img src="assets/img/banner4.jpg"></a>
+			<a href="goods-detail.html?id={{item.goods_id}}" v-for="item in imported"><img src="{{item.image}}"></a>
 		</section>
 	</div>
 	<script src="assets/js/lib/jquery.min.js"></script>
-	<script src="assets/js/lib/mustache.min.js"></script>
 	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script>
 		var slider = new Slider();
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				boutique: [],
+				imported: []
+			},
+			methods: {
+
+			}
+		});
 		page.push(function() {
+			// 精品特卖
 			api.spaceGoods('index_1').done(function(response) {
-				console.log(response)
+				vm.boutique = response.data;
 			});
+			// 进口热销
 			api.spaceGoods('index_2').done(function(response) {
-				console.log(response)
+				vm.imported = response.data;
 			});
-			api.spaceGoods('index_3').done(function(response) {
-				console.log(response)
-			});
-		})
+		});
 	</script>
 </body>
 </html>

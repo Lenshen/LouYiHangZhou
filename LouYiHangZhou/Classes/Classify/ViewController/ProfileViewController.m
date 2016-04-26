@@ -40,20 +40,25 @@
     [self imagesArray];
     [self lableArray];
     self.tableView.contentOffset = CGPointMake(0, 0);
-    NSData *imageData = [USER_DEFAULT objectForKey:@"headImage"];
-    if (imageData) {
-        UIImage *image = [NSKeyedUnarchiver unarchiveObjectWithData:imageData];
-        [self.headImage setBackgroundImage:image forState:UIControlStateNormal];
-        self.headImage.layer.cornerRadius = 35;
-        self.headImage.layer.masksToBounds = YES;
-        
-    }
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = item;
     
-        
+    
+}
+
+
+-(NSInteger )collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 4;
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    ProfileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"profileCollectionCell" forIndexPath:indexPath];
+    cell.imageView.image = _imagesArray[indexPath.row];
+    cell.label.text = _lableArray[indexPath.row];
+    
+    return cell;
 }
 #pragma mark 点击跳转
+
 - (IBAction)ProsonIMFor:(id)sender {
     
     if ([USER_DEFAULT objectForKey:@"user_token"]) {
@@ -124,7 +129,7 @@
         [self cellMobiel:self.mobileNumbel.text];
     }else if(indexPath.row == 0 && indexPath.section == 0)
     {
-        UITableViewController *tab = [CollectTableViewController instanceFromStoryboard];
+        UIViewController *tab = [CollectTableViewController instanceFromStoryboard];
         tab.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:tab animated:YES];
     }else if(indexPath.row == 2 && indexPath.section == 0)
@@ -151,18 +156,7 @@
     [webview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:Str]]];
     [self.view addSubview:webview];
 }
--(NSInteger )collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return 4;
-}
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    ProfileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"profileCollectionCell" forIndexPath:indexPath];
-    cell.imageView.image = _imagesArray[indexPath.row];
-    cell.label.text = _lableArray[indexPath.row];
-    
-    return cell;
-}
+
 
 #pragma mark 点击订单状态
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

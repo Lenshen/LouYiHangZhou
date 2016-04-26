@@ -8,82 +8,132 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-	<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
-		<div id="busSlider" class="bus-slider">
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
-			</a>
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
-			</a>
-			<a class="bus-slider-cell" href="javascript:;">
-				<img src="assets/img/banner.jpg">
-			</a>
-		</div>
-		<div id="busSliderControl" class="bus-slider-control">
-			<em></em><em></em><em></em>
-		</div>
-	</section>
-	<div class="space10"></div>
-	<a class="title-bar" href="">
-		<h3 class="limited">限时特卖</h3>
-		<!-- 剩余的秒数 -->
-		<div class="timed">特卖倒计时 <b id="timespan" time="10"></b></div>
-	</a>
-	<section class="mod-limited">
-		<div class="body">
-			<a class="item" href="">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-				<p>台湾进口SODA单品</p>
-				<b>￥110.9</b>
-			</a>
-			<a class="item" href="">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-				<p>台湾进口SODA单品</p>
-				<b>￥110.9</b>
-			</a>
-			<a class="item" href="">
-				<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-				<p>台湾进口SODA单品</p>
-				<b>￥110.9</b>
-			</a>
-		</div>
-		<div class="top">
-			<div class="logo"><img src="assets/img/icon-mall-top.png" height="11" alt=""></div>
-			<ul class="list">
-				<li><a href="">台湾进口SODA单品只要99！！！</a></li>
-			</ul>
-		</div>
-	</section>
-	<div class="space10"></div>
-	<header>
+	<div id="vue-view">
+		<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
+			<div id="busSlider" class="bus-slider">
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+				<a class="bus-slider-cell" href="javascript:;">
+					<img src="assets/img/banner.jpg">
+				</a>
+			</div>
+			<div id="busSliderControl" class="bus-slider-control">
+				<em></em><em></em><em></em>
+			</div>
+		</section>
+		<div class="space10"></div>
 		<a class="title-bar" href="">
-			<h3 class="sales">精品特卖</h3>
-			<div class="icon-arrow"></div>
+			<h3 class="limited">限时特卖</h3>
+			<!-- 剩余的秒数 -->
+			<div class="timed">特卖倒计时 <b id="timespan" time="10"></b></div>
 		</a>
-	</header>
-	<section class="mod-hotlist">
-		<a href=""><img src="assets/img/banner2.jpg"></a>
-		<a href=""><img src="assets/img/banner3.jpg"></a>
-		<a href=""><img src="assets/img/banner4.jpg"></a>
-	</section>
-	<header>
-		<a class="title-bar" href="">
-			<h3 class="hot">进口热销</h3>
-			<div class="icon-arrow"></div>
-		</a>
-	</header>
-	<section class="mod-hotlist">
-		<a href=""><img src="assets/img/banner2.jpg"></a>
-		<a href=""><img src="assets/img/banner3.jpg"></a>
-		<a href=""><img src="assets/img/banner4.jpg"></a>
-	</section>
+		<section class="mod-limited">
+			<div class="body">
+				<a class="item" href="">
+					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+					<p>台湾进口SODA单品</p>
+					<b>￥110.9</b>
+				</a>
+				<a class="item" href="">
+					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+					<p>台湾进口SODA单品</p>
+					<b>￥110.9</b>
+				</a>
+				<a class="item" href="">
+					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
+					<p>台湾进口SODA单品</p>
+					<b>￥110.9</b>
+				</a>
+			</div>
+			<div class="top">
+				<div class="logo"><img src="assets/img/icon-mall-top.png" height="11" alt=""></div>
+				<div id="top-list" class="list">
+					<ul>
+						<li v-for="item in titles"><a href="{{item.url}}">{{item.title}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<div class="space10"></div>
+		<header>
+			<a class="title-bar" href="">
+				<h3 class="sales">精品特卖</h3>
+				<div class="icon-arrow"></div>
+			</a>
+		</header>
+		<section class="mod-hotlist">
+			<a href="goods-detail.html?id={{item.goods_id}}" v-for="item in boutique"><img src="{{item.image}}"></a>
+		</section>
+		<header>
+			<a class="title-bar" href="">
+				<h3 class="hot">进口热销</h3>
+				<div class="icon-arrow"></div>
+			</a>
+		</header>
+		<section class="mod-hotlist">
+			<a href="goods-detail.html?id={{item.goods_id}}" v-for="item in imported"><img src="{{item.image}}"></a>
+		</section>
+	</div>
 	<script src="assets/js/lib/jquery.min.js"></script>
 	<script src="assets/js/lib/vue.min.js"></script>
-	<script src="assets/js/lib/mustache.min.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script>
 		var slider = new Slider();
+
+		var vm = new Vue({
+			el: '#vue-view',
+			data: {
+				boutique: [],
+				imported: [],
+				titles: []
+			},
+			methods: {
+
+			}
+		});
+
+
+		page.push(function() {
+			var $toplist = $('#top-list');
+			var $ul = $toplist.find('ul');
+
+			var scrollList = function() {
+				var timer = null;
+				if ($ul.find('li').size() <= 1) {
+					return;
+				}
+				timer = window.setInterval(function() {
+					$ul.animate({'top': '-16px'}, 300, function() {
+						$ul.css('top', '0').append($toplist.find('li').first());
+					});
+				}, 3000);
+			};
+
+			// 商城头条
+			api.spaceLink('index_title1').done(function(response) {
+				vm.titles = response.data;
+
+				vm.$nextTick(function() {
+					scrollList();
+				});
+			});
+			// 精品特卖
+			api.spaceGoods('index_1').done(function(response) {
+				vm.boutique = response.data;
+			});
+			// 进口热销
+			api.spaceGoods('index_2').done(function(response) {
+				vm.imported = response.data;
+			});
+			// 限时抢购
+			api.spaceGoods('index_0').done(function(response) {
+				console.log(response)
+			});
+		})
 	</script>
 
 	<script>
@@ -115,7 +165,7 @@
 			}, 1000);
 
 			var theend = function() {
-				alert('倒计时结束');
+				// alert('倒计时结束');
 			};
 
 		}) ();

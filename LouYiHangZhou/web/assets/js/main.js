@@ -16,6 +16,33 @@ Vue.filter('datetime', function (string) {
 	}
 	return string.replace(/T/g, ' ').replace(/.\d+$/, '');
 });
+Vue.filter('stars', function (num) {
+	if (num === undefined) {
+		return;
+	}
+	var star = [];
+	for (var i = 1, l = 5; i <= l; i ++) {
+		if (i <= num) {
+			star.push('<span class="icons icon-star-yellow-small"></span>');
+		}
+		else {
+			star.push('<span class="icons icon-star-gray-small"></span>');
+		}
+	}
+	return star.join('');
+});
+Vue.filter('tag', function (sku) {
+	if (sku === undefined) {
+		return;
+	}
+	sku = sku.replace(/;$/, '');
+	var skus = sku.split(';');
+	var tags = [];
+	$.each(skus, function() {
+		tags.push('<span class="tag">' + this + '</span>');
+	});
+	return tags.join('');
+});
 
 // Ajax = function(configs) {
 // 	var defaults = {
@@ -109,6 +136,10 @@ var maps = {
 
 // app接口
 window.app = {
+
+	request: function(name, params, callback) {
+		MallJSBridge.request(name, params, callback);
+	},
 	_hasMethod: function(name) {
 		return !!window['MallJSBridge'] && !!window['MallJSBridge'][name];
 	},
@@ -122,7 +153,7 @@ window.app = {
 		return this._callMethod('ShowWaiting', message);
 	},
 	getToken: function() {
-		return this._callMethod('GetToken') || '8237C82CC50EED5688668E7EFB7538BC2EC8FB2432F0B0EDD10052B5848294F17EFD86C7EBBDF41F';
+		return this._callMethod('GetToken') || '8237C82CC50EED56C2F6C47EA2A43C397F2F3BFB563DF3CC2AEDCD4BDE2EC5C887EAA3A195453076';
 	},
 	getUserID: function() {
 		return this._callMethod('GetUserID') || '10027';
@@ -289,6 +320,7 @@ var page = {
 
 var api = {
 	domain: 'http://192.168.0.103:7021',
+	domainUser: 'http://192.168.0.103:8078',
 	ajax: function(conf) {
 		return $.ajax(conf).fail(function(response) {
 			// console.error(this + Mustache.render('{{url}}\nStatus: {{status}}', this, response));
@@ -600,6 +632,60 @@ var api = {
 				sort_index: '', // 售价 1、2，销量 6、7
 				page_index: 1,
 				page_size: 20
+			}, options)
+		});
+	},
+	// 获取商品品论列表
+	goodsComments: function(options) {
+		return this.ajax({
+			url: this.domainUser + '/api/user/commentlist',
+			type: 'POST',
+			data: $.extend({
+				access_token: app.getToken(),
+				goods_id: '',
+				page_index: '',
+				page_size: ''
+			}, options)
+		});
+	},
+	// 获得订单中的待评价商品信息
+	getByOrder: function(id) {
+		return this.ajax({
+			url: this.domainUser + '/api/user/getbyorder',
+			type: 'POST',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+		
+	},
+	// 新建一个评论
+	addComment: function(options) {
+		return this.ajax({
+			url: this.domainUser + '/api/user/addcomment',
+			type: 'POST',
+			data: $.extend({
+				access_token: app.getToken(),
+				order_id: 0,
+				sku_name: '',
+				goods_id: 0,
+				content: '',
+				star: 0
+			}, options)
+		});
+		
+	},
+	// 提交评论
+	submitComment: function(options) {
+		return this.ajax({
+			url: this.domainUser + '/api/user/updatecomment',
+			type: 'POST',
+			data: $.extend({
+				access_token: app.getToken(),
+				comment_id: 0,
+				star: 0,
+				content: ''
 			}, options)
 		});
 	}
@@ -1053,7 +1139,9 @@ $.extend(Slider.prototype, {
 // });
 
 $(window).on('load', function() {
-	window.MallJSBridgeEvent = document.createEvent('Event'); 
-	window.MallJSBridgeEvent.initEvent('MallJSBridgeReady', false, false); 
-	document.dispatchEvent(window.MallJSBridgeEvent);
+	if (navigator.userAgent.toLowerCase().indexOf('pc') >= 0) {
+		window.MallJSBridgeEvent = document.createEvent('Event'); 
+		window.MallJSBridgeEvent.initEvent('MallJSBridgeReady', false, false); 
+		document.dispatchEvent(window.MallJSBridgeEvent);
+	}
 });

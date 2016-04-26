@@ -177,6 +177,9 @@
 					vm.getGoods();
 				}
 			});
+                  app.request('getToken', {}, function(response) {
+				alert(response);
+			});
 		});
 	</script>
 </body>

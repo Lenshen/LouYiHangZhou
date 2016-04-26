@@ -1,5 +1,4 @@
 
-
 ;(function() {
 
 	var JSBridgeName = '%@',
@@ -14,7 +13,21 @@
 		};
 	window[JSBridgeName] = {
 		
+		// document.addEventListener('SHUOJSBridgeReady', function() {
 
+		// 	SHUOJSBridge.request('testFunction', {
+		// 		a: 1,
+		// 		b: 2,
+		// 		c: 3
+		// 	}, function(a, b, c) {
+		// 		alert(a);
+		// 		alert(b);
+		// 		alert(c);
+		// 	});
+			
+		// }, false);
+
+		// name, params, callback
 		request: function() {
 
 	        var iframe = createIframe();
@@ -46,8 +59,8 @@
 	};
 
 	// create bridge onReady;
-	var e = document.createEvent('Event');
-	e.initEvent('MALLJSBridgeReady', false, false);
-	document.dispatchEvent(e);
+    window.MallJSBridgeEvent = document.createEvent('Event');
+	window.MallJSBridgeEvent.initEvent('MallJSBridgeReady', false, false);
+	document.dispatchEvent(window.MallJSBridgeEvent);
 
 })();

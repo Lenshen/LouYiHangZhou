@@ -11,7 +11,7 @@
 #import "UserImformationModel.h"
 #import "HttpParameters.h"
 #import "NSString+MD5.h"
-
+#import "SVProgressHUD.h"
 @interface LogonVViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *userName;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTF;
@@ -31,17 +31,26 @@
     // Do any additional setup after loading the view.
   [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
 
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    [self setTextField];
+}
 
+
+-(void)setTextField
+
+{
     _passwordTF.enabled = NO;
     _passwordTF.keyboardType = UIKeyboardTypePhonePad;
     _userName.keyboardType = UIKeyboardTypePhonePad;
-
- 
+    
+    
     [_passwordTF addTarget:self action:@selector(logoButtonBackgroundChange) forControlEvents:UIControlEventEditingChanged];
     [_userName addTarget:self action:@selector(passwordCanWirtte) forControlEvents:UIControlEventEditingChanged];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = item;
+    
 }
+
+
 -(void)passwordCanWirtte
 {
     if ( _userName.text.length == 11) {
@@ -66,6 +75,8 @@
 - (IBAction)logoEvent:(id)sender {
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
+//    [SVProgressHUD showWithStatus:@"请稍等...."];
+
     [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
@@ -81,8 +92,11 @@
                 [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
                 [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
                 [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
-                
+                NSDictionary *userdic = @{@"mobile":[USER_DEFAULT objectForKey:@"mobile"],@"sex":[USER_DEFAULT objectForKey:@"sex"],@"avatar":[USER_DEFAULT objectForKey:@"avatar"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"birth":[USER_DEFAULT objectForKey:@"birth"]};
+                [USER_DEFAULT setObject:userdic forKey:@"userimformation"];
+
             } Failure:^(NSError *error) {
+                [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];
                
             }];
             

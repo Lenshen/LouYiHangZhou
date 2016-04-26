@@ -9,8 +9,11 @@
 #import "CollectTableViewController.h"
 #import "CollectTableViewCell.h"
 #import "BYSHttpTool.h"
+#import <MJRefresh.h>
+#import "SVProgressHUD.h"
 
 @interface CollectTableViewController ()
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -20,23 +23,54 @@
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-//    NSString *str = @"http://192.168.0.103:7021/api/favorite/list";
-//    NSString *str2 = [USER_DEFAULT objectForKey:@"user_access_token"];
-//    NSDictionary *dic = @{@"access_token":str2};
-//    [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
-//        NSLog(@"%@",responseObject);
-//        
-//    } Failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//    }
-//     ];
-}
 
+    [self setupMJRefreshHeader];
+}
+- (void)setupMJRefreshHeader {
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(LoadNewData)];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+   
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)LoadNewData {
+        NSString *str = @"http://192.168.0.103:7021/api/favorite/list";
+        NSString *str2 = [USER_DEFAULT objectForKey:@"user_token"];
+        NSDictionary *dic = @{@"access_token":str2};
+        [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            [self.tableView.mj_header endRefreshing];
+    
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            [self.tableView.mj_header endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"服务器未响应,请稍候再试..."];
 
+        }
+         ];
+}
+-(void)LoadMoreData
+{
+    NSString *str = @"http://192.168.0.103:7021/api/favorite/list";
+    NSString *str2 = [USER_DEFAULT objectForKey:@"user_token"];
+    NSDictionary *dic = @{@"access_token":str2};
+    [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.tableView.mj_header endRefreshing];
+        
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [self.tableView.mj_header endRefreshing];
+        [SVProgressHUD showErrorWithStatus:@"服务器未响应,请稍候再试..."];
+        
+    }
+     ];
+
+}
 #pragma mark - Table view data source
 
 - (IBAction)black:(id)sender {

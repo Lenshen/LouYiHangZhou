@@ -39,7 +39,7 @@
         model.vm =self;
         model.type=1;
         model.isSelect=YES;
-//        [commonMuList addObject:model];
+       [commonMuList addObject:model];
         
     }
     

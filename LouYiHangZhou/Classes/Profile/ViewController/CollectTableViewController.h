@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CollectTableViewController : UITableViewController
+@interface CollectTableViewController : UIViewController
 
 @end

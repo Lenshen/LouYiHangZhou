@@ -11,7 +11,7 @@
 
 //@protocol WebViewJSBridgeDelegate;
 
-@interface WebViewJSBridge : NSObject <UIWebViewDelegate>
+@interface WebViewJSBridge : UIViewController <UIWebViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) id superDelegate;
@@ -28,7 +28,14 @@
 
 - (void)converters:(NSString *)type name:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback;
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback;
+- (void)getToken:(NSString *)callback;
 
+- (void)showWaiting:(NSDictionary *)args ;
+-(void)hideWaiting;
+-(void)getUser:(NSString *)callback;
+-(void)openWebview:(NSURL *)url;
+-(void)closeWebview;
+-(void)signin;
 @end
 
 

@@ -24,6 +24,8 @@
     // Override point for customization after application launch.
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self getApptokenAndClientIP];
+    
+    
     //极光推送
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
         //可以添加自定义categories
@@ -31,27 +33,27 @@
                                                           UIUserNotificationTypeSound |
                                                           UIUserNotificationTypeAlert)
                                               categories:nil];
-    } else {
-        //categories 必须为nil
-        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                          UIRemoteNotificationTypeSound |
-                                                          UIRemoteNotificationTypeAlert)
-                                              categories:nil];
-    }
-    //JAppKey : 是你在极光推送申请下来的appKey Jchannel : 可以直接设置默认值即可 Publish channel
+    }     //JAppKey : 是你在极光推送申请下来的appKey Jchannel : 可以直接设置默认值即可 Publish channel
     [JPUSHService setupWithOption:launchOptions appKey:JPUSH channel:nil apsForProduction:NO
                 ];
+    
+    [JPUSHService setAlias:@"15961237169" callbackSelector:nil object:nil];
 
     return YES;
 }
-//hdjkhfadsf
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {    // 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    
     [JPUSHService registerDeviceToken:deviceToken];
+
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    NSLog(@"%@",userInfo);
     NSString *alert = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"jpush" object:self userInfo:userInfo];
+  
     NSLog(@"%@",alert);
     if (application.applicationState == UIApplicationStateActive) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"推送消息"
@@ -59,8 +61,8 @@
                                                            delegate:self
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
-        [alertView show];
         
+        [alertView show];
     }
     
     [application setApplicationIconBadgeNumber:0];
@@ -78,6 +80,8 @@
     NSLog(@"%@",str);
     [USER_DEFAULT setObject:str forKey:@"client_ip"];
 }
+
+
 - (NSString *)getIPAddress
 {
     NSString *address = @"error";

@@ -20,7 +20,6 @@ typedef void(^NumPriceBlock)();
 
 - (void)getNumPrices:(void (^)()) priceBlock;
 
--(void)clickAllBT:(NSMutableArray *)carDataArrList bt:(UIButton *)bt;
 
 - (NSDictionary *)verificationSelect:(NSMutableArray *)arr type:(NSString *)type;
 

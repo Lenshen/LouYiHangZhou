@@ -11,6 +11,8 @@
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
 #import "AddressModel.h"
+#import "SVProgressHUD.h"
+#import "NSString+MD5.h"
 
 @interface ReceptionTableViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -29,6 +31,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self getAddress];
     
   
     
@@ -41,8 +44,15 @@
 
         self.addressArrayM = [NSMutableArray arrayWithArray:array];
         NSLog(@"%@",_addressArrayM);
+        if (self.addressArrayM.count == 0 || self.addressArrayM == nil || [self.addressArrayM isKindOfClass:[NSNull class]]) {
+            
+            NSString *str = @"你还没加地址呢!请尽快添加";
+            [str alert:str viewcontroller:self];
+            
+        }
         
         [self.tableView reloadData];
+        
         
         
     } Failure:^(NSError *error) {
@@ -53,6 +63,7 @@
 {
    
     [self getAddress];
+   
 
 }
 - (IBAction)black:(id)sender {
@@ -81,9 +92,9 @@
     _model = [[AddressModel alloc]initWithDictionary:dic error:nil];
     NSLog(@"%@",_model);
     NSString *address = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.area,_model.address];
-    
-
-    cell.addressLable.text = address;
+    NSMutableAttributedString *mutoString = [[NSMutableAttributedString alloc]initWithString:[NSString  stringWithFormat:@"[默认]%@",address]];
+    [mutoString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,4)];
+    cell.addressLable.attributedText = mutoString;
     cell.full_nameLable.text = _model.full_name;
     cell.mobileLable.text = _model.mobile;
     

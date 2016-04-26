@@ -25,7 +25,6 @@
 
 @protocol WLZ_ShoppingCartEndViewDelegate <NSObject>
 
--(void)clickALLEnd:(UIButton *)bt;
 
 -(void)clickRightBT:(UIButton *)bt;
 @end

@@ -221,7 +221,8 @@ body { background: #f3f3f3;}
 .mod-limited .top { display: -webkit-box; padding: 7px 10px;}
 .mod-limited .top .logo { width: 66px; border-right: 1px solid #ccc;}
 .mod-limited .top .logo img { vertical-align: top; margin: 3px 0 0;}
-.mod-limited .top .list { height: 16px; line-height: 16px; -webkit-box-flex: 1; padding: 0 0 0 10px; font-size: 10px;}
+.mod-limited .top .list { height: 16px; line-height: 16px; -webkit-box-flex: 1; margin: 0 0 0 10px; font-size: 10px; overflow: hidden; position: relative;}
+.mod-limited .top .list ul { position: absolute; top: 0; left: 0;}
 .mod-limited .top .list li { height: 100%; padding: 0 0 0 8px; background: url(../img/icon-dot.png) no-repeat 0 center; background-size: 2px;}
 .mod-limited .top .list li a { color: #272636;}
 
@@ -230,31 +231,31 @@ body { background: #f3f3f3;}
 .page-comment { }
 .page-comment .item { padding-bottom: 10px;}
 .page-comment .item h3 { display: -webkit-box; height: 24px; line-height: 24px; font-size: 16px; color: #1f1f1f; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all; overflow: hidden;}
-.page-comment .item .box { padding: 7px 0 10px;}
+.page-comment .item .box { padding: 7px 0 0;}
 .page-comment .item .img { width: 73px; height: 73px; margin: 0 10px 0 0; overflow: hidden;}
 .page-comment .item .img img { width: 100%; height: 100%;}
 .page-comment .item .top { padding: 0 10px; background: #fff;}
 .page-comment .item .top .tag { display: inline-block; min-width: 42px; text-align: center; height: 16px; line-height: 14px; font-size: 10px; vertical-align: top; border: 1px solid #ffd455; margin: 10px 4px 0 0; padding: 0 10px; border-radius: 8px;}
-.page-comment .item .content { padding: 10px 0; position: relative;}
-.page-comment .item .content textarea { width: 100%; height: 60px; border: none; line-height: 20px; font-size: 14px;}
+.page-comment .item .content { padding: 0 0 10px; position: relative;}
+.page-comment .item .content textarea { width: 100%; height: 60px; border: 1px solid #cccccc; padding: 3px 8px; line-height: 20px; font-size: 14px;}
 .page-comment .item .pictures { margin: 8px 0 0; height: 73px; position: relative;}
 .page-comment .item .pictures ul { font-size: 0; white-space: nowrap; overflow: hidden; height: 73px; position: absolute; top: 0; left: 0;}
 .page-comment .item .pictures li { display: inline-block; width: 73px; height: 73px; vertical-align: top; margin: 0 10px 0 0;}
 .page-comment .item .pictures li img { width: 100%; height: 100%; vertical-align: top;}
 .page-comment .item .pictures .upload-button { margin-right: 0; background: url(../img/icon-upload.jpg) no-repeat; background-size: 73px 73px;}
-.page-comment .item .stars { padding: 25px 10px; color: #999; margin: 8px 0 0; background: #fff;}
-.page-comment .item .stars .label { font-size: 14px; font-weight: bold;}
+.page-comment .item .stars { padding: 15px 10px 18px; color: #999; background: #fff;}
+.page-comment .item .stars .label { font-size: 14px; line-height: 18px; font-weight: bold;}
 .page-comment .item .stars .star { display: inline-block; width: 18px; height: 18px; vertical-align: top; margin: 0 0 0 20px; background: url(../img/icon-sprites.png) no-repeat -18px -100px; background-size: 320px auto;}
 .page-comment .item .stars .star.solid { background-position: 0 -100px;}
 
 .button-bar { padding: 12px 10px; background: #fff;}
-.button-bar .button-submit { display: block; height: 38px; line-height: 38px; text-align: center; color: #fff; font-size: 15px; background: #ffbe00; border-radius: 4px;}
+.button-bar .button-submit { display: block; height: 38px; line-height: 38px; text-align: center; color: #fff; font-size: 15px; background: #ff3000; border-radius: 4px;}
 
 /** page orders */
 
 .page-orders .nav { display: -webkit-box; position: relative; height: 34px; background: #fff;}
 .page-orders .nav div { -webkit-box-flex: 1; text-align: center; line-height: 32px; font-size: 14px; color: #272636; padding: 0 0 2px; margin: 0 10px;}
-.page-orders .nav .selected { color: #ffbe00; padding: 0; border-bottom: 2px solid #ffbe00;}
+.page-orders .nav .selected { color: #ff3000; padding: 0; border-bottom: 2px solid #ff3000;}
 .page-orders .item { margin: 0 0 5px;}
 .page-orders .top { height: 30px; line-height: 30px; padding: 0 10px; background: #fff;}
 .page-orders .top .fl { font-size: 12px; color: #333;}

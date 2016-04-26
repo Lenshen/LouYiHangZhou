@@ -9,12 +9,13 @@
 #import "SearchViewController.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import <MJRefresh.h>
 @interface SearchViewController ()<UISearchBarDelegate,UISearchDisplayDelegate>
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *searchDisplayController;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong,nonatomic) NSMutableArray  *dataList;
 @property (strong,nonatomic) NSMutableArray *responseArray;
-
+@property (strong,nonatomic) NSString *searchStr;
 @property (strong,nonatomic) NSMutableArray  *searchList;
 
 @end
@@ -24,6 +25,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+      [self setupMJRefreshHeader];
+    [self dismissSearchBarBlackground];
+
+}
+-(void)dismissSearchBarBlackground
+{
     self.searchDisplayController.searchBar.delegate = self;
     for (UIView *view in self.searchDisplayController.searchBar.subviews)
     {
@@ -36,13 +43,71 @@
         {
             [[view.subviews objectAtIndex:0]removeFromSuperview];
         }
-       
-    
+        
+        
+        
+    }
     
 }
-  
+- (void)setupMJRefreshHeader {
+   
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
+    
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
+}
 
+-(void)LoadMoreData
+{
+    
+    //过滤数据
+    NSInteger i = 0;
+    i++;
+    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
+        NSDictionary *dic = responseObject;
+        _responseArray  = dic[@"data"];
+        NSLog(@"%@",_responseArray);
+        if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
+        {
+            
+            _dataList =[[NSMutableArray alloc]init];
+            
+            if (_responseArray.count != 0) {
+                for (NSInteger i=0; i<_responseArray.count; i++) {
+                    NSDictionary *dic = _responseArray[i];
+                    NSString *str = dic[@"goods_name"];
+                    [_dataList
+                     addObject:str];
+                    NSLog(@"%@%@",_dataList,str);
+                    self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                    [self.tableView reloadData];
+                    [self.searchDisplayController.searchResultsTableView reloadData];
+                }
+                
+                
+            }else
+            {
+                NSLog(@"meishuju");
+                
+            }
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error)
+    }];
+    
+    
 }
+
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -81,17 +146,20 @@
         [self.searchList removeAllObjects];
     }
     //过滤数据
-    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:searchString page_index:@"1" page_size:@"10"] Success:^(id responseObject) {
+    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:searchString page_index:@"0" page_size:@"10"] Success:^(id responseObject) {
         NSDictionary *dic = responseObject;
+        self.searchStr = searchString;
         _responseArray  = dic[@"data"];
         NSLog(@"%@",_responseArray);
         if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
  {
+     
+           _dataList =[[NSMutableArray alloc]init];
+
             if (_responseArray.count != 0) {
                 for (NSInteger i=0; i<_responseArray.count; i++) {
                     NSDictionary *dic = _responseArray[i];
                     NSString *str = dic[@"goods_name"];
-                    _dataList =[[NSMutableArray alloc]init];
                     [_dataList
                      addObject:str];
                     NSLog(@"%@%@",_dataList,str);
