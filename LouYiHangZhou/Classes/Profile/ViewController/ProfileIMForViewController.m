@@ -72,6 +72,7 @@
 
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -82,17 +83,18 @@
 }
 #pragma mark dianji
 - (IBAction)sureAdd:(id)sender {
+    [SVProgressHUD showWithStatus:@"正在上传请稍等...."];
     if (self.imageStr) {
         [BYSHttpTool POST:APP_USER_UNLOAD_AVATAR Parameters:[HttpParameters uploadAvatar:_imageStr] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"avatar"];
-            [SVProgressHUD showSuccessWithStatus:@"上传图成功"];
+            [SVProgressHUD dismiss];
 
             [self.navigationController popViewControllerAnimated:YES];
-            
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
+           [SVProgressHUD dismiss];
         }];
 
     }
@@ -100,14 +102,18 @@
         [BYSHttpTool POST:APP_USER_UPDATE Parameters:[HttpParameters uploadImformation:self.dateString sexStr:self.sexString] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
+            [SVProgressHUD dismiss];
+
             [self.navigationController popViewControllerAnimated:YES];
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
+            [SVProgressHUD showErrorWithStatus:@"缺少参数"];
         }];
 
     }
 
 }
+
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -174,7 +180,7 @@
     NSString *yearString = [self.yearArray objectAtIndex:[self.pickview selectedRowInComponent:0]];
     NSString *monthString = [self.monthArray objectAtIndex:[self.pickview selectedRowInComponent:1]];
     NSString *dayString = [self.dayArray objectAtIndex:[self.pickview selectedRowInComponent:2]];
-    self.dateString = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
+    self.dateString = [NSString stringWithFormat:@"%@%@%@",yearString,monthString,dayString];
     
 
   
@@ -340,5 +346,5 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-\
+
 @end

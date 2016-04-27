@@ -56,7 +56,9 @@
     NSString *push = dic[@"push"];
     
     if ([push isEqualToString:@"SearchViewController"]) {
-        [self.navigationController pushViewController:[SearchViewController instanceFromStoryboard] animated:YES];
+        SearchViewController  *search = [SearchViewController instanceFromStoryboard];
+        search.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:search animated:YES];
     }
     
 }
