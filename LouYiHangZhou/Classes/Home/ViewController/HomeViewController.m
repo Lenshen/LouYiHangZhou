@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.hidesBottomBarWhenPushed = YES;
 
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(jpush:) name:@"jpush" object:nil];
     
@@ -38,7 +37,17 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:YES];
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SearchViewController" object:nil];
+}
+- (IBAction)pushButton:(id)sender {
+    SearchViewController  *search = [SearchViewController instanceFromStoryboard];
+    search.hidesBottomBarWhenPushed = YES;
+    [self
+     .navigationController pushViewController:search animated:YES];
+    
+    
+
 }
 -(void)jpush:(NSNotification *)noti
 {
@@ -80,6 +89,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+
   
 
 }

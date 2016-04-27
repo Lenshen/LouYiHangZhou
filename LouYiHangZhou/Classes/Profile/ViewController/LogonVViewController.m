@@ -73,9 +73,10 @@
     }
 }
 - (IBAction)logoEvent:(id)sender {
+    
+    [SVProgressHUD showWithStatus:@"请稍等...."];
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
-//    [SVProgressHUD showWithStatus:@"请稍等...."];
 
     [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
@@ -94,6 +95,7 @@
                 [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
                 NSDictionary *userdic = @{@"mobile":[USER_DEFAULT objectForKey:@"mobile"],@"sex":[USER_DEFAULT objectForKey:@"sex"],@"avatar":[USER_DEFAULT objectForKey:@"avatar"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"birth":[USER_DEFAULT objectForKey:@"birth"]};
                 [USER_DEFAULT setObject:userdic forKey:@"userimformation"];
+                [SVProgressHUD dismiss];
 
             } Failure:^(NSError *error) {
                 [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];

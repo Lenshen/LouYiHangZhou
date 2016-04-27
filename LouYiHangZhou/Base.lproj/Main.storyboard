@@ -52,8 +52,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="weQ-pA-DPI">
-                                <rect key="frame" x="0.0" y="63" width="375" height="604"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="weQ-pA-DPI">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="eN5-Ey-jbq" id="VIn-si-Qdp"/>
@@ -96,10 +96,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="weQ-pA-DPI" firstAttribute="leading" secondItem="WV3-oO-ate" secondAttribute="leading" id="6Rl-gI-9vU"/>
                             <constraint firstAttribute="trailing" secondItem="GQe-dr-vCC" secondAttribute="trailing" id="6pa-MQ-NRS"/>
+                            <constraint firstItem="weQ-pA-DPI" firstAttribute="top" secondItem="bdE-fh-tf1" secondAttribute="bottom" constant="43" id="FMM-fd-J6X"/>
+                            <constraint firstItem="weQ-pA-DPI" firstAttribute="top" secondItem="WV3-oO-ate" secondAttribute="topMargin" constant="64" id="RMj-f9-9C4"/>
+                            <constraint firstItem="aqb-S8-lYx" firstAttribute="top" secondItem="weQ-pA-DPI" secondAttribute="bottom" id="at0-Jg-pEh"/>
                             <constraint firstItem="GQe-dr-vCC" firstAttribute="top" secondItem="WV3-oO-ate" secondAttribute="top" id="m4F-8t-Qid"/>
                             <constraint firstItem="GQe-dr-vCC" firstAttribute="leading" secondItem="WV3-oO-ate" secondAttribute="leading" id="ryL-Hr-1MS"/>
+                            <constraint firstAttribute="trailing" secondItem="weQ-pA-DPI" secondAttribute="trailing" id="xPx-Yn-TcG"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="FMM-fd-J6X"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="X56-5y-rOm"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -2126,7 +2136,7 @@
                                         </constraints>
                                         <state key="normal" image="搜索框"/>
                                         <connections>
-                                            <segue destination="eN5-Ey-jbq" kind="push" id="pJF-AE-E4t"/>
+                                            <action selector="pushButton:" destination="7eo-lj-Y1m" eventType="touchUpInside" id="sKv-ya-Sry"/>
                                         </connections>
                                     </button>
                                 </subviews>

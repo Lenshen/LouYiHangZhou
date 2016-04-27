@@ -27,6 +27,7 @@
     // Do any additional setup after loading the view.
       [self setupMJRefreshHeader];
     [self dismissSearchBarBlackground];
+    self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
 
 }
 -(void)dismissSearchBarBlackground
@@ -61,52 +62,57 @@
 {
     
     //过滤数据
-    NSInteger i = 0;
-    i++;
-    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
-        NSDictionary *dic = responseObject;
-        _responseArray  = dic[@"data"];
-        NSLog(@"%@",_responseArray);
-        if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
-        {
-            
-            _dataList =[[NSMutableArray alloc]init];
-            
-            if (_responseArray.count != 0) {
-                for (NSInteger i=0; i<_responseArray.count; i++) {
-                    NSDictionary *dic = _responseArray[i];
-                    NSString *str = dic[@"goods_name"];
-                    [_dataList
-                     addObject:str];
-                    NSLog(@"%@%@",_dataList,str);
-                    self.searchList= [NSMutableArray arrayWithArray:_dataList];
-                    [self.tableView reloadData];
-                    [self.searchDisplayController.searchResultsTableView reloadData];
+    if (self.searchStr) {
+        NSInteger i = 0;
+        i++;
+        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
+            NSDictionary *dic = responseObject;
+            _responseArray  = dic[@"data"];
+            NSLog(@"%@",_responseArray);
+            if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
+            {
+                
+                _dataList =[[NSMutableArray alloc]init];
+                
+                if (_responseArray.count != 0) {
+                    for (NSInteger i=0; i<_responseArray.count; i++) {
+                        NSDictionary *dic = _responseArray[i];
+                        NSString *str = dic[@"goods_name"];
+                        [_dataList
+                         addObject:str];
+                        NSLog(@"%@%@",_dataList,str);
+                        self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                        [self.tableView reloadData];
+                        [self.searchDisplayController.searchResultsTableView reloadData];
+                    }
+                    
+                    
+                }else
+                {
+                    NSLog(@"meishuju");
+                    
                 }
                 
-                
-            }else
-            {
-                NSLog(@"meishuju");
                 
             }
             
             
-        }
+            
+            
+            
+            
+            
+            
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error)
+        }];
         
         
+
         
-        
-        
-        
-        
-        
-    } Failure:^(NSError *error) {
-        NSLog(@"%@",error)
-    }];
-    
-    
-}
+    }else
+        [self.tableView.mj_footer endRefreshing];
+ }
 
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -164,6 +170,7 @@
                      addObject:str];
                     NSLog(@"%@%@",_dataList,str);
                     self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                     [self.tableView reloadData];
                     [self.searchDisplayController.searchResultsTableView reloadData];
                 }
@@ -214,6 +221,7 @@
 }
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
     NSLog(@"搜索End");
+    [self.searchDisplayController setActive:NO animated:YES];
     return YES;
 }
 - (void)didReceiveMemoryWarning {

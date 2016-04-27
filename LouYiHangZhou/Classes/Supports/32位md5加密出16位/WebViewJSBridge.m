@@ -70,7 +70,7 @@
 -(void)signin
 {
    
-//    [self presentViewController:[LogonViewController instanceFromStoryboard] animated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"LogonVViewController" object:self userInfo:@{@"LogonVViewController":@"LogonVViewController"}];
 
 }
 -(void)getUser:(NSString *)callback

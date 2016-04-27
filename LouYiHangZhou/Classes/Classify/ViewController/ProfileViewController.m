@@ -40,10 +40,26 @@
     [self imagesArray];
     [self lableArray];
     self.tableView.contentOffset = CGPointMake(0, 0);
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushLogonVViewController:) name:@"LogonVViewController" object:nil];
+    
     
     
 }
-
+-(void)pushLogonVViewController:(NSNotification *)notification
+{
+    NSDictionary *dic = notification.userInfo;
+    NSString *push = dic[@"LogonVViewController"];
+    
+    if ([push isEqualToString:@"LogonVViewController"]) {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+    }
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:YES];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LogonVViewController" object:nil];
+}
 
 -(NSInteger )collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
