@@ -39,6 +39,7 @@
     // Do any additional setup after loading the view.
     [self imagesArray];
     [self lableArray];
+    //
     self.tableView.contentOffset = CGPointMake(0, 0);
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushLogonVViewController:) name:@"LogonVViewController" object:nil];
     
