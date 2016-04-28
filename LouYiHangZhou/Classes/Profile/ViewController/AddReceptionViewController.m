@@ -12,6 +12,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import "SVProgressHUD.h"
 
 @interface AddReceptionViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *address;
@@ -42,15 +43,17 @@
     
 }
 - (IBAction)sureAddButton:(id)sender {
+    [SVProgressHUD show];
     
-    [BYSHttpTool POST:APP_ADDRESS_ADD Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:@"yes"] Success:^(id responseObject) {
+    [BYSHttpTool POST:APP_ADDRESS_ADD Parameters:[HttpParameters add_address:_address.text country:nil province:self.province city:self.city area:self.area address:self.address.text zip:nil full_name:_full_name.text tel:nil mobile:_mobile.text is_default:nil] Success:^(id responseObject) {
+        
         NSLog(@"%@",responseObject);
-
+        [SVProgressHUD dismiss];
         [self.navigationController popViewControllerAnimated:YES];
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
         
-
+        [SVProgressHUD dismiss];
     }];
     
     

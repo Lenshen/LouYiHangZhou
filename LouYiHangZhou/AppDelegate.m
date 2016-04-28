@@ -23,7 +23,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    [UIApplication sharedApplication].statusBarHidden = NO;
+  
     [self getApptokenAndClientIP];
+
     
     
     //极光推送

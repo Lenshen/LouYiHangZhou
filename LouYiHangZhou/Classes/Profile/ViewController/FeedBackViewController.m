@@ -26,6 +26,18 @@
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"意见与反馈";
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
+    
+}
 
 /*
 #pragma mark - Navigation

@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface NavigationViewController : UINavigationController
+{
+    BOOL _changing;
 
+}
+@property(nonatomic, retain)UIView *alphaView;
+-(void)setAlph;
 @end

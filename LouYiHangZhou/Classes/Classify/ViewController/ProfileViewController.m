@@ -12,24 +12,24 @@
 #import "LogonVViewController.h"
 #import "UIButton+WebCache.h"
 #import "OrderStatusViewController.h"
-
-
 #import "ProfileCollectionViewCell.h"
-
 #import "ProfileIMForViewController.h"
-
 #import "UIViewController+StoryboardFrom.h"
-
 #import "ReceptionTableViewController.h"
-
 #import "CollectTableViewController.h"
+
+
 @interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UIWebViewDelegate>
+{
+    BOOL isLogoin;
+}
 @property (weak, nonatomic) IBOutlet UIView *hideview;
 @property (strong, nonatomic) IBOutlet UILabel *mobileNumbel;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imagesArray;
 @property (strong, nonatomic) IBOutlet UIButton *headImage;
 @property (strong, nonatomic) NSArray *lableArray;
+
 @end
 
 @implementation ProfileViewController
@@ -44,8 +44,14 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushLogonVViewController:) name:@"LogonVViewController" object:nil];
     
     
+
+    
+
     
 }
+
+
+
 -(void)pushLogonVViewController:(NSNotification *)notification
 {
     NSDictionary *dic = notification.userInfo;
@@ -77,8 +83,9 @@
 #pragma mark 点击跳转
 
 - (IBAction)ProsonIMFor:(id)sender {
+
     
-    if ([USER_DEFAULT objectForKey:@"user_token"]) {
+    if (isLogoin) {
         ProfileIMForViewController *p = [ProfileIMForViewController instanceFromStoryboard];
         self.hideview.hidden = NO;
         p.hidesBottomBarWhenPushed = YES;
@@ -96,6 +103,9 @@
 #pragma mark viewVillAppear
 -(void)viewWillAppear:(BOOL)animated
 {
+    
+    isLogoin = [USER_DEFAULT objectForKey:@"user_token"];
+    
 
     if ([USER_DEFAULT objectForKey:@"user_token"]) {
  
@@ -137,29 +147,65 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 &&indexPath.row == 1) {
+    
+    if (indexPath.section == 0 &&indexPath.row == 1  && isLogoin) {
         UIViewController *v2 = [ReceptionTableViewController instanceFromStoryboard];
         v2.hidesBottomBarWhenPushed = YES;
 
         [self.navigationController pushViewController:v2 animated:YES];
-    }else if(indexPath.section == 0 &&indexPath.row == 4)
+    }else if(indexPath.section == 0 && indexPath.row == 1)
     {
-        [self cellMobiel:self.mobileNumbel.text];
-    }else if(indexPath.row == 0 && indexPath.section == 0)
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+    }
+    
+    
+     if(indexPath.section == 0 &&indexPath.row == 4)
+    {
+        [self cellMobiel:@"400-800-67672"];
+    }
+        
+    
+    
+    
+    
+      if(indexPath.row == 0 && indexPath.section == 0 && isLogoin)
     {
         UIViewController *tab = [CollectTableViewController instanceFromStoryboard];
         tab.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:tab animated:YES];
-    }else if(indexPath.row == 2 && indexPath.section == 0)
+        
+    }else if(indexPath.row == 0 && indexPath.section == 0)
+        
+    {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+
+    }
+    
+    
+    
+    
+    if(indexPath.row == 2 && indexPath.section == 0 && isLogoin)
     {
         UITableViewController *tab = [MessageTableViewController instanceFromStoryboard];
         tab.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:tab animated:YES];
-    }else if (indexPath.row == 3 && indexPath.section == 0)
+    }else if(indexPath.row == 2 && indexPath.section == 0)
+        
+    {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+    }
+    
+    
+    
+    if (indexPath.row == 3 && indexPath.section == 0 && isLogoin)
     {
         CouponViewController *coupon = [[CouponViewController alloc]init];
         coupon.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:coupon animated:YES];
+    }else if(indexPath.row == 3 && indexPath.section == 0 )
+    {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+
     }
     
 

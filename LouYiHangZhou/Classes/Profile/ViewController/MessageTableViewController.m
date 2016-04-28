@@ -103,5 +103,17 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"我的消息";
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
+    
+}
 
 @end

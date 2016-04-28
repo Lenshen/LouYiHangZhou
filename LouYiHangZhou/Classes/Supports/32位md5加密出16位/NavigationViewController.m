@@ -24,7 +24,16 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
-    
+//    
+//    CGRect frame = self.navigationBar.frame;
+//
+//    
+//    _alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height+20)];
+//    _alphaView.backgroundColor = [UIColor blueColor];
+//    [self.view insertSubview:_alphaView belowSubview:self.navigationBar];
+//    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"bigShadow.png"] forBarMetrics:UIBarMetricsCompact];
+//    self.navigationBar.layer.masksToBounds = YES;
+
     
     
     
@@ -33,6 +42,27 @@
 
 }
 
+-(void)setAlph{
+    if (_changing == NO) {
+        _changing = YES;
+        if (_alphaView.alpha == 0.0 ) {
+            [UIView animateWithDuration:0.5 animations:^{
+                _alphaView.alpha = 1.0;
+            } completion:^(BOOL finished) {
+                _changing = NO;
+            }];
+        }else{
+            [UIView animateWithDuration:0.5 animations:^{
+                _alphaView.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                _changing = NO;
+                
+            }];
+        }
+    }
+    
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

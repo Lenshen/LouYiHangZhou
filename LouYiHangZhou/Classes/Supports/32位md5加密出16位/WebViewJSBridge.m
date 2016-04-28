@@ -83,8 +83,22 @@
     if (dic != nil) {
         dic = @{};
     }
-    [self executeCallback:callback withArgs:@[dic]];
+    NSString *jsonstring  = [self dictionaryToJson:dic];
+    [self executeCallback:callback withArgs:@[jsonstring]];
 }
+
+- (NSString*)dictionaryToJson:(NSDictionary *)dic
+
+{
+    
+    NSError *parseError = nil;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+}
+
 
 // 执行OC函数
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback

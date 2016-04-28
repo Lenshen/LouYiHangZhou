@@ -15,7 +15,7 @@
 @property (strong, nonatomic) NSString* full_name;
 @property (strong, nonatomic) NSString* mobile;
 @property (strong, nonatomic) NSString* province;
-//@property (strong, nonatomic) NSString* address;
+@property BOOL is_default;
 //@property (strong, nonatomic) NSString* address;
 //@property (strong, nonatomic) NSString* address;
 

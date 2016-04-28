@@ -379,7 +379,7 @@
     self.navigationController.navigationBarHidden = NO;
     self.title = @"个人信息";
     self.tableView.showsVerticalScrollIndicator = NO;
-    
+//    [self setNavigationBarType];
     
     self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
     self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
@@ -395,5 +395,18 @@
     self.navigationController.navigationBarHidden = YES;
     
 }
-
+-(void)setNavigationBarType
+{
+    self.navigationController.navigationBar.translucent = YES;
+    UIColor *color =[UIColor clearColor]
+    ;
+    CGRect rect = CGRectMake(0, 0, kScreenWidth, 64);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+}
 @end

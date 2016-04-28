@@ -108,7 +108,8 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
-    self.title = @"注册";
+    self.title = @"忘记密码";
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated

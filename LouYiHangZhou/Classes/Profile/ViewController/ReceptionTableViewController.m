@@ -13,6 +13,7 @@
 #import "AddressModel.h"
 #import "SVProgressHUD.h"
 #import "NSString+MD5.h"
+#import "NavigationViewController.h"
 
 @interface ReceptionTableViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -42,7 +43,8 @@
         NSArray *array = responseObject[@"data"];
 
         self.addressArrayM = [NSMutableArray arrayWithArray:array];
-        NSLog(@"%@",_addressArrayM);
+        NSLog(@"%@ -----response==%@",_addressArrayM,responseObject);
+        
         if (self.addressArrayM.count == 0 || self.addressArrayM == nil || [self.addressArrayM isKindOfClass:[NSNull class]]) {
             
             NSString *str = @"你还没加地址呢!请尽快添加";
@@ -66,6 +68,9 @@
     self.title = @"收货地址";
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
+    
+//    NavigationViewController *nav = (NavigationViewController *)self.navigationController;
+//    [nav setAlph];
    
 
 }
