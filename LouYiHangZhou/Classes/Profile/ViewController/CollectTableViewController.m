@@ -75,6 +75,7 @@
 
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+    
 }
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -98,6 +99,18 @@
 {
     CollectTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CollectTableViewController" forIndexPath:indexPath];
     return cell;
+    
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"我的收藏";
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
     
 }
 /*

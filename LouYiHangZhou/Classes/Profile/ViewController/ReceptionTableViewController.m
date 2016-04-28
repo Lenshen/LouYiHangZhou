@@ -31,7 +31,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    [self getAddress];
     
   
     
@@ -63,8 +62,18 @@
 {
    
     [self getAddress];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"收货地址";
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
    
 
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
+    
 }
 - (IBAction)black:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];

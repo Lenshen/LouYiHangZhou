@@ -96,6 +96,7 @@
 #pragma mark viewVillAppear
 -(void)viewWillAppear:(BOOL)animated
 {
+
     if ([USER_DEFAULT objectForKey:@"user_token"]) {
  
         self.hideview.hidden = NO;
