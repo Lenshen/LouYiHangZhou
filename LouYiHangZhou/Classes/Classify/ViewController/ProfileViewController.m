@@ -229,8 +229,15 @@
  
         OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
     order.indexName = array[indexPath.row];
+    if (isLogoin) {
+        [self.navigationController pushViewController:order animated:YES];
+
+    }else
+    {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+
+    }
     
-   [self.navigationController pushViewController:order animated:YES];
 
     
 }
