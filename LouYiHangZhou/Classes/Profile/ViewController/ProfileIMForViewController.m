@@ -16,6 +16,7 @@
 #import "HttpParameters.h"
 #import "SVProgressHUD.h"
 
+
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImagePickerController *_imagePickerController;
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) UIButton *canceButtonl;
 @property (nonatomic, strong) UIButton *sureButton;
 @property (nonatomic,assign) BOOL isLeapyear;//是否是闰年
+@property (nonatomic,strong) UIView *viewp;
 
 
 @end
@@ -134,6 +136,7 @@
     if (indexPath.section == 0 && indexPath.row == 1) {
         _sureButton.hidden = NO;
         _canceButtonl.hidden = NO;
+        _viewp.hidden = NO;
         [self.view addSubview:_pickview];
         _pickview.hidden = NO;
 
@@ -144,10 +147,19 @@
 }
 -(void)initPickView
 {
-    _pickview = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.height-44-200-50,_pickview.width, _pickview.height)];
+    
+    
+    _pickview = [[UIPickerView alloc]initWithFrame:CGRectZero];
+    _pickview.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    _pickview.frame = CGRectMake(0, kScreenHeight-44-200-50,kScreenWidth, _pickview.height);
+    _pickview.showsSelectionIndicator = YES;
     _pickview.backgroundColor = [UIColor whiteColor];
     _pickview.delegate = self;
     _pickview.dataSource = self;
+    
+    _viewp = [[UIView alloc]initWithFrame:CGRectMake(0,_pickview.origin.y-50, kScreenHeight,50 )];
+    _viewp.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:_viewp];
     _canceButtonl = [[UIButton alloc]initWithFrame:CGRectMake(0,_pickview.origin.y-50, 50,50 )];
     [_canceButtonl addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     [_canceButtonl setTitle:@"取消" forState:UIControlStateNormal];
@@ -171,12 +183,15 @@
     _canceButtonl.hidden = YES;
     _sureButton.hidden = YES;
     _pickview.hidden = YES;
+    _viewp.hidden = YES;
+    
 }
 -(void)sure
 {
     _canceButtonl.hidden = YES;
     _sureButton.hidden = YES;
     _pickview.hidden = YES;
+    _viewp.hidden = YES;
     NSString *yearString = [self.yearArray objectAtIndex:[self.pickview selectedRowInComponent:0]];
     NSString *monthString = [self.monthArray objectAtIndex:[self.pickview selectedRowInComponent:1]];
     NSString *dayString = [self.dayArray objectAtIndex:[self.pickview selectedRowInComponent:2]];
@@ -203,6 +218,8 @@
     }
     [self.pickview reloadAllComponents];
 }
+
+
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 3;
 }
@@ -249,32 +266,59 @@
 -(void)initHeadImageAlertController
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"相册或照相获取图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            UIImagePickerController *impick = [[UIImagePickerController alloc]init];
-            impick.delegate = self;
-            impick.allowsEditing = YES;
-            impick.sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self presentViewController:impick animated:YES completion:nil];
-        }
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
+        
+        [self openCamera];
+        
     }];
     
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UIImagePickerController *impick = [[UIImagePickerController alloc]init];
-        impick.delegate = self;
-        impick.allowsEditing = YES;
-        impick.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [self presentViewController:impick animated:YES completion:nil];
-
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) \
+    
+    {
+        
+        [self openPhotoLibrary];
+        
     }];
+    
     UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    
     [alertController addAction:cancelAction];
     [alertController addAction:deleteAction];
     [alertController addAction:archiveAction];
+    
     [self presentViewController:alertController animated:YES completion:nil];
     
 }
 
+-(void)openPhotoLibrary
+{
+    UIImagePickerController *impick = [[UIImagePickerController alloc]init];
+    impick.delegate = self;
+    impick.allowsEditing = YES;
+    impick.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:impick animated:YES completion:nil];
+    
+
+    
+}
+- (void) openCamera
+{
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *impick = [[UIImagePickerController alloc]init];
+        impick.delegate = self;
+        impick.allowsEditing = YES;
+        impick.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:impick animated:YES completion:nil];
+    }
+
+    
+}
+
+//imagepickerdelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo {
     [self.headImage setBackgroundImage:editingInfo[UIImagePickerControllerEditedImage] forState:UIControlStateNormal];
@@ -285,15 +329,7 @@
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    //判断资源类型
-//    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]){
-//        //如果是图片
-//        self.imageView.image = info[UIImagePickerControllerEditedImage];
-//        //压缩图片
-//        NSData *fileData = UIImageJPEGRepresentation(self.imageView.image, 1.0);
-//        //保存图片至相册
-//        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
-//        //上传图片
+
     UIImage *image = info[UIImagePickerControllerEditedImage];
     [self.headImage setBackgroundImage:image forState:UIControlStateNormal];
     self.headImage.layer.cornerRadius = 33;
@@ -305,26 +341,17 @@
                          
    
     }
+
+
 -(void)base64:(UIImage *)image
 {
     NSData *imagedata = UIImageJPEGRepresentation(image, 1.0);
     NSString *imageStr = [imagedata base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     self.imageStr = imageStr;
-    }
+    
+}
 #pragma mark viewViewAppear
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
-    self.tableView.showsVerticalScrollIndicator = NO;
-    
-   
-    self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
-    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
-    self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
-    
-
-}
 
 
 
@@ -345,6 +372,28 @@
     [alertController addAction:archiveAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    _viewp.hidden = YES;
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"个人信息";
+    self.tableView.showsVerticalScrollIndicator = NO;
+    
+    
+    self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
+    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
+    self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
+    
+    
 
+  
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
+    
+}
 
 @end

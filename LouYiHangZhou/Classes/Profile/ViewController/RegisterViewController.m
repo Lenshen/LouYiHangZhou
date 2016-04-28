@@ -9,6 +9,8 @@
 #import "RegisterViewController.h"
 #import "UIButton+countDown.h"
 #import "BYSHttpTool.h"
+#import "NSString+MD5.h"
+#import "SVProgressHUD.h"
 
 @interface RegisterViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *codeButton;
@@ -36,11 +38,13 @@
     _codeTF.delegate = self;
     _passwordTF.delegate = self;
     [_mobileTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [_passwordTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    
   
 
     
    
-
 }
 - (IBAction)registerEvent:(id)sender {
    
@@ -55,7 +59,7 @@
 
         }else
         {
-            [self alert:message];
+            [message alert:message viewcontroller:self];
         }
         
 
@@ -64,17 +68,13 @@
     }];
     
 }
--(void)alert:(NSString *)message
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
-    [self presentViewController:alert animated:YES completion:nil];
-}
+
 - (void)textFieldDidChange:(UITextField *)textField
 {
-    if (textField == self.mobileTF) {
-        if (textField.text.length == 11) {
+    if (textField == self.mobileTF)
+    {
+        if (textField.text.length == 11)
+        {
             self.codeButton.enabled = YES;
             [self.codeButton setBackgroundColor:[UIColor redColor]];
             
@@ -86,19 +86,38 @@
             [self.codeButton setBackgroundColor:[UIColor grayColor]];
         }
 
+    }else if(textField == self.passwordTF)
+    {
+        
+        if (textField.text.length > 5) {
+            self.registerButton.enabled = YES;
+            [self.registerButton setBackgroundImage:[UIImage imageNamed:@"登陆注册按钮"] forState:UIControlStateNormal];
+            [self.registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }else
+        {
+            [self.registerButton setBackgroundImage:[UIImage imageNamed:@"登陆按钮框"] forState:UIControlStateNormal];
+            [self.registerButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        }
+        
+        
+        
     }
 }
 
 
 
 - (IBAction)getCode:(id)sender {
+    [SVProgressHUD show];
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
     NSString *str = APP_MOBILEVERIFY;
     NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100"};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
+        [SVProgressHUD dismiss];
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"服务器未响应"];
     }];
 }
 -(void)viewWillAppear:(BOOL)animated

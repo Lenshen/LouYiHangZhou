@@ -181,18 +181,17 @@
  
         OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
     order.indexName = array[indexPath.row];
-
-
-    [self.navigationController pushViewController:order animated:YES];
-
     
+   [self.navigationController pushViewController:order animated:YES];
 
     
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
+    
     return CGSizeMake(self.view.frame.size.width/3.99999,self.collectionView.frame.size.height) ;
+    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

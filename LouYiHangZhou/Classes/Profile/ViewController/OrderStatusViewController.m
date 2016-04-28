@@ -47,6 +47,7 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
+    self.title = @"订单"; 
     
     
 }

@@ -44,5 +44,18 @@
 
 }
 
+-(void)canSelectButton
+{
+    self.enabled = YES;
+    [self setBackgroundImage:[UIImage imageNamed:@"登陆注册按钮"] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
+}
+-(void)canNotSelectButton
+{
+    self.enabled = NO;
+    [self setBackgroundImage:[UIImage imageNamed:@"登陆按钮框"] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+
+}
 @end

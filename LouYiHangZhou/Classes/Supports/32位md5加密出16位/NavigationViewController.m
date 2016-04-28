@@ -16,7 +16,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
+    
+    self.navigationBar.barTintColor = [UIColor redColor];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
+    
+    
+    
+    
+    
+    
+
 }
 
 - (void)didReceiveMemoryWarning {

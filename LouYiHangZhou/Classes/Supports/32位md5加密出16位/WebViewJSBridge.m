@@ -45,14 +45,17 @@
 - (void)getToken:(NSString *)callback
 {
     NSString *str = [USER_DEFAULT objectForKey:@"user_token"];
-    NSLog(@"%@",str);
+    
+    if (str == nil) {
+        str = @"";
+    }
     [self executeCallback:callback withArgs: @[str]];
 }
 - (void)showWaiting:(NSDictionary *)args
 {
     
-    
-    [SVProgressHUD showWithStatus:@"请稍等...."];
+    NSString *message = [args objectForKey:@"message"];
+    [SVProgressHUD showWithStatus:message];
     
 }
 -(void)closeWebview
@@ -61,7 +64,7 @@
 }
 -(void)openWebview:(NSURL *)url
 {
-   }
+}
 -(void)hideWaiting
 {
     [SVProgressHUD dismiss];
@@ -69,19 +72,19 @@
 
 -(void)signin
 {
-   
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"LogonVViewController" object:self userInfo:@{@"LogonVViewController":@"LogonVViewController"}];
-
+    
 }
 -(void)getUser:(NSString *)callback
 {
     NSDictionary *dic = [USER_DEFAULT objectForKey:@"userimformation"];
     NSLog(@"%@",dic);
-    
+    if (dic != nil) {
+        dic = @{};
+    }
     [self executeCallback:callback withArgs:@[dic]];
 }
-
-
 
 // 执行OC函数
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback

@@ -30,6 +30,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.navigationController.navigationBar.hidden = NO;
+    self.title = @"设置";
     [self getCacheSize];
    }
 -(void)getCacheSize
@@ -150,6 +152,22 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"设置";
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
+    
 }
 
 

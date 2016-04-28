@@ -12,7 +12,9 @@
 #import "HttpParameters.h"
 #import "NSString+MD5.h"
 #import "SVProgressHUD.h"
+#import "UIButton+countDown.h"
 @interface LogonVViewController ()
+
 @property (weak, nonatomic) IBOutlet UITextField *userName;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTF;
 @property (weak, nonatomic) IBOutlet UIButton *logoButton;
@@ -29,11 +31,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
 
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = item;
+  UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+  self.navigationItem.backBarButtonItem = item;
     [self setTextField];
+    
+    
 }
 
 
@@ -51,6 +54,8 @@
 }
 
 
+
+
 -(void)passwordCanWirtte
 {
     if ( _userName.text.length == 11) {
@@ -61,15 +66,18 @@
 
     
 }
+
+
+
 -(void)logoButtonBackgroundChange
 {
     if (_passwordTF.text.length > 5 && _userName.text.length == 11) {
-        [self.logoButton setBackgroundImage:[UIImage imageNamed:@"登陆注册按钮"] forState:UIControlStateNormal];
-        [self.logoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+        [self.logoButton canSelectButton];
     }else
     {
-        [self.logoButton setBackgroundImage:[UIImage imageNamed:@"登陆按钮框"] forState:UIControlStateNormal];
-        [self.logoButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [self.logoButton canNotSelectButton];
+    
     }
 }
 - (IBAction)logoEvent:(id)sender {
@@ -78,35 +86,53 @@
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
 
-    [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject) {
+    [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject)
+{
+        
         NSLog(@"%@",responseObject);
+        
         if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
-        {
+{
+            
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
-            [BYSHttpTool GET:APP_USER_GET Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
+            
+    [BYSHttpTool GET:APP_USER_GET Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
+        
                 NSLog(@"%@",responseObject);
+        
                 [self.navigationController popToRootViewControllerAnimated:YES];
+        
                 NSDictionary *dic = responseObject[@"data"];
                 _useModel = [[UserImformationModel alloc]initWithDictionary:dic error:nil];
+        
                 [USER_DEFAULT setObject:_useModel.mobile forKey:@"mobile"];
                 [USER_DEFAULT setObject:_useModel.sex forKey:@"sex"];
                 [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
                 [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
                 [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
+        
                 NSDictionary *userdic = @{@"mobile":[USER_DEFAULT objectForKey:@"mobile"],@"sex":[USER_DEFAULT objectForKey:@"sex"],@"avatar":[USER_DEFAULT objectForKey:@"avatar"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"birth":[USER_DEFAULT objectForKey:@"birth"]};
+        
                 [USER_DEFAULT setObject:userdic forKey:@"userimformation"];
                 [SVProgressHUD dismiss];
 
-            } Failure:^(NSError *error) {
+                }
+             Failure:^(NSError *error) {
                 [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];
-               
+                
+                    
+                    
+                    
             }];
             
-        }
-        if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]]) {
+}
+        if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]])
+        {
             {
                NSString *message = responseObject[@"message"];
-                [self alert:message];
+                [message alert:message viewcontroller:self];
+                [SVProgressHUD dismiss];
+
             }
         }
         
@@ -121,18 +147,16 @@
    
 
 }
--(void)alert:(NSString *)message
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
-    [self presentViewController:alert animated:YES completion:nil];
-}
+
+
+
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
 }
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
@@ -147,17 +171,8 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
