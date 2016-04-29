@@ -114,7 +114,8 @@
     {
         self.hideview.hidden = YES;
     }
-  self.navigationController.navigationBarHidden = YES;
+    
+    self.navigationController.navigationBarHidden = YES;
     NSURL *url = [NSURL URLWithString:[USER_DEFAULT objectForKey:@"avatar"]];
     [self.headImage sd_setBackgroundImageWithURL:url forState:UIControlStateNormal];
     self.mobileNumbel.text = [USER_DEFAULT objectForKey:@"mobile"];
@@ -211,8 +212,8 @@
 
 
 }
-//jj
-//jj
+
+
 -(void)cellMobiel:(NSString *)mobielNumbel
 {
     NSMutableString *Str =[[NSMutableString alloc]initWithFormat:@"tel:%@",mobielNumbel];

@@ -14,8 +14,10 @@
 #import "SVProgressHUD.h"
 #import "NSString+MD5.h"
 #import "NavigationViewController.h"
+#import "ChangeReceptionViewController.h"
+#import "UIViewController+StoryboardFrom.h"
 
-@interface ReceptionTableViewController ()
+@interface ReceptionTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) AddressModel *model;
 @property (nonatomic,strong)NSMutableArray *addressArrayM;
@@ -39,6 +41,8 @@
 }
 -(void)getAddress
 {
+    
+    [SVProgressHUD show];
     [BYSHttpTool GET:APP_ADDRESS_GET Parameters:[HttpParameters app_get_userImformation:nil ] Success:^(id responseObject) {
         NSArray *array = responseObject[@"data"];
 
@@ -51,13 +55,13 @@
             [str alert:str viewcontroller:self];
             
         }
-        
+        [SVProgressHUD dismiss];
         [self.tableView reloadData];
         
         
         
     } Failure:^(NSError *error) {
-        
+        [SVProgressHUD dismiss];
     }];
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -113,6 +117,13 @@
     cell.mobileLable.text = _model.mobile;
     
     return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ChangeReceptionViewController *changeReceptionVC = [ChangeReceptionViewController instanceFromStoryboard];
+    changeReceptionVC.model = self.model;
+    [self.navigationController pushViewController:changeReceptionVC animated:YES];
+    
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -75,9 +75,7 @@
     
     childViewController.tabBarItem.image = [UIImage imageNamed:image];
     childViewController.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    childViewController.navigationController.navigationBar.barTintColor = [UIColor yellowColor];
-    childViewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [childViewController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    ;
     
     //tabBarItem字体的设置
     //正常状态

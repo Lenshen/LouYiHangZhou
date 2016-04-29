@@ -36,10 +36,6 @@
 
     
     
-    
-    
-    
-
 }
 
 -(void)setAlph{
