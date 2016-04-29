@@ -83,9 +83,9 @@
     NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"country":@"中国",@"province":province,@"city":city,@"area":area,@"address":address,@"zip":@"100010",@"full_name":full_name,@"tel":@"nil",@"mobile":mobile,@"is_default":@"true"};
     return dic;
 }
-+(NSDictionary *)update_address:(NSString *)userToken country:(NSString *)country province:(NSString *)province city:(NSString *)city area:(NSString *)area address:(NSString *)address zip:(NSString *)zip tel:(NSString *)tel mobile:(NSString *)mobile is_default:(BOOL)ture
++(NSDictionary *)update_address:(NSString *)userToken country:(NSString *)country province:(NSString *)province city:(NSString *)city area:(NSString *)area address:(NSString *)address zip:(NSString *)zip full_name:(NSString *)full_name tel:(NSString *)tel mobile:(NSString *)mobile is_default:(NSString *)trueStr address_id:(NSString *)address_id;
 {
-    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"country":@"中国",@"province":province,@"city":city,@"area":area,@"address":country,@"zip":zip,@"tel":mobile,@"mobile":mobile,@"is_default":@1};
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"country":@"中国",@"province":province,@"city":city,@"area":area,@"address":address,@"zip":@"100010",@"full_name":full_name,@"tel":mobile,@"mobile":mobile,@"is_default":trueStr,@"address_id":address_id};
     return dic;
 }
 +(NSDictionary *)delete_address:(NSString *)userToken address_id:(NSString *)address_id;

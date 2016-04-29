@@ -16,7 +16,7 @@
 @property (strong, nonatomic) NSString* mobile;
 @property (strong, nonatomic) NSString* province;
 @property BOOL is_default;
-//@property (strong, nonatomic) NSString* address;
+@property (strong, nonatomic) NSString* address_id;
 //@property (strong, nonatomic) NSString* address;
 
 @end

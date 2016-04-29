@@ -8,7 +8,7 @@
 
 #ifndef MacroDefinition_h
 #define MacroDefinition_h
-#define TESTSERVERSAPI  @"192.168.0.103:7021"
+#define TESTSERVERSAPI  @"192.168.0.103:8078"
 
 //-------------------获取设备大小-------------------------
 //NavBar高度
@@ -28,11 +28,11 @@
 #define APP_GOOD_SEARCH  @"http://"TESTSERVERSAPI"/api/goods/search"
 #define APP_USER_SIGOUT  @"http://"TESTSERVERSAPI"api/user/signout"
 #define APP_USER_UPDATE  @"http://"TESTSERVERSAPI"/api/user/update"
-#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
-#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
-#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
-#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
-#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"api/address/add"
+#define APP_ADDRESS_UPDATE @"http://"TESTSERVERSAPI"/api/address/update"
+//#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+//#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+//#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
 
 
 

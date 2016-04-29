@@ -72,15 +72,25 @@
 }
 -(void)getApptokenAndClientIP
 {
+    
+    
     [BYSHttpTool GET:APP_AUTHOTIZD_API Parameters:[HttpParameters app_Token] Success:^(id responseObject) {
         DLog(@"%@",responseObject[@"data"]);
-    [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"app_autorizd_number"];
+        
+        if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]]){
+            
+             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"app_autorizd_number"];
+            
+        }
+   
     } Failure:^(NSError *error) {
         DLog(@"%@",error);
     }];
     NSString *str = [self getIPAddress];
     NSLog(@"%@",str);
     [USER_DEFAULT setObject:str forKey:@"client_ip"];
+    
+    
 }
 
 

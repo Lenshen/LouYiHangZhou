@@ -18,6 +18,7 @@
 #import "UIViewController+StoryboardFrom.h"
 
 @interface ReceptionTableViewController ()<UITableViewDataSource,UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) AddressModel *model;
 @property (nonatomic,strong)NSMutableArray *addressArrayM;
@@ -61,18 +62,20 @@
         
         
     } Failure:^(NSError *error) {
+        NSString *message = @"服务器未响应";
+        [message alert:message viewcontroller:self];
         [SVProgressHUD dismiss];
     }];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
    
-    [self getAddress];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"收货地址";
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
-    
+    [self getAddress];
+
 //    NavigationViewController *nav = (NavigationViewController *)self.navigationController;
 //    [nav setAlph];
    
@@ -105,14 +108,27 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    
     ReceptionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReceptionTableViewCell" forIndexPath:indexPath];
     NSDictionary *dic = self.addressArrayM[indexPath.row];
     _model = [[AddressModel alloc]initWithDictionary:dic error:nil];
     NSLog(@"%@",_model);
     NSString *address = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.area,_model.address];
-    NSMutableAttributedString *mutoString = [[NSMutableAttributedString alloc]initWithString:[NSString  stringWithFormat:@"[默认]%@",address]];
-    [mutoString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,4)];
-    cell.addressLable.attributedText = mutoString;
+    if (indexPath.row == 0 && indexPath.section == 0) {
+        NSMutableAttributedString *mutoString = [[NSMutableAttributedString alloc]initWithString:[NSString  stringWithFormat:@"[默认]%@",address]];
+        [mutoString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,4)];
+        cell.addressLable.attributedText = mutoString;
+        cell.hideView.hidden = NO;
+    }
+    else
+    {
+        cell.addressLable.text = address;
+        cell.hideView.hidden = YES;
+
+    }
+   
     cell.full_nameLable.text = _model.full_name;
     cell.mobileLable.text = _model.mobile;
     
@@ -121,6 +137,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ChangeReceptionViewController *changeReceptionVC = [ChangeReceptionViewController instanceFromStoryboard];
+    NSDictionary *dic = self.addressArrayM[indexPath.row];
+    _model = [[AddressModel alloc]initWithDictionary:dic error:nil];
     changeReceptionVC.model = self.model;
     [self.navigationController pushViewController:changeReceptionVC animated:YES];
     
