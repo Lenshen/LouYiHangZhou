@@ -19,11 +19,12 @@
     CFRelease(puuid);
     CFRelease(uuidString);
     NSString *device_id = result;
-    
-    NSString *sign = [NSString stringWithFormat:@"test1123456%@",result];
+    NSString *code = @"iosapp";
+    NSString *accesskey = @"123456";
+    NSString *sign = [NSString stringWithFormat:@"%@%@%@",code,accesskey,result];
     NSString *signmd5 = [sign md5];
     DLog(@"%@",signmd5);
-    NSDictionary *dic = @{@"code":@"test1",@"ver":@"1.0",@"device_id":device_id,@"sign":signmd5};
+    NSDictionary *dic = @{@"code":code,@"ver":@"1.0.0",@"device_id":device_id,@"sign":signmd5};
 
     return dic;
 }
@@ -80,7 +81,7 @@
 }
 +(NSDictionary *)add_address:(NSString *)userToken country:(NSString *)country province:(NSString *)province city:(NSString *)city area:(NSString *)area address:(NSString *)address zip:(NSString *)zip full_name:(NSString *)full_name tel:(NSString *)tel mobile:(NSString *)mobile is_default:(NSString *)ture
 {
-    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"country":@"中国",@"province":province,@"city":city,@"area":area,@"address":address,@"zip":@"100010",@"full_name":full_name,@"tel":@"nil",@"mobile":mobile,@"is_default":@"true"};
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"country":@"中国",@"province":province,@"city":city,@"area":area,@"address":address,@"zip":@"100010",@"full_name":full_name,@"tel":mobile,@"mobile":mobile,@"is_default":@"true"};
     return dic;
 }
 +(NSDictionary *)update_address:(NSString *)userToken country:(NSString *)country province:(NSString *)province city:(NSString *)city area:(NSString *)area address:(NSString *)address zip:(NSString *)zip full_name:(NSString *)full_name tel:(NSString *)tel mobile:(NSString *)mobile is_default:(NSString *)trueStr address_id:(NSString *)address_id;

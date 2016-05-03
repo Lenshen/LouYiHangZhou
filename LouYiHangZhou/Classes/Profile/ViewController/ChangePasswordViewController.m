@@ -10,6 +10,7 @@
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
 #import "UIButton+countDown.h"
+#import "HttpParameters.h"
 //ddddd
 @interface ChangePasswordViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *codeButton;
@@ -47,8 +48,9 @@
     NSString *str = APP_USER_FINDPASSWORD;
     NSLog(@"%@%@%@",_mobileTF.text,_niupasswordTF.text,_codeTF.text);
     [BYSHttpTool GET:str Parameters:[HttpParameters find_password:@"" newpassword:_niupasswordTF.text code:_codeTF.text mobile:_mobileTF.text ] Success:^(id responseObject) {
+        
         _registerDic = responseObject;
-        NSLog(@"%@",responseObject);
+        NSLog(@"%@啊%@",responseObject,[HttpParameters find_password:@"" newpassword:_niupasswordTF.text code:_codeTF.text mobile:_mobileTF.text ] );
         NSString *message = _registerDic[@"message"];
         if (_registerDic[@"message"] != nil && ![_registerDic[@"message"] isKindOfClass:[NSNull class] ]) {
             [self alert:message];
@@ -96,9 +98,8 @@
 
 - (IBAction)getCode:(id)sender {
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
-    NSString *str = APP_MOBILEVERIFY;
-    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"101"};
-    [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
+    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"func_id":@"101"};
+    [BYSHttpTool POST:APP_MOBILEVERIFY Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);

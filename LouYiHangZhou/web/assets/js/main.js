@@ -136,27 +136,40 @@ var maps = {
 
 // app接口
 window.app = {
-
 	request: function(name, params, callback) {
-		MallJSBridge.request(name, params, callback);
-	},
-	_hasMethod: function(name) {
-		return !!window['MallJSBridge'] && !!window['MallJSBridge'][name];
-	},
-	_callMethod: function(name) {
-		if (!this._hasMethod(name)) {
+		if (!window['MallJSBridge']) {
 			return;
 		}
-		return window['MallJSBridge'][name].apply(window['MallJSBridge'], Array.prototype.slice.call(arguments).slice(1));
+		MallJSBridge.request(name, params, callback);
 	},
 	showWaiting: function(message) {
-		return this._callMethod('ShowWaiting', message);
+		this.request('showWaiting', {message: message});
+	},
+	hideWaiting: function() {
+		this.request('hideWaiting', {});
 	},
 	getToken: function() {
-		return this._callMethod('GetToken') || '8237C82CC50EED56C2F6C47EA2A43C397F2F3BFB563DF3CC2AEDCD4BDE2EC5C887EAA3A195453076';
+		var self = this;
+		if (this.token === undefined) {
+			this.request('getToken', {}, function(token) {
+				self.token = token;
+			});
+		}
+		
+		return this.token || '8237C82CC50EED56C2F6C47EA2A43C39E3BD1160B4107351E2ACA9F753899EC672394C63A2AE231C';
 	},
-	getUserID: function() {
-		return this._callMethod('GetUserID') || '10027';
+	getUser: function() {
+		var self = this;
+		if (this.user === undefined) {
+			this.request('getUser', {}, function(user) {
+				self.user = user;
+			});
+		}
+		
+		return this.user;
+	},
+	signin: function() {
+		this.request('signin', {});
 	},
 	// ajax: function(configs) {
 	// 	console.log(configs)
@@ -271,23 +284,23 @@ $.extend($, {
 	 * @return {json}        {search: {xxx: 1, mmm: 3}, hash: {aaa: 1, bbb: 1}}
 	 */
 	params: function(search, hash){  
-        search  = search    || window.location.search;  
-        hash    = hash      || window.location.hash;  
-          
-        var fn = function(str, reg){  
-            if(str){  
-                var data = {};  
-                str.replace(reg,function( $0, $1, $2, $3 ){  
-                    data[ $1 ] = $3;  
-                });  
-                return data;  
-            }  
-        }  
-          
-        return {  
-            search: fn(search,  new RegExp( "([^?=&]+)(=([^&]*))?", "g" ))||{},  
-            hash:   fn(hash,    new RegExp( "([^#=&]+)(=([^&]*))?", "g" ))||{}  
-        };  
+		search  = search    || window.location.search;  
+		hash    = hash      || window.location.hash;  
+
+		var fn = function(str, reg){  
+			if(str){  
+				var data = {};  
+				str.replace(reg,function( $0, $1, $2, $3 ){  
+					data[ $1 ] = $3;  
+				});  
+				return data;  
+			}  
+		}  
+
+		return {  
+			search: fn(search,  new RegExp( "([^?=&]+)(=([^&]*))?", "g" ))||{},  
+			hash:   fn(hash,    new RegExp( "([^#=&]+)(=([^&]*))?", "g" ))||{}  
+		};  
     }
 });
 
@@ -600,7 +613,7 @@ var api = {
 	// 商品分类列表页，获取子分类
 	brandlist: function(id) {
 		return this.ajax({
-			url: this.domain + '/api/goods/brandlist',
+			url: this.domainUser + '/api/goods/brandlist',
 			type: 'GET',
 			data: {
 				access_token: app.getToken(),
@@ -622,7 +635,7 @@ var api = {
 	// },
 	search: function(options) {
 		return this.ajax({
-			url: this.domain + '/api/goods/search',
+			url: this.domainUser + '/api/goods/search',
 			type: 'POST',
 			data: $.extend({
 				access_token: app.getToken(),
@@ -968,175 +981,6 @@ $.extend(Slider.prototype, {
 
 });
 
-// ngApp.controller('PageOrders', function($rootScope, $scope) {
-
-// 	$scope.tab = 1;
-
-// 	var pScroll = new IScroll($('.goods').get(0), {
-// 		snap: true,
-// 		scrollX: true,
-// 		scrollY: false,
-// 		mouseWheel: true
-// 	});
-// 	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
-		
-		
-// 	});
-
-// });
-
-// ngApp.controller('PageOrderConfirm', function($rootScope, $scope) {
-
-// 	$scope.payment = 'wechat';
-
-// });
-// ngApp.controller('PageCart', function($rootScope, $scope) {
-
-// 	$('.num').each(function() {
-// 		var $this = $(this),
-// 			$addition = $this.find('.icon-addition'),
-// 			$reduced = $this.find('.icon-reduced'),
-// 			$num = $this.find('b');
-
-
-// 	});
-
-// 	$scope.reduced = function($event) {
-// 		var target = $event.currentTarget;
-// 		var $target = $(target);
-
-// 		var $num = $target.next();
-
-// 		var n = $num.html();
-// 		if (n == 1) {
-// 			console.log('do delete');
-// 			return;
-// 		}
-
-// 		n = parseInt(n) - 1;
-// 		$num.html(n);
-
-// 		if (n == 1) {
-// 			$target.addClass('disabled');
-// 		}
-// 	};
-
-// 	$scope.addition = function($event) {
-// 		var target = $event.currentTarget;
-// 		var $target = $(target);
-// 		if ($target.hasClass('disabled')) {
-// 			return;
-// 		}
-// 		var $num = $target.prev();
-
-// 		var n = $num.html();
-
-// 		n = parseInt(n) + 1;
-// 		$num.html(n);
-
-// 		if (n > 1) {
-// 			$num.prev().removeClass('disabled');
-// 		}
-
-// 	};
-
-// });
-
-// ngApp.controller('PageGoodsDetail', function($rootScope, $scope, $api) {
-	
-
-// 	$api.favoriteExist(1).then(function(response) {
-
-// 	}, function() {
-
-// 	});
-
-
-
-
-// });
-
-// ngApp.controller('PageInvitation', function($rootScope, $scope) {
-	
-// });
-
-// ngApp.controller('PageCommentView', function($rootScope, $scope) {
-	
-// 		$('.page-comment-view .item').each(function() {
-// 			var $this = $(this);
-// 			var pictures = $this.find('.pictures').get(0);
-// 			if (!pictures) {
-// 				return;
-// 			}
-// 			var pScroll = new IScroll(pictures, {
-// 				snap: true,
-// 				scrollX: true,
-// 				scrollY: false,
-// 				mouseWheel: true
-// 			});
-
-
-// 			// pScroll.reset();
-// 		});
-
-// });
-
-// ngApp.controller('PageCoupon', function($rootScope, $scope) {
-	
-
-// });
-
-
-// ngApp.service('$api', function($http, $q) {
-
-// 	var domain = 'http://192.168.0.103:7021';
-
-// 	var headers = {};
-
-// 	return ({
-// 		favoriteExist: favoriteExist
-
-// 	});
-
-// 	// ---
-// 	// PRIVATE METHODS.
-// 	// ---
-// 	function handleError( response ) {
-// 		Toast('网络错误，请稍后重试！');
-// 		// if (
-// 		// 	! angular.isObject( response.data ) ||
-// 		// 	! response.data.message
-// 		// 	) {
-// 		// 	return( $q.reject( "An unknown error occurred." ) );
-// 		// }
-// 		return( $q.reject( response ) );
-// 	}
-
-// 	function handleSuccess( response ) {
-// 		return( response.data );
-// 	}
-
-// 	/**
-// 	 * PUBLIC METHODS
-// 	 */
-// 	// 判断是否收藏
-// 	function favoriteExist(id) {
-// 		var request = $http({
-// 			method: 'post',
-// 			url: domain + '/api/favorite/exist',
-// 			params: {
-// 				access_token: '',
-// 				goods_id: id
-// 			}
-// 			// data: parseData({
-// 			// 	access_token: '',
-// 			// 	goods_id: ''
-// 			// }, data),
-// 			// headers: headers
-// 		});
-// 		return( request.then( handleSuccess, handleError ) );
-// 	}
-// });
 
 $(window).on('load', function() {
 	if (navigator.userAgent.toLowerCase().indexOf('pc') >= 0) {

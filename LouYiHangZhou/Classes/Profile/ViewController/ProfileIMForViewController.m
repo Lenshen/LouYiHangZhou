@@ -40,6 +40,7 @@
 @property (nonatomic, strong) UIButton *sureButton;
 @property (nonatomic,assign) BOOL isLeapyear;//是否是闰年
 @property (nonatomic,strong) UIView *viewp;
+@property (nonatomic,strong) NSString *timesp;
 
 
 @end
@@ -53,7 +54,6 @@
     self.yearArray = [NSMutableArray array];
     self.monthArray = [NSMutableArray array];
     self.dayArray = [NSMutableArray array];
-    
     
     NSString *imagedata = [USER_DEFAULT objectForKey:@"avatar"];
     NSURL *url = [NSURL URLWithString:imagedata];
@@ -100,9 +100,14 @@
         }];
 
     }
+    self.sexString = self.sexLabel.text;
     if (self.sexString && self.dateString) {
-        [BYSHttpTool POST:APP_USER_UPDATE Parameters:[HttpParameters uploadImformation:self.dateString sexStr:self.sexString] Success:^(id responseObject) {
+        NSLog(@"%@",self.timesp);
+        [BYSHttpTool POST:APP_USER_UPDATE Parameters:[HttpParameters uploadImformation:self.timesp sexStr:self.sexString] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
+            
+            [USER_DEFAULT setObject:self.timesp forKey:@"birth"];
+            [USER_DEFAULT setObject:self.sexLabel.text forKey:@"sex"];
             NSLog(@"%@",responseObject[@"data"]);
             [SVProgressHUD dismiss];
 
@@ -111,6 +116,7 @@
             NSLog(@"%@",error);
             [SVProgressHUD showErrorWithStatus:@"缺少参数"];
         }];
+    
 
     }
 
@@ -195,12 +201,14 @@
     NSString *yearString = [self.yearArray objectAtIndex:[self.pickview selectedRowInComponent:0]];
     NSString *monthString = [self.monthArray objectAtIndex:[self.pickview selectedRowInComponent:1]];
     NSString *dayString = [self.dayArray objectAtIndex:[self.pickview selectedRowInComponent:2]];
-    self.dateString = [NSString stringWithFormat:@"%@%@%@",yearString,monthString,dayString];
+    self.dateString = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
     
-
-  
-    self.dateField.text = [NSString stringWithFormat:@"%@-%@-%@",yearString,monthString,dayString];
-       [self.view endEditing:NO];
+    NSString* timeStr = self.dateString;
+    self.dateField.text = self.dateString;
+    
+    _timesp = [self transTotimeSp:timeStr];
+    
+    NSLog(@"%@  %@",timeStr,_timesp);
     
 
 }
@@ -381,13 +389,30 @@
     self.tableView.showsVerticalScrollIndicator = NO;
 //    [self setNavigationBarType];
     
+    NSString * timeStampString = [USER_DEFAULT objectForKey:@"birth"];
+    
+    NSTimeInterval _interval=[timeStampString doubleValue];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSLog(@"1296035591  = %@",confromTimesp);
+    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
     self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
-    self.birthLabel.text = [USER_DEFAULT objectForKey:@"birth"];
+    self.birthLabel.text = confromTimespStr;
     self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
     
     
 
   
+}
+-(NSString *)transTotimeSp:(NSString *)time{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]]; //设置本地时区
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [dateFormatter dateFromString:time];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[date timeIntervalSince1970]];//时间戳
+    return timeSp;
 }
 - (void)viewWillDisappear:(BOOL)animated
 {

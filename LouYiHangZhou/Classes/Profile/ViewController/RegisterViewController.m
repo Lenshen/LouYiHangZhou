@@ -49,7 +49,7 @@
 - (IBAction)registerEvent:(id)sender {
    
     NSString *str = APP_REGISTER;
-    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100",@"password":_passwordTF.text,@"code":_codeTF.text};
+    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"func_id":@"100",@"password":_passwordTF.text,@"code":_codeTF.text};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
         _registerDic = responseObject;
         NSLog(@"%@",responseObject);
@@ -110,7 +110,7 @@
     [SVProgressHUD show];
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
     NSString *str = APP_MOBILEVERIFY;
-    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":@"101",@"func_id":@"100"};
+    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"func_id":@"100"};
     [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         [SVProgressHUD dismiss];

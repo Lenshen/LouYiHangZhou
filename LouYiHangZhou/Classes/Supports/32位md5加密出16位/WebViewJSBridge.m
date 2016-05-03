@@ -8,8 +8,9 @@
 
 #import "WebViewJSBridge.h"
 #import "SVProgressHUD.h"
-#import "LogonViewController.h"
+#import "LogonVViewController.h"
 #import "UIViewController+StoryboardFrom.h"
+#import "ProfileViewController.h"
 
 #define JSBridgeName @"MallJSBridge"
 #define JSBridgeProtocol @"bridge://"
@@ -74,6 +75,8 @@
 {
     
     [[NSNotificationCenter defaultCenter]postNotificationName:@"LogonVViewController" object:self userInfo:@{@"LogonVViewController":@"LogonVViewController"}];
+    
+    
     
 }
 -(void)getUser:(NSString *)callback

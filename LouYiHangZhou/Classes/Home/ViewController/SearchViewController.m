@@ -11,15 +11,21 @@
 #import "HttpParameters.h"
 #import <MJRefresh.h>
 #import "HistoryLabel.h"
+#import "MJRefresh.h"
+
 #define ScreenWidth   [UIScreen mainScreen].bounds.size.width
 
 @interface SearchViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate>
+
+
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *searchDisplayController;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong,nonatomic) NSMutableArray  *dataList;
 @property (strong,nonatomic) NSMutableArray *responseArray;
 @property (strong,nonatomic) NSString *searchStr;
 @property (strong,nonatomic) NSMutableArray  *searchList;
+@property (strong,nonatomic) NSMutableArray  *finallyMArry;
+
 @property (weak, nonatomic) IBOutlet UIButton *blackButton;
 @property (strong, nonatomic) NSArray *clearArray;
 @property (strong, nonatomic) HistoryLabel *history;
@@ -30,7 +36,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-      [self setupMJRefreshHeader];
     [self dismissSearchBarBlackground];
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
     self.automaticallyAdjustsScrollViewInsets =NO;
@@ -54,6 +59,9 @@
     [button setTitle:@"清除历史纪录" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.tableView addSubview:button];
+    
+    
+    
 
 
 }
@@ -86,68 +94,71 @@
 }
 - (void)setupMJRefreshHeader {
    
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
+//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+//    [self.tableView.mj_header beginRefreshing];
     
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
+    self.searchDisplayController.searchResultsTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self  refreshingAction:@selector(LoadMoreData)];
 }
 
-//-(void)LoadMoreData
-//{
-//    
-//    //过滤数据
-//    if (self.searchStr) {
-//        NSInteger i = 0;
-//        i++;
-//        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
-//            NSDictionary *dic = responseObject;
-//            _responseArray  = dic[@"data"];
-//            NSLog(@"%@",_responseArray);
-//            if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
-//            {
-//                
-//                _dataList =[[NSMutableArray alloc]init];
-//                
-//                if (_responseArray.count != 0) {
-//                    for (NSInteger i=0; i<_responseArray.count; i++) {
-//                        NSDictionary *dic = _responseArray[i];
-//                        NSString *str = dic[@"goods_name"];
-//                        [_dataList
-//                         addObject:str];
-//                        NSLog(@"%@%@",_dataList,str);
-//                        self.searchList= [NSMutableArray arrayWithArray:_dataList];
-//                        [self.tableView reloadData];
-//                        [self.searchDisplayController.searchResultsTableView reloadData];
-//                    }
-//                    
-//                    
-//                }else
-//                {
-//                    NSLog(@"meishuju");
-//                    
-//                }
-//                
-//                
-//            }
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//        } Failure:^(NSError *error) {
-//            NSLog(@"%@",error)
-//        }];
-//        
-//        
-//
-//        
-//    }else
-//        [self.tableView.mj_footer endRefreshing];
-// }
-//
+-(void)LoadMoreData
+{
+    
+    //过滤数据
+    if (self.searchStr) {
+        NSInteger i = 0;
+        i++;
+        NSLog(@"%ld",i);
+        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
+            NSDictionary *dic = responseObject;
+            _responseArray  = dic[@"data"];
+            NSLog(@"%@",_responseArray);
+            if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
+            {
+                
+                _dataList =[[NSMutableArray alloc]init];
+                
+                if (_responseArray.count != 0) {
+                    for (NSInteger i=0; i<_responseArray.count; i++) {
+                        NSDictionary *dic = _responseArray[i];
+                        NSString *str = dic[@"goods_name"];
+                        [_dataList
+                         addObject:str];
+                        NSLog(@"%@%@",_dataList,str);
+                        self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                        [self.searchDisplayController.searchResultsTableView reloadData];
+                    }
+                    [ self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
+
+                    
+                }else
+                {
+                    NSLog(@"meishuju");
+                    
+                }
+                
+                
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error)
+            [self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
+
+        }];
+        
+        
+
+        
+    }else
+        [self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
+ }
+
 - (IBAction)black:(id)sender {
     [self.searchDisplayController setActive:NO animated:YES];
     self.blackButton.enabled = YES;
@@ -170,7 +181,13 @@
     }
     
 }
-    
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 50;
+    }
+    return 0;
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *flag=@"cellFlag";
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:flag];
@@ -269,13 +286,16 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     NSLog(@"搜索Begin");
     self.blackButton.enabled = NO;
+    self.searchDisplayController.searchResultsTableView.frame = self.view.frame;
+//    self.searchDisplayController.searchResultsTableView.contentSize = CGSizeMake(kScreenWidth, kScreenHeight);
+    [self setupMJRefreshHeader];
+
 
     
     return YES;
 }
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
     NSLog(@"搜索End");
-    [self.searchDisplayController setActive:NO animated:YES];
     self.blackButton.enabled = YES;
 
 

@@ -62,7 +62,8 @@
 					}
 					vm.loading = true;
 					api.search({
-						brand_id: params.search.id,
+						goods_type_id: params.search.typeid,
+						brand_id: params.search.brandid,
 						sort_index: vm.sorttype,
 						page_index: vm.pageindex,
 						page_size: vm.pagesize

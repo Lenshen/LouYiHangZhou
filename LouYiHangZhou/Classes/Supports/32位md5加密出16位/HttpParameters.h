@@ -35,4 +35,5 @@
 +(NSDictionary *)change_password:(NSString *)userToken newpassword:(NSString *)newpassword oldpassword:(NSString *)oldpassword;
 
 +(NSDictionary *)find_password:(NSString *)userToken newpassword:(NSString *)newpassword code:(NSString *)code mobile:(NSString *)mobile;
+
 @end

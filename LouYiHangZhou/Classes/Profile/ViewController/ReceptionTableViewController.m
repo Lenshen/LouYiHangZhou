@@ -35,6 +35,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.edgesForExtendedLayout = UIRectEdgeNone;
+  
+    
     
   
     
@@ -44,6 +46,10 @@
 {
     
     [SVProgressHUD show];
+    
+    NSDictionary *dic = [HttpParameters app_get_userImformation:nil];
+    NSLog(@"%@",dic);
+
     [BYSHttpTool GET:APP_ADDRESS_GET Parameters:[HttpParameters app_get_userImformation:nil ] Success:^(id responseObject) {
         NSArray *array = responseObject[@"data"];
 
@@ -116,7 +122,7 @@
     _model = [[AddressModel alloc]initWithDictionary:dic error:nil];
     NSLog(@"%@",_model);
     NSString *address = [NSString stringWithFormat:@"%@%@%@%@",_model.province,_model.city,_model.area,_model.address];
-    if (indexPath.row == 0 && indexPath.section == 0) {
+    if (_model.is_default) {
         NSMutableAttributedString *mutoString = [[NSMutableAttributedString alloc]initWithString:[NSString  stringWithFormat:@"[默认]%@",address]];
         [mutoString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,4)];
         cell.addressLable.attributedText = mutoString;
@@ -143,7 +149,6 @@
     [self.navigationController pushViewController:changeReceptionVC animated:YES];
     
 }
-
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;

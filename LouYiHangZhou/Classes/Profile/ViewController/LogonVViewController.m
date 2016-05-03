@@ -31,6 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   
 
   UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
   self.navigationItem.backBarButtonItem = item;
@@ -118,6 +119,7 @@
 
                 }
              Failure:^(NSError *error) {
+                 NSLog(@"%@",error);
                 [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];
                 
                     

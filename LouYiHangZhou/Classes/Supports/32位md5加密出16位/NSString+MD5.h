@@ -12,4 +12,6 @@
 @interface NSString (MD5)
 -(NSString*) md5;
 -(void)alert:(NSString *)message viewcontroller:(UIViewController *)viewcontroller;
+
+-(BOOL) isValidateMobile:(NSString *)mobile;
 @end

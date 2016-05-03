@@ -8,6 +8,7 @@
 
 #import "MessageTableViewController.h"
 #import "MessageTableViewCell.h"
+#import "BYSHttpTool.h"
 
 @interface MessageTableViewController ()
 
@@ -108,6 +109,9 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"我的消息";
+//    [BYSHttpTool GET:APP_USER_GETMESSAGE Parameters:<#(id)#> Success:<#^(id responseObject)success#> Failure:<#^(NSError *error)failure#>]
+    
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {

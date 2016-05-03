@@ -75,7 +75,7 @@
     
     
     [BYSHttpTool GET:APP_AUTHOTIZD_API Parameters:[HttpParameters app_Token] Success:^(id responseObject) {
-        DLog(@"%@",responseObject[@"data"]);
+        DLog(@"%@",responseObject);
         
         if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]]){
             
