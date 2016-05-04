@@ -17,6 +17,7 @@
 #import "SVProgressHUD.h"
 
 
+
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImagePickerController *_imagePickerController;
@@ -41,6 +42,7 @@
 @property (nonatomic,assign) BOOL isLeapyear;//是否是闰年
 @property (nonatomic,strong) UIView *viewp;
 @property (nonatomic,strong) NSString *timesp;
+@property (nonatomic,strong) NSString *timeOnly;
 
 
 @end
@@ -91,9 +93,8 @@
             NSLog(@"%@",responseObject);
             NSLog(@"%@",responseObject[@"data"]);
             [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"avatar"];
-            [SVProgressHUD dismiss];
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
 
-            [self.navigationController popViewControllerAnimated:YES];
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
            [SVProgressHUD dismiss];
@@ -101,7 +102,13 @@
 
     }
     self.sexString = self.sexLabel.text;
-    if (self.sexString && self.dateString) {
+    self.timesp =[self transTotimeSp:self.birthLabel.text];
+
+   
+   
+        
+    
+    if (self.sexString && self.timesp) {
         NSLog(@"%@",self.timesp);
         [BYSHttpTool POST:APP_USER_UPDATE Parameters:[HttpParameters uploadImformation:self.timesp sexStr:self.sexString] Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
@@ -109,9 +116,9 @@
             [USER_DEFAULT setObject:self.timesp forKey:@"birth"];
             [USER_DEFAULT setObject:self.sexLabel.text forKey:@"sex"];
             NSLog(@"%@",responseObject[@"data"]);
-            [SVProgressHUD dismiss];
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
 
-            [self.navigationController popViewControllerAnimated:YES];
+
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
             [SVProgressHUD showErrorWithStatus:@"缺少参数"];
@@ -119,6 +126,8 @@
     
 
     }
+    
+
 
 }
 
@@ -390,26 +399,35 @@
 //    [self setNavigationBarType];
     
     NSString * timeStampString = [USER_DEFAULT objectForKey:@"birth"];
+   
     
-    NSTimeInterval _interval=[timeStampString doubleValue];
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:_interval];
-    NSLog(@"1296035591  = %@",confromTimesp);
-    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+    
     self.mobileLB.text = [USER_DEFAULT objectForKey:@"mobile"];
-    self.birthLabel.text = confromTimespStr;
+    self.birthLabel.text = [self transTotime:timeStampString];
     self.sexLabel.text = [USER_DEFAULT objectForKey:@"sex"];
     
     
 
   
 }
+-(NSString *)transTotime:(NSString *)timeStampString
+{
+    NSTimeInterval _interval=[timeStampString doubleValue];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSLog(@"1296035591  = %@",confromTimesp);
+    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+    
+    return confromTimespStr;
+}
 -(NSString *)transTotimeSp:(NSString *)time{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]]; //设置本地时区
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
     NSDate *date = [dateFormatter dateFromString:time];
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[date timeIntervalSince1970]];//时间戳
     return timeSp;

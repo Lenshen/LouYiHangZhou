@@ -79,16 +79,11 @@
 }
 - (void)textFieldDidChange:(UITextField *)textField
 {
-    if (textField == self.mobileTF) {
-        if (textField.text.length == 11) {
-            
-        }else
-            
-        {
-            
-        }
-        
-    }
+    if (textField.text.length != 0) {
+        [_registerButton canSelectButton];
+    }else
+        [_registerButton canNotSelectButton];
+    
 }
 
 

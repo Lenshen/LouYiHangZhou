@@ -31,7 +31,7 @@
 #define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
 #define APP_ADDRESS_UPDATE @"http://"TESTSERVERSAPI"/api/address/update"
 #define APP_USER_GETMESSAGE  @"http://"TESTSERVERSAPI"/api/user/getmessages"
-//#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+#define APP_USER_ADDINQUIRE  @"http://"TESTSERVERSAPI"/api/user/addinquire"
 //#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
 
 

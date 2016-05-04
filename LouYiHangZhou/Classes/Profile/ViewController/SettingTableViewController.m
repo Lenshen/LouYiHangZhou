@@ -12,6 +12,7 @@
 #import "FeedBackViewController.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import "SVProgressHUD.h"
 
 @interface SettingTableViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *clearCacheLabel;
@@ -167,6 +168,7 @@
 {
     [super viewWillDisappear:YES];
     self.navigationController.navigationBarHidden = YES;
+
     
 }
 

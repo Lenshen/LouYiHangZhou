@@ -36,7 +36,9 @@
     _mobileTF.delegate = self;
     _codeTF.delegate = self;
     _niupasswordTF.delegate = self;
+    [_niupasswordTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [_mobileTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
     
     
     
@@ -91,6 +93,14 @@
             [self.codeButton setBackgroundColor:[UIColor grayColor]];
         }
         
+    }else if(textField == self.niupasswordTF)
+    {
+        if (textField.text.length >= 6) {
+            [_registerButton canSelectButton];
+        }else
+        {
+            [_registerButton canNotSelectButton];
+        }
     }
 }
 

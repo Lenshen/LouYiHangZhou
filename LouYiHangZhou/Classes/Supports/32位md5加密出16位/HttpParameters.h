@@ -36,4 +36,6 @@
 
 +(NSDictionary *)find_password:(NSString *)userToken newpassword:(NSString *)newpassword code:(NSString *)code mobile:(NSString *)mobile;
 
++(NSDictionary *)app_user_addinquiresMessage:(NSString *)message;
+
 @end

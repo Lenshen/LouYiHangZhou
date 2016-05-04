@@ -121,5 +121,11 @@
     return dic;
     
 }
++(NSDictionary *)app_user_addinquiresMessage:(NSString *)message
+{
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"message":message,@"user_ip":[USER_DEFAULT objectForKey:@"client_ip"]};
+    return dic;
+    
 
+}
 @end
