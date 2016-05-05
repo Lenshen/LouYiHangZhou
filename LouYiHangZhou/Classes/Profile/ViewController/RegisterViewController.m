@@ -110,8 +110,8 @@
     [SVProgressHUD show];
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
     NSString *str = APP_MOBILEVERIFY;
-    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"func_id":@"100"};
-    [BYSHttpTool POST:str Parameters:parameter Success:^(id responseObject) {
+    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"type":@"0"};
+    [BYSHttpTool GET:str Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         [SVProgressHUD dismiss];
     } Failure:^(NSError *error) {

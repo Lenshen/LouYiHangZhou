@@ -144,6 +144,8 @@
       
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+
 
     }];
    

@@ -29,7 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(jpush:) name:@"jpush" object:nil];
+  
     
     [self setUpWebview:@"index2" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     
@@ -38,30 +38,24 @@
 {
     [super viewDidDisappear:YES];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SearchViewController" object:nil];
+  
 }
 - (IBAction)pushButton:(id)sender {
     SearchViewController  *search = [SearchViewController instanceFromStoryboard];
     search.hidesBottomBarWhenPushed = YES;
-    [self
-     .navigationController pushViewController:search animated:YES];
+    [self.navigationController pushViewController:search animated:YES];
 
     
 
 }
--(void)jpush:(NSNotification *)noti
-{
-    NSLog(@"%@",noti);
-    NSDictionary *dic = noti.userInfo;
-    NSString *push = dic[@"push"];
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    // 禁用用户选择
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
     
-    if ([push isEqualToString:@"SearchViewController"]) {
-        SearchViewController  *search = [SearchViewController instanceFromStoryboard];
-        search.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:search animated:YES];
-    }
-    
+    // 禁用长按弹出框
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
 }
+
 
 
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
@@ -69,6 +63,7 @@
     _webView = [[UIWebView alloc]initWithFrame:webviewFrame];
 //    NSString *str = [[NSBundle mainBundle] bundlePath];
     _webView.delegate = self;
+    
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
     NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
     NSURL *baseURL = [NSURL fileURLWithPath:path1];

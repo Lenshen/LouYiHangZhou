@@ -8,10 +8,22 @@
 
 #import "MessageTableViewController.h"
 #import "MessageTableViewCell.h"
+#import "HttpParameters.h"
 #import "BYSHttpTool.h"
+#import "MessageModel.h"
+#import "SVProgressHUD.h"
+#import <MJRefresh.h>
+#import "DatailMessageViewController.h"
+
+
 
 @interface MessageTableViewController ()
+@property (nonatomic, strong)MessageModel *model;
+@property (strong, nonatomic) IBOutlet UITableView *tableview;
 
+@property (nonatomic, strong)NSMutableArray *messageMArray;
+
+@property BOOL is_read;
 @end
 
 @implementation MessageTableViewController
@@ -19,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self setupMJRefreshHeader];
+    self.tableview.tableFooterView.hidden = YES;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -30,6 +44,50 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)setupMJRefreshHeader {
+//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(LoadNewData)];
+//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+//    [self.tableView.mj_header beginRefreshing];
+    
+    self.tableview.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
+
+}
+
+
+-(void)LoadMoreData
+{
+   
+    NSInteger i = 1;
+    i++;
+    NSString *index = [NSString stringWithFormat:@"%ld",i];
+
+    [BYSHttpTool GET:APP_USER_GETMESSAGE Parameters:[HttpParameters app_user_getMessagesPageindex:index]  Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *array  = responseObject[@"data"];
+        [self.tableView.mj_header endRefreshing];
+        for (NSInteger i = 0;i < array.count; i++) {
+            _model = [[MessageModel alloc]initWithDictionary:array[i] error:nil];
+            [_messageMArray addObject:_model];
+            [self.tableView reloadData];
+            NSInteger count = [responseObject[@"record_count"] integerValue];
+            if (self.messageMArray.count == count) {
+                self.tableview.tableFooterView.hidden = NO;
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
+          
+            
+        }
+        [self.tableview reloadData];
+        
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        [self.tableView.mj_header endRefreshing];
+//        [SVProgressHUD showErrorWithStatus:@"服务器未响应,请稍候再试..."];
+        
+    }
+     ];
+    
 }
 
 
@@ -48,13 +106,39 @@
 {
     return @"删除";
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DatailMessageViewController *datail = [[DatailMessageViewController alloc]init];
+      _model = _messageMArray[indexPath.row];
+    datail.labelText = _model.alert;
+    [self.navigationController pushViewController:datail animated:YES];
+
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return _messageMArray.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageTableViewCell" forIndexPath:indexPath];
+    _model = _messageMArray[indexPath.row];
+    NSString *year = [_model.create_date substringToIndex:4];
+    NSString *mounth = [_model.create_date substringWithRange:NSMakeRange(4, 2)];
+    NSString *date = [_model.create_date substringFromIndex:6];
+    NSString *finaDate = [NSString stringWithFormat:@"%@-%@-%@",year,mounth,date];
+    _is_read = [_model.is_read integerValue];
+    
+    if (_is_read) {
+        cell.hideRedDog.hidden = YES;
+    }else
+    {
+        cell.hideRedDog.hidden = NO;
+    }
+
+    cell.label.text = _model.alert;
+    cell.datelabel.text = finaDate;
+    
+    
     
     
     return cell;
@@ -109,10 +193,34 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"我的消息";
-//    [BYSHttpTool GET:APP_USER_GETMESSAGE Parameters:<#(id)#> Success:<#^(id responseObject)success#> Failure:<#^(NSError *error)failure#>]
     
+    [BYSHttpTool GET:APP_USER_GETMESSAGE Parameters:[HttpParameters app_user_getMessagesPageindex:@"1"] Success:^(id responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        _messageMArray = [NSMutableArray array];
+        NSArray *array  = responseObject[@"data"];
+        for (NSInteger i = 0;i < array.count; i++) {
+            _model = [[MessageModel alloc]initWithDictionary:array[i] error:nil];
+            [_messageMArray addObject:_model];
+            [self.tableView reloadData];
+            NSLog(@"%@----------%@",_model,_messageMArray);
+
+
+        }
+       
+
+        
+        
+    } Failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+        [SVProgressHUD showErrorWithStatus:@"服务器超时...."];
+        
+    }];
     
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];

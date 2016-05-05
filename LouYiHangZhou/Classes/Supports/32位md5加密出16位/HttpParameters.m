@@ -128,4 +128,21 @@
     
 
 }
++(NSDictionary *)app_user_getMessagesPageindex:(NSString *)pageindex
+{
+    
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"PlatForm":@"3",@"mobile":[USER_DEFAULT objectForKey:@"mobile"],@"pageindex":pageindex,@"pagesize":@"10"};
+    return dic;
+    
+
+}
++(NSDictionary *)app_cart_getall
+{
+    
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"]};
+    return dic;
+    
+    
+}
+
 @end

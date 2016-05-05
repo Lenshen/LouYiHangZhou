@@ -108,8 +108,8 @@
 
 - (IBAction)getCode:(id)sender {
     [_codeButton startWithTime:59.0 title:@"获取验证码" countDownTitle:@"秒后再验证码" mainColor:nil countColor:[UIColor whiteColor]];
-    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"func_id":@"101"};
-    [BYSHttpTool POST:APP_MOBILEVERIFY Parameters:parameter Success:^(id responseObject) {
+    NSDictionary *parameter = @{@"mobile":_mobileTF.text,@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"type":@"1"};
+    [BYSHttpTool GET:APP_MOBILEVERIFYRESETWD Parameters:parameter Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);

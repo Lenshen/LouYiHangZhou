@@ -38,4 +38,8 @@
 
 +(NSDictionary *)app_user_addinquiresMessage:(NSString *)message;
 
++(NSDictionary *)app_user_getMessagesPageindex:(NSString *)pageindex;
+
++(NSDictionary *)app_cart_getall;
+
 @end

@@ -226,7 +226,7 @@
 #pragma mark 点击订单状态
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",nil];
+    NSArray *array = [NSArray arrayWithObjects:@"0",@"10",@"80",@"15",nil];
  
         OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
     order.indexName = array[indexPath.row];

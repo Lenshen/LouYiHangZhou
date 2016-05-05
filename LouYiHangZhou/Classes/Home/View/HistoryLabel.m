@@ -85,13 +85,11 @@
     CGRect  NewRect = CGRectZero;
     
     if (_previousFrame.origin.x + _previousFrame.size.width + StrSize.width + LABEL_MARGIN > self.bounds.size.width) {
-        NSLog(@"======%f=======%f",_previousFrame.origin.x,_previousFrame.size.width );
         NewRect.origin = CGPointMake(10, _previousFrame.origin.y + StrSize.height + BOTTOM_MARGIN);
         _totalHeight += StrSize.height + BOTTOM_MARGIN;
     }else {
         NewRect.origin = CGPointMake(_previousFrame.origin.x + _previousFrame.size.width + LABEL_MARGIN, _previousFrame.origin.y);
         
-        NSLog(@"======%f=======%f",_previousFrame.origin.x,_previousFrame.size.width );
         
     }
     NewRect.size = StrSize;

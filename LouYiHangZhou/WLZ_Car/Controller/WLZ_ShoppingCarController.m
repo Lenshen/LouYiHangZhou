@@ -12,6 +12,8 @@
 //   MVVM (降低耦合) KVO(一处计算总价钱) 键盘处理(精确到每个cell) 代码适配(手动代码适配，无第三方) ，还有全选,侧滑操作等操作
 #import "PayViewController.h"
 #import "WLZ_ShoppingCarController.h"
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
 
 
@@ -101,50 +103,6 @@
     }
     return _endView;
 }
-
-//- (void)clickALLEnd:(UIButton *)bt
-//{
-//    
-//    //全选 也可以在 VM里面 写  这次在Controller里面写了
-//    if (bt.tag == 18) {
-//        bt.selected = !bt.selected;
-//        
-//        BOOL btselected = bt.selected;
-//        
-//        NSString *checked = @"";
-//        if (btselected) {
-//            checked = @"YES";
-//        }
-//        else
-//        {
-//            checked = @"NO";
-//        }
-//        
-//        if (self.isEdit) {
-//            //取消
-//            for (int i =0; i<_carDataArrList.count; i++) {
-//                NSArray *dataList = [_carDataArrList objectAtIndex:i];
-//                NSMutableDictionary *dic = [dataList lastObject];
-//                
-//                [dic setObject:checked forKey:@"checked"];
-//                for (int j=0; j<dataList.count-1; j++) {
-//                    WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
-//                    if (![model.item_info.sale_state isEqualToString:@"3"]) {
-//                        model.isSelect=btselected;
-//                    }
-//                    
-//                }
-//            }
-//        }
-//        
-//        [_tableView reloadData];
-//
-//    }
-//    
-//    
-//
-//    
-//}
 
 
 
@@ -379,5 +337,16 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [BYSHttpTool GET:APP_CART_GETALL Parameters:[HttpParameters app_cart_getall] Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } Failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+}
 
 @end

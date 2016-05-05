@@ -22,14 +22,14 @@
 - (void)getShopData:(void (^)(NSArray * commonArry))shopDataBlock  priceBlock:(void (^)()) priceBlock
 {
 //    访问网络 获取数据 block回调失败或者成功 都可以在这处理
-//    
+  
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
     NSMutableDictionary *strategyDic = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     
     
     NSArray *commonList = [strategyDic objectForKey:@"common"];
     
-    NSLog(@"%@",commonList);
+    NSLog(@"%@",strategyDic);
     NSMutableArray *commonMuList = [NSMutableArray array];
     
    

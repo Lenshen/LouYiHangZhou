@@ -13,26 +13,47 @@
 //-------------------获取设备大小-------------------------
 //NavBar高度
 #define NavigationBar_HEIGHT 44
+
 #define APP_AUTHOTIZD_API @"http://"TESTSERVERSAPI"/api/authorized/app"
+
 #define APP_USER_API   @"http://"TESTSERVERSAPI"/api/authorized/user"
-#define APP_MOBILEVERIFY @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/send"
+
+#define APP_MOBILEVERIFY @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/reg"
+
+#define APP_MOBILEVERIFYRESETWD @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/resetpwd"
+
 #define JUDGE_MOBILEEXIST @"http://"TESTSERVERSAPI"/api/user/checkmobile"
+
 #define JUDGE_CODETURE @"http://"TESTSERVERSAPI"/api/MobileVerifyCode/verify"
+
 #define APP_REGISTER  @"http://"TESTSERVERSAPI"/api/user/reg"
+
 #define APP_ADDRESS_GET @"http://"TESTSERVERSAPI"/api/address/get"
+
 #define APP_ADDRESS_DELETE @"http://"TESTSERVERSAPI"/api/address/delete"
+
 #define APP_USER_GET @"http://"TESTSERVERSAPI"/api/user/get"
+
 #define APP_USER_UNLOAD_AVATAR  @"http://"TESTSERVERSAPI"/api/upload/avatar"
+
 #define APP_USER_FINDPASSWORD  @"http://"TESTSERVERSAPI"/api/user/findpassword"
 #define APP_USER_PASSWORD  @"http://"TESTSERVERSAPI"/api/user/password"
+
 #define APP_GOOD_SEARCH  @"http://"TESTSERVERSAPI"/api/goods/search"
+
 #define APP_USER_SIGOUT  @"http://"TESTSERVERSAPI"/api/user/signout"
+
 #define APP_USER_UPDATE  @"http://"TESTSERVERSAPI"/api/user/update"
+
 #define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+
 #define APP_ADDRESS_UPDATE @"http://"TESTSERVERSAPI"/api/address/update"
-#define APP_USER_GETMESSAGE  @"http://"TESTSERVERSAPI"/api/user/getmessages"
+
+#define APP_USER_GETMESSAGE  @"http://"TESTSERVERSAPI"/api/user/get_msg"
+
 #define APP_USER_ADDINQUIRE  @"http://"TESTSERVERSAPI"/api/user/addinquire"
-//#define APP_ADDRESS_ADD  @"http://"TESTSERVERSAPI"/api/address/add"
+
+#define APP_CART_GETALL @"http://"TESTSERVERSAPI"/api/cart/getall"
 
 
 

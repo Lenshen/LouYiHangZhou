@@ -12,6 +12,8 @@
 #import <MJRefresh.h>
 #import "HistoryLabel.h"
 #import "MJRefresh.h"
+#import "SearchModel.h"
+#import "SearhDetailViewController.h"
 
 #define ScreenWidth   [UIScreen mainScreen].bounds.size.width
 
@@ -29,12 +31,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *blackButton;
 @property (strong, nonatomic) NSArray *clearArray;
 @property (strong, nonatomic) HistoryLabel *history;
+@property (strong,nonatomic) SearchModel *model;
 @end
 
 @implementation SearchViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.searchDisplayController.searchResultsTableView removeFromSuperview];
+
     // Do any additional setup after loading the view.
     [self dismissSearchBarBlackground];
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
@@ -60,6 +65,9 @@
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.tableView addSubview:button];
     
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
     
     
 
@@ -94,8 +102,8 @@
 }
 - (void)setupMJRefreshHeader {
    
-//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-//    [self.tableView.mj_header beginRefreshing];
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    [self.tableView.mj_header beginRefreshing];
     
     self.searchDisplayController.searchResultsTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self  refreshingAction:@selector(LoadMoreData)];
 }
@@ -120,11 +128,13 @@
                 if (_responseArray.count != 0) {
                     for (NSInteger i=0; i<_responseArray.count; i++) {
                         NSDictionary *dic = _responseArray[i];
-                        NSString *str = dic[@"goods_name"];
-                        [_dataList
-                         addObject:str];
-                        NSLog(@"%@%@",_dataList,str);
-                        self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                        _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
+                        
+                        
+                        
+                        [_searchList
+                         addObject:_model];
+                        
                         [self.searchDisplayController.searchResultsTableView reloadData];
                     }
                     [ self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
@@ -195,17 +205,21 @@
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:flag];
     }
     if (tableView==self.searchDisplayController.searchResultsTableView) {
-        [cell.textLabel setText:self.searchList[indexPath.row]];
+        _model = self.searchList[indexPath.row];
+        [cell.textLabel setText:_model.goods_name];
     }
-    else{
-        [cell.textLabel setText:self.dataList[indexPath.row]];
-    }
+    
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"dididididi");
+    _model = _searchList[indexPath.row];
+    SearhDetailViewController *searhDetailViewController = [[SearhDetailViewController alloc]init];
+    searhDetailViewController.indexName = _model.goods_id;
+    [self.navigationController pushViewController:searhDetailViewController animated:YES];
+    
+    
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
@@ -227,13 +241,15 @@
             if (_responseArray.count != 0) {
                 for (NSInteger i=0; i<_responseArray.count; i++) {
                     NSDictionary *dic = _responseArray[i];
-                    NSString *str = dic[@"goods_name"];
+                    _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
+                    
+                    
+                    
                     [_dataList
-                     addObject:str];
-                    NSLog(@"%@%@",_dataList,str);
+                     addObject:_model];
+                    NSLog(@"%@",_dataList);
                     self.searchList= [NSMutableArray arrayWithArray:_dataList];
                     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-                    [self.tableView reloadData];
                     [self.searchDisplayController.searchResultsTableView reloadData];
                 }
                 
@@ -287,7 +303,6 @@
     NSLog(@"搜索Begin");
     self.blackButton.enabled = NO;
     self.searchDisplayController.searchResultsTableView.frame = self.view.frame;
-//    self.searchDisplayController.searchResultsTableView.contentSize = CGSizeMake(kScreenWidth, kScreenHeight);
     [self setupMJRefreshHeader];
 
 

@@ -42,18 +42,25 @@
     _webView.delegate = self;
 
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-    NSURL *baseURL = [NSURL fileURLWithPath:path1];
+
     
-    NSString *htmlStr = [NSString stringWithFormat:@"web/classify.html"];
+    NSString *htmlStr = [NSString stringWithFormat:@"web/classify.html?typeid=117"];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
-    NSLog(@"%@ %@",path1,path);
-    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+
+
  
     
     _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+//    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
+//    NSURL *baseURL = [NSURL fileURLWithPath:path1];
+//    [_webView loadHTMLString:html baseURL:baseURL];
+//    NSLog(@"%@ ",path);
+//    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+//    NSLog(@"%@",html);
+    NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+    NSLog(@"%@",request1);
     
-    [_webView loadHTMLString:html baseURL:baseURL];
+    [self.webView loadRequest:request1];
     [self.view addSubview:_webView];
 }
 
@@ -62,12 +69,17 @@
 {
     
     NSString *url = [[request URL] absoluteString];
+  
+
     
     NSLog(@"%@",url);
 
     return YES;
 }
-
+//-(void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//    _webView stringByEvaluatingJavaScriptFromString:<#(nonnull NSString *)#>
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
