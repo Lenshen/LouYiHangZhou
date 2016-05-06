@@ -47,7 +47,7 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
-    self.title = @"订单详情";
+    self.title = @"商品详情";
     
     
 }

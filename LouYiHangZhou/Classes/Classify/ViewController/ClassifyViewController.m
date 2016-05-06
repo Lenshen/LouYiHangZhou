@@ -8,9 +8,11 @@
 
 #import "ClassifyViewController.h"
 #import "WebViewJSBridge.h"
+#import "SearhDetailViewController.h"
+#import "ClassifyBrandViewController.h"
 #define JSBridgeName @"MallJSBridge"
 #define JSBridgeProtocol @"bridge://"
-@interface ClassifyViewController ()<UIWebViewDelegate>
+@interface ClassifyViewController ()<UIWebViewDelegate,OpenWebviewDelegate>
 @property (nonatomic, strong)UIWebView *webView;
 @property (nonatomic, strong)WebViewJSBridge *bridge;
 
@@ -51,19 +53,43 @@
  
     
     _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
-//    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-//    NSURL *baseURL = [NSURL fileURLWithPath:path1];
-//    [_webView loadHTMLString:html baseURL:baseURL];
-//    NSLog(@"%@ ",path);
-//    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-//    NSLog(@"%@",html);
+    _bridge.openWebviewDelegate = self;
+   
+
     NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
     NSLog(@"%@",request1);
     
     [self.webView loadRequest:request1];
     [self.view addSubview:_webView];
+    
+    
+    
+    //    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
+    //    NSURL *baseURL = [NSURL fileURLWithPath:path1];
+    //    [_webView loadHTMLString:html baseURL:baseURL];
+    //    NSLog(@"%@ ",path);
+    //    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    //    NSLog(@"%@",html);
 }
-
+-(void)openGoodDetailWebviewWithString:(NSString *)goods_id
+{
+    if (_bridge.openWebview) {
+        SearhDetailViewController *gooddetail = [[SearhDetailViewController alloc]init];
+        gooddetail.hidesBottomBarWhenPushed = YES;
+        
+        [self.navigationController pushViewController:gooddetail animated:YES];
+        
+    }
+    
+}
+-(void)openGoodsWebbiewWihtString:(NSString *)type_id brand_id:(NSString *)brand_id
+{
+    ClassifyBrandViewController *brand = [[ClassifyBrandViewController alloc]init];
+    brand.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:brand animated:YES];
+    
+    
+}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -85,6 +111,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    // 禁用用户选择
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
+    
+    // 禁用长按弹出框
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
+}
 
 
 

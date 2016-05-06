@@ -9,12 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-//@protocol WebViewJSBridgeDelegate;
+@protocol OpenWebviewDelegate <NSObject>
 
+- (void)openGoodDetailWebviewWithString:(NSString *)goods_id;
+- (void)openGoodsWebbiewWihtString:(NSString *)type_id brand_id:(NSString *)brand_id;
+
+
+@end
 @interface WebViewJSBridge : UIViewController <UIWebViewDelegate>
-
+@property (nonatomic, strong) NSString *goods_id;
+@property BOOL openWebview;
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) id superDelegate;
+@property (nonatomic,retain)  id <OpenWebviewDelegate>openWebviewDelegate;
 
 + (instancetype)bridgeForWebView:(UIWebView *)webView withSuperDelegate:(id)superDelegate;
 
@@ -48,3 +55,4 @@
 
 
 @end
+

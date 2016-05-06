@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div id="vue-view" class="page-goods-detail">
-		<a href="" class="icons icon-back"></a>
+		<!-- <a href="" class="icons icon-back"></a> -->
 		<!-- <a href="" class="icons icon-share"></a> -->
 		<!-- <section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
 			<div id="busSlider" class="bus-slider">
@@ -94,6 +94,13 @@
 			},
 			methods: {
 				doFavorite: function() {
+
+					var user = app.getUser();
+					if (!user) {
+						app.signin();
+						return;
+					}
+
 					if (vm.goods.is_favorite) {
 						api.favoriteRemove(params.search.id).done(function(response) {
 							if (response.success) {
@@ -135,6 +142,15 @@
 					return stars.join('');
 				},
 				cartAdd: function(id) {
+					alert(app.getToken())
+					alert(id)
+					var user = app.getUser();
+					alert(user)
+					if (!user) {
+						app.signin();
+						return;
+					}
+
 					var specId = [];
 					var specName = [];
 					$('.spec-list').each(function() {

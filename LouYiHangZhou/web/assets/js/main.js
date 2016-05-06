@@ -156,7 +156,7 @@ window.app = {
 			});
 		}
 		
-		return this.token || '8237C82CC50EED56C2F6C47EA2A43C39E3BD1160B4107351E2ACA9F753899EC672394C63A2AE231C';
+		return this.token;
 	},
 	getUser: function() {
 		var self = this;
@@ -170,6 +170,9 @@ window.app = {
 	},
 	signin: function() {
 		this.request('signin', {});
+	},
+	intentaddress: function() {
+		this.request('intentaddress', {});
 	},
 	// ajax: function(configs) {
 	// 	console.log(configs)
@@ -332,8 +335,8 @@ var page = {
 
 
 var api = {
-	domain: 'http://192.168.0.103:7021',
-	domainUser: 'http://192.168.0.103:8078',
+	// domain: 'http://192.168.0.103:7021',
+	domain: 'http://192.168.0.103:8078',
 	ajax: function(conf) {
 		return $.ajax(conf).fail(function(response) {
 			// console.error(this + Mustache.render('{{url}}\nStatus: {{status}}', this, response));
@@ -613,7 +616,7 @@ var api = {
 	// 商品分类列表页，获取子分类
 	brandlist: function(id) {
 		return this.ajax({
-			url: this.domainUser + '/api/goods/brandlist',
+			url: this.domain + '/api/goods/brandlist',
 			type: 'GET',
 			data: {
 				access_token: app.getToken(),
@@ -635,7 +638,7 @@ var api = {
 	// },
 	search: function(options) {
 		return this.ajax({
-			url: this.domainUser + '/api/goods/search',
+			url: this.domain + '/api/goods/search',
 			type: 'POST',
 			data: $.extend({
 				access_token: app.getToken(),
@@ -651,7 +654,7 @@ var api = {
 	// 获取商品品论列表
 	goodsComments: function(options) {
 		return this.ajax({
-			url: this.domainUser + '/api/user/commentlist',
+			url: this.domain + '/api/user/commentlist',
 			type: 'POST',
 			data: $.extend({
 				access_token: app.getToken(),
@@ -664,7 +667,7 @@ var api = {
 	// 获得订单中的待评价商品信息
 	getByOrder: function(id) {
 		return this.ajax({
-			url: this.domainUser + '/api/user/getbyorder',
+			url: this.domain + '/api/user/getbyorder',
 			type: 'POST',
 			data: {
 				access_token: app.getToken(),
@@ -676,7 +679,7 @@ var api = {
 	// 新建一个评论
 	addComment: function(options) {
 		return this.ajax({
-			url: this.domainUser + '/api/user/addcomment',
+			url: this.domain + '/api/user/addcomment',
 			type: 'POST',
 			data: $.extend({
 				access_token: app.getToken(),
@@ -692,7 +695,7 @@ var api = {
 	// 提交评论
 	submitComment: function(options) {
 		return this.ajax({
-			url: this.domainUser + '/api/user/updatecomment',
+			url: this.domain + '/api/user/updatecomment',
 			type: 'POST',
 			data: $.extend({
 				access_token: app.getToken(),

@@ -51,6 +51,8 @@
         str = @"";
     }
     [self executeCallback:callback withArgs: @[str]];
+    NSLog(@"%@",str);
+    
 }
 - (void)showWaiting:(NSDictionary *)args
 {
@@ -63,8 +65,32 @@
 {
     
 }
--(void)openWebview:(NSURL *)url
+-(void)intentGoodsDetail:(id)goodsid
 {
+    _openWebview = YES;
+    NSDictionary *dic = goodsid;
+    
+    self.goods_id = dic[@"id"];
+    if ([self.openWebviewDelegate respondsToSelector:@selector(openGoodDetailWebviewWithString:)]) {
+        [self.openWebviewDelegate openGoodDetailWebviewWithString:self.goods_id];
+        
+        
+    }
+    
+    NSLog(@"id=====%@",self.goods_id);
+    
+}
+-(void)intentClassifyWeb:(id)args
+{
+    NSLog(@"%@",args);
+    
+    NSString *brand_id = args[@"brandid"];
+    NSString *type_id = args[@"typeid"];
+    if ([self.openWebviewDelegate respondsToSelector:@selector(openGoodsWebbiewWihtString:brand_id:)]) {
+        [self.openWebviewDelegate openGoodsWebbiewWihtString:type_id brand_id:brand_id];
+    }
+    
+    
 }
 -(void)hideWaiting
 {
@@ -120,16 +146,20 @@
     }else if ([name isEqualToString:@"getUser"])
     {
         [self getUser:callback];
-    }else if ([name isEqualToString:@"openWebview"])
+    }else if ([name isEqualToString:@"intentGoodsDetail"])
     {
-        NSURL *url = [NSURL URLWithString:callback];
-        [self openWebview:url];
+//        NSURL *url = [NSURL URLWithString:callback];
+        
+        [self intentGoodsDetail:args];
     }else if ([name isEqualToString:@"closeWebview"])
     {
         [self closeWebview];
     }else if ([name isEqualToString:@"signin"])
     {
         [self signin];
+    }else if ([name isEqualToString:@"intentClassifyWeb"])
+    {
+        [self intentClassifyWeb:args];
     }
 
     [_superDelegate executeSelector:name args:args callback:callback];

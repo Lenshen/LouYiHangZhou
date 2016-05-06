@@ -37,6 +37,9 @@
 			</div>
 		</section>
 		<div class="clear-text" v-show="loading">加载中...</div>
+		<div class="mod-empty" v-if="!orders.length && !loading">
+			暂无订单
+		</div>
 		<!-- <div ng-repeat="item in items" on-finish-render="ngRepeatFinished">
 	    <div>{{item.name}}<div>
 		</div> -->
@@ -79,7 +82,7 @@
 			vm.orders = [];
 			vm.ajax = api.orders(vm.status).done(function(response) {
 				if (response.success) {
-					vm.orders = response.data;
+					vm.orders = response.data || [];
 
 					vm.$nextTick(function() {
 						$('.item').each(function() {
@@ -103,6 +106,12 @@
 				vm.loading = false;
 			});
 		});
+
+		// page.push(function() {
+		// 	if (params.search.status) {
+		// 		getOrders();
+		// 	}
+		// });
 
 	</script>
 </body>

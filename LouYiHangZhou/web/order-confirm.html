@@ -16,10 +16,10 @@
 				<div class="flex street"><span class="icons icon-location"></span>{{address.province}}{{address.city}}{{address.area}}{{address.address}}</div>
 			</div>
 		</section>
-		<!-- <section class="section address-choose" @click="selectAddress();" v-if="!address">
+		<section class="section address-choose" @click="initAddress();" v-if="!address">
 			<span class="icons icon-arrow"></span>
-			选择一个收货地址
-		</section> -->
+			新建收货地址
+		</section>
 		<section class="section mod-table">
 			<div class="row">
 				<div class="cell icon"><span class="icons icon-clock"></span>配送时间</div><div class="cell r"><select dir="rtl"><option value="">工作日配送</option></select></div>
@@ -128,6 +128,9 @@
 						}
 					});
 				},
+				initAddress: function() {
+					app.intentaddress();
+				},
 				setAddress: function() {
 					var id = $dialog.find('.selected').attr('dataid');
 					$.each(this.addressList, function() {
@@ -203,6 +206,8 @@
 
 
 		page.push(function() {
+
+			alert('Token: ' + app.getToken());
 
 			vm.$watch('address', function() {
 				vm.shippingFee();

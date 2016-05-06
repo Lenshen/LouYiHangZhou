@@ -52,7 +52,7 @@
 		<div class="content">
 			<div class="body">
 				<div class="menu">
-					<a v-for="item in brands" data-id="{{item.id}}">{{item.name}}</a>
+					<div v-for="item in brands" data-id="{{item.id}}">{{item.name}}</div>
 				</div>
 				<div class="list">
 					<ul>
@@ -95,16 +95,19 @@
 				href: function(id) {
 					this.typeid = id;
 					getBrandlist();
+					this.getGoods();
+					$('.content').scrollTop(0)
 				},
 				clickBrand: function(id) {
 					if (this.brandid == id) {
 						return;
 					}
 					this.brandid = id;
-					this.pageindex = 1;
-
-					this.getGoods();
-
+					// this.pageindex = 1;
+					app.request('intentClassifyWeb', {
+						typeid: this.typeid,
+						brandid: this.brandid
+					});
 				},
 				getGoods: function() {
 					if (this.last || this.loading) {
@@ -112,7 +115,7 @@
 					}
 					this.loading = true;
 					api.search({
-						brand_id: this.brandid,
+						typeid: this.typeid,
 						page_index: this.pageindex,
 						page_size: this.pagesize
 					}).done(function(response) {
@@ -137,14 +140,15 @@
 					});
 				},
 				goDetail: function(id) {
-					maps.goods(id);
+					app.request('intentGoodsDetail', {id: id});
+					// maps.goods(id);
 				}
 			}
 		});
 
-		vm.typeid = params.search.typeid;
+		vm.typeid = params.search.typeid || 117;
 
-		$('.menu').on('click', 'a', function() {
+		$('.menu').on('click', 'div', function() {
 			$(this).addClass('selected').siblings().removeClass('selected');
 			vm.clickBrand($(this).attr('data-id'));
 		});
@@ -158,13 +162,17 @@
 				
 				vm.brands = response.data;
 
-				vm.$nextTick(function() {
-					$('.menu').find('a').first().trigger('click');
-				});
+				// vm.$nextTick(function() {
+				// 	$('.menu').find('a').first().trigger('click');
+				// });
 			});
 		});
 
 		page.push(function() {
+
+			if (vm.typeid) {
+				vm.href(vm.typeid);
+			}
 
 			var clientHeight = $('.content').height();
 			$('.content').on('scroll', function() {

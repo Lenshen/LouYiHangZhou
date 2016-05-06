@@ -75,7 +75,8 @@
     NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [_webView loadHTMLString:html baseURL:baseURL];
 //    NSURL *url = [NSURL URLWithString:@"http://lmmm0013.gotoip55.com/Bridge/bridge.html"];
-    
+    _webView.scalesPageToFit = NO;
+//    _webView.scrollView.scrollEnabled = no
 //    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
     
     [self.view addSubview:_webView];
