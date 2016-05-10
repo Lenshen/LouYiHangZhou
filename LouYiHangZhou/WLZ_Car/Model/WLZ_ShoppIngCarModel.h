@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "WLZ_ShopViewModel.h"
-#import "WLZ_CommodityModel.h"
 
-@class WLZ_CommodityModel;
 
 @interface WLZ_ShoppIngCarModel : NSObject
 
@@ -19,15 +17,28 @@
 
 
 
-@property(nonatomic,copy)NSString *item_id;
-@property(nonatomic,copy)NSString *count;
-@property(nonatomic,copy)NSString *item_size;
-@property(nonatomic,strong)WLZ_CommodityModel *item_info;
+
+
+@property(nonatomic,copy)NSString *image;
+@property(nonatomic,copy)NSString *goods_name;
+@property(nonatomic,copy)NSString *sale_price;
+@property(nonatomic,copy)NSString *original_price;
+@property(nonatomic,copy)NSString *qty;
+@property(nonatomic,copy)NSString *goods_id;
+@property(nonatomic,copy)NSString *total;
+@property(nonatomic,copy)NSString *cart_id;
+@property(nonatomic,copy)NSString *sku_name;
+
+
+
+
+
+
 @property(nonatomic,assign)BOOL isSelect;
 
 
 
 @property(nonatomic,assign)NSInteger type;
 
-@property(nonatomic,weak)WLZ_ShopViewModel *vm;
+@property(nonatomic,strong)WLZ_ShopViewModel *vm;
 @end

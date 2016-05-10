@@ -11,9 +11,16 @@
 #import "BYSHttpTool.h"
 #import <MJRefresh.h>
 #import "SVProgressHUD.h"
-
-@interface CollectTableViewController ()
+#import "CollectionModel.h"
+#import "SearhDetailViewController.h"
+#import "UIImageView+WebCache.h"
+#import "BYSHttpTool.h"
+#import "HttpParameters.h"
+@interface CollectTableViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) CollectionModel *model;
+@property (strong, nonatomic) NSMutableArray *modelmutoArray;
+@property (strong, nonatomic) UILabel *label;
 
 @end
 
@@ -21,30 +28,60 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.frame = [UIScreen mainScreen].bounds;
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    [self setupMJRefreshHeader];
+//    [self setupMJRefreshHeader];
 }
-- (void)setupMJRefreshHeader {
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(LoadNewData)];
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
-   
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
-}
+
+//- (void)setupMJRefreshHeader {
+//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(LoadNewData)];
+//    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+//    [self.tableView.mj_header beginRefreshing];
+//   
+//    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(LoadMoreData)];
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (void)LoadNewData {
-        NSString *str = @"http://192.168.0.103:7021/api/favorite/list";
+        [SVProgressHUD show];
         NSString *str2 = [USER_DEFAULT objectForKey:@"user_token"];
         NSDictionary *dic = @{@"access_token":str2};
-        [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
+        [BYSHttpTool GET:APP_FAVORITE_LIST Parameters:dic  Success:^(id responseObject) {
             NSLog(@"%@",responseObject);
-            [self.tableView.mj_header endRefreshing];
-    
+            NSArray *array = responseObject[@"data"];
+            
+        
+            _modelmutoArray = [NSMutableArray array];
+
+            for (NSInteger i = 0; i < array.count; i++) {
+                  _model = [[CollectionModel alloc]initWithDictionary:array[i] error:nil];
+
+                [_modelmutoArray addObject:_model];
+                NSLog(@"%@",_modelmutoArray);
+                [self.tableView reloadData];
+
+            }
+            
+            if (self.modelmutoArray.count == 0 || self.modelmutoArray == nil || [self.modelmutoArray isKindOfClass:[NSNull class]]) {
+                
+                _label = [[UILabel alloc]initWithFrame:CGRectMake(self.view.center.x-50, self.view.center.y-50, 100, 50)];
+                _label.text = @"暂无数据";
+                _label.font =[UIFont systemFontOfSize:15];
+                _label.textAlignment = NSTextAlignmentCenter;
+                [self.tableView addSubview:_label];
+            }else
+            {
+                [_label removeFromSuperview];
+            }
+
+            [SVProgressHUD dismiss];
+
+            
+         
         } Failure:^(NSError *error) {
             NSLog(@"%@",error);
             [self.tableView.mj_header endRefreshing];
@@ -60,6 +97,8 @@
     NSDictionary *dic = @{@"access_token":str2};
     [BYSHttpTool GET:str Parameters:dic  Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
+        
+        
         [self.tableView.mj_header endRefreshing];
         
     } Failure:^(NSError *error) {
@@ -82,29 +121,87 @@
     return YES;
     
 }
+
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self deleteTableviewCell:indexPath.row];
+
+        [self.modelmutoArray removeObjectAtIndex:indexPath.row];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+        [tableView reloadData];
+        
+    }
 }
+
+
+-(void)deleteTableviewCell:(NSInteger)index;
+{
+    
+    _model = self.modelmutoArray[index];
+    NSLog(@"///%@",_model.goods_id);
+
+
+    
+    [BYSHttpTool POST:APP_FAVORITE_REMOVE Parameters:[HttpParameters delete_collectionAddress_id:_model.goods_id] Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } Failure:^(NSError *error) {
+        
+    }];
+}
+
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)ind
 {
     return @"删除";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return _modelmutoArray.count;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SearhDetailViewController *goodsDetail = [[SearhDetailViewController  alloc]init];
+    _model = _modelmutoArray[indexPath.row];
 
+    goodsDetail.indexName = _model.goods_id;
+    [self.navigationController pushViewController:goodsDetail animated:YES];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CollectTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CollectTableViewController" forIndexPath:indexPath];
+    _model = _modelmutoArray[indexPath.row];
+    NSString *salePrice = [NSString stringWithFormat:@"¥%@", _model.sales_price];
+    NSMutableAttributedString *markMutoAttributeSting = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"¥%@",_model.market_price]];
+    [markMutoAttributeSting addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0,markMutoAttributeSting.length)];
+    
+    
+    cell.goods_name.text = _model.goods_name;
+    cell.market_price.attributedText = markMutoAttributeSting;
+    cell.sales_price.text = salePrice;
+   
+
+    [cell.imageview sd_setImageWithURL:[NSURL URLWithString:_model.image]placeholderImage:nil options:0 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        cell.imageview.image = image;
+    }];
+    
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
     
 }
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
+    [self LoadNewData];
+    
+
     self.title = @"我的收藏";
 }
 - (void)viewWillDisappear:(BOOL)animated

@@ -7,8 +7,11 @@
 //
 
 #import "SearhDetailViewController.h"
+#import "WebViewJSBridge.h"
 
-@interface SearhDetailViewController ()
+@interface SearhDetailViewController ()<UIWebViewDelegate>
+@property (nonatomic, strong)WebViewJSBridge *bridge;
+
 
 
 @end
@@ -23,15 +26,23 @@
     
     
 }
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    // 禁用用户选择
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
+    
+    // 禁用长按弹出框
+    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
+}
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
 {
     UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
+    webview.delegate = self;
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
     
-    NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?status=%@",htmlName];
+    NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?id=%@",htmlName];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
     
-    
+    _bridge = [WebViewJSBridge bridgeForWebView:webview withSuperDelegate:self];
     NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
     NSLog(@"%@",request1);
     

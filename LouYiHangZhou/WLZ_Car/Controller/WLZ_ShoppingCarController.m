@@ -14,13 +14,22 @@
 #import "WLZ_ShoppingCarController.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import "HomeViewController.h"
+#import "UIViewController+StoryboardFrom.h"
+#import "LogonVViewController.h"
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
+{
+    BOOL isLogoin;
+}
 
 
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *carDataArrList;
 @property(nonatomic,strong)UIToolbar *toolbar;
 @property (nonatomic , strong) UIBarButtonItem *previousBarButton;
+@property (nonatomic , strong) UIImageView *islogoinImageView;
+@property (nonatomic , strong) UIImageView *isnilImageView;
+
 @property(nonatomic,assign)BOOL isEdit;
 @property(nonatomic,strong)WLZ_ShoppingCartEndView *endView;
 @property(nonatomic,strong) WLZ_ShopViewModel *vm;
@@ -31,40 +40,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _vm = [[WLZ_ShopViewModel alloc]init];
+    
+    
+
+
     self.view.backgroundColor=[UIColor whiteColor];
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
-    self.title = @"购物车";
    
 
     
     
     //获取数据
-    _vm = [[WLZ_ShopViewModel alloc]init];
-    
-    __weak typeof (WLZ_ShoppingCarController) *waks = self;
-    __weak typeof (NSMutableArray)* carDataArrList =self.carDataArrList;
-    __weak typeof (UITableView ) *tableView = self.tableView;
-    [_vm getShopData:^(NSArray *commonArry) {
-        [carDataArrList addObject:commonArry];
-        [tableView reloadData];
-        [waks numPrice];
-    } priceBlock:^{
-        
-        
-        
-        
-        [waks numPrice];
-    }];
-    
-    
-    if (self.carDataArrList.count != 0) {
-        [self.view addSubview:self.tableView];
-        [self.view addSubview:self.endView];
-    }
-    
-}
+  }
 
 
 
@@ -78,19 +68,26 @@
 {
     NSArray *lists =   [_endView.Lab.text componentsSeparatedByString:@"￥"];
     float num = 0.00;
-    for (int i=0; i<self.carDataArrList.count; i++) {
-        NSArray *list = [self.carDataArrList objectAtIndex:i];
-        for (int j = 0; j<list.count-1; j++) {
-            WLZ_ShoppIngCarModel *model = [list objectAtIndex:j];
-            NSInteger count = [model.count integerValue];
-            float sale = [model.item_info.sale_price floatValue];
-            if (model.isSelect && ![model.item_info.sale_state isEqualToString:@"3"] ) {
-                num = count*sale+ num;
-            }
+    if (self.carDataArrList != nil && self.carDataArrList.count != 0) {
+        NSArray *list = [self.carDataArrList objectAtIndex:0];
+        for (int i=0; i<list.count; i++) {
+            WLZ_ShoppIngCarModel *model = [list objectAtIndex:i];
+            float sale = [model.sale_price floatValue];
+            NSInteger count = [model.qty floatValue];
+            
+            num = count*sale + num;
+            NSLog(@"count=====%ld  ======%.2f",count,num);
+            
+            
+            
+            
         }
+        _endView.Lab.text = [NSString stringWithFormat:@"%@￥%.2f",lists[0],num];
+
+
     }
-    _endView.Lab.text = [NSString stringWithFormat:@"%@￥%.2f",lists[0],num];
-}
+
+    }
 
 
 -(WLZ_ShoppingCartEndView *)endView
@@ -130,6 +127,7 @@
     else if (bt.tag==18)
     {
         PayViewController *pay = [[PayViewController alloc]init];
+        pay.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:pay animated:YES];
         
     }
@@ -138,19 +136,19 @@
     
 }
 
-
-- (NSMutableArray *)carDataArrList
-{
-    if (!_carDataArrList) {
-        _carDataArrList = [NSMutableArray array];
-    }
-    return _carDataArrList;
-}
+//
+//- (NSMutableArray *)carDataArrList
+//{
+//    if (!_carDataArrList) {
+//        _carDataArrList = [NSMutableArray array];
+//    }
+//    return _carDataArrList;
+//}
 
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, APPScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APPScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.userInteractionEnabled=YES;
         _tableView.dataSource = self;
@@ -176,8 +174,41 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    NSArray *list = [self.carDataArrList objectAtIndex:section];
-    return list.count-1;
+    
+    if (self.carDataArrList.count == 0) {
+        [self.tableView removeFromSuperview];
+        [self.endView removeFromSuperview];
+
+        if (isLogoin) {
+            
+            _isnilImageView= [[UIImageView alloc]initWithFrame:self.view.frame];
+            UIImage *image = [UIImage imageNamed:@"img_cart_null"];
+            _isnilImageView.image = image;
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeTabbaritem)];
+            _isnilImageView.userInteractionEnabled = YES;
+            [_isnilImageView addGestureRecognizer:tap];
+            [self.view addSubview:_isnilImageView];
+            
+
+        }else
+        {
+            self.isnilImageView.hidden = YES ;
+
+        }
+        
+    }  else
+    {
+        [self.view addSubview:self.tableView];
+        [self.view addSubview:self.endView];
+
+    }
+    NSLog(@"%ld",_carDataArrList.count);
+        return self.carDataArrList.count;
+    
+}
+-(void)changeTabbaritem
+{
+    self.tabBarController.selectedIndex = 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -212,6 +243,7 @@
             [cell addSubview:line];
         }
     }
+  
     return cell;
 }
 - (void)singleClick:(WLZ_ShoppIngCarModel *)models row:(NSInteger)row
@@ -246,7 +278,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         
-        NSMutableArray *list = [_carDataArrList objectAtIndex:indexPath.section];
+        NSMutableArray *list = [_carDataArrList objectAtIndex:1];
         
         
         
@@ -340,12 +372,60 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [BYSHttpTool GET:APP_CART_GETALL Parameters:[HttpParameters app_cart_getall] Success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"购物车";
+    [super viewWillAppear:YES];
+    isLogoin = [USER_DEFAULT objectForKey:@"user_token"];
+
+    if (isLogoin) {
+        _carDataArrList = [NSMutableArray array];
+        NSLog(@"%@",_carDataArrList);
         
-    } Failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
+        __weak typeof (WLZ_ShoppingCarController) *waks = self;
+        __weak typeof (NSMutableArray)* carDataArrList =self.carDataArrList;
+        __weak typeof (UITableView ) *tableView = self.tableView;
+        [_vm getShopData:^(NSArray *commonArry) {
+            [carDataArrList addObject:commonArry];
+            NSLog(@"%@ ------------",carDataArrList);
+            [tableView reloadData];
+            [waks numPrice];
+        } priceBlock:^{
+            
+            [waks numPrice];
+        }];
+        
+        
+        [self.tableView reloadData];
+        [self.islogoinImageView removeFromSuperview];
+        
+        
+
+    }else
+    {
+        _islogoinImageView= [[UIImageView alloc]initWithFrame:self.view.frame];
+        _islogoinImageView.image = [UIImage imageNamed:@"img_no_login"];
+        UITapGestureRecognizer *singeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(loginEvent)];
+        _islogoinImageView.userInteractionEnabled = YES;
+
+        [_islogoinImageView addGestureRecognizer:singeTap];
+        [_isnilImageView removeFromSuperview];
+        [self.view addSubview:_islogoinImageView];
+    }
+    
+   
+    
+    
+}
+-(void)loginEvent
+{
+    
+    [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.navigationController.navigationBarHidden = YES;
     
 }
 

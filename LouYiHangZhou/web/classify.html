@@ -99,15 +99,10 @@
 					$('.content').scrollTop(0)
 				},
 				clickBrand: function(id) {
-					if (this.brandid == id) {
-						return;
-					}
+					
 					this.brandid = id;
 					// this.pageindex = 1;
-					app.request('intentClassifyWeb', {
-						typeid: this.typeid,
-						brandid: this.brandid
-					});
+					app.intentClassifyWeb(this.typeid, this.brandid);
 				},
 				getGoods: function() {
 					if (this.last || this.loading) {
@@ -140,7 +135,7 @@
 					});
 				},
 				goDetail: function(id) {
-					app.request('intentGoodsDetail', {id: id});
+					app.intentGoodsDetail(id);
 					// maps.goods(id);
 				}
 			}
@@ -153,7 +148,7 @@
 			vm.clickBrand($(this).attr('data-id'));
 		});
 
-		var getBrandlist = page.push(function() {
+		var getBrandlist = function() {
 			api.brandlist(vm.typeid).done(function(response) {
 				if (!response.success) {
 					Toast(response.message || response.Message);
@@ -165,8 +160,12 @@
 				// vm.$nextTick(function() {
 				// 	$('.menu').find('a').first().trigger('click');
 				// });
+			}).error(function(response) {
+				Toast(response.status);
+			}).always(function() {
+
 			});
-		});
+		};
 
 		page.push(function() {
 

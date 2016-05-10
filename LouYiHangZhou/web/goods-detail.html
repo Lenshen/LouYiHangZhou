@@ -52,7 +52,7 @@
 		<section class="section goods-spec">
 			<dl class="spec-list" v-for="spec in goods.spec">
 				<dt>{{spec.spec_name}}</dt>
-				<dd class="{{index == 0 && 'selected'}}" v-for="(index, item) in spec.spec_item" key="{{item.valueids}}" @click="chooseSpec">{{item.sku_name}}</dd>
+				<dd sku-name="{{spec.spec_name}}:{{item.sku_name}}" class="{{index == 0 && 'selected'}}" v-for="(index, item) in spec.spec_item" key="{{item.valueids}}" @click="chooseSpec">{{item.sku_name}}</dd>
 			</dl>
 		</section>
 		<section class="section comment">
@@ -142,10 +142,8 @@
 					return stars.join('');
 				},
 				cartAdd: function(id) {
-					alert(app.getToken())
-					alert(id)
+
 					var user = app.getUser();
-					alert(user)
 					if (!user) {
 						app.signin();
 						return;
@@ -156,14 +154,13 @@
 					$('.spec-list').each(function() {
 						var $this = $(this).find('.selected');
 						specId.push($this.attr('key'));
-						specName.push($this.html());
+						specName.push($this.attr('sku-name'));
 					});
 					
 					api.cartAdd({
 						goods_id: id,
 						qty: vm.qty,
-						sku: specId.join(';') + (specId.length > 0 ? ';' : ''),
-						customized: specName.join(';') + (specName.length > 0 ? ';' : '')
+						sku: specId.join(';') + (specId.length > 0 ? ';' : '')
 					}).done(function(response) {
 						if (response.success) {
 							Toast('添加成功！');

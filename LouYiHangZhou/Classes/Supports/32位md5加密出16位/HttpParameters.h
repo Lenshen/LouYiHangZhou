@@ -42,4 +42,7 @@
 
 +(NSDictionary *)app_cart_getall;
 
++(NSDictionary *)delete_collectionAddress_id:(NSString *)address_id;
+
+
 @end

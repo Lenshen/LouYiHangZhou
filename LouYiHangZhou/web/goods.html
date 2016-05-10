@@ -93,14 +93,19 @@
 
 					api.spec(id).done(function(response) {
 						if (response.success) {
-							var data = response.data[0] || {}
-							var specId = data.spec_code || '';
-							var specName = data.spec_name || '';
+							var keys = [];
+							var values = [];
+							$.each(response.data, function() {
+								var spec = this.spec_item[0];
+								keys.push(spec.valueids);
+								values.push(this.spec_name + ':' + spec.sku_name);
+							});
+							var specId = keys.join(';') + (keys.length > 0 ? ';' : '');
+							var specName = values.join(';') + (values.length > 0 ? ';' : '');
 							api.cartAdd({
 								goods_id: id,
 								qty: 1,
-								sku: specId + ';',
-								customized: specName + ';'
+								sku: specId
 							}).done(function(response) {
 								if (response.success) {
 									Toast('添加成功！');

@@ -112,9 +112,9 @@
                 [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
                 [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
         
-                NSDictionary *userdic = @{@"mobile":[USER_DEFAULT objectForKey:@"mobile"],@"sex":[USER_DEFAULT objectForKey:@"sex"],@"avatar":[USER_DEFAULT objectForKey:@"avatar"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"birth":[USER_DEFAULT objectForKey:@"birth"]};
+                NSDictionary *userdic = @{@"user_name":[USER_DEFAULT objectForKey:@"mobile"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"]};
         
-                [USER_DEFAULT setObject:userdic forKey:@"userimformation"];
+                [USER_DEFAULT setObject:userdic forKey:@"userimfor"];
                 [SVProgressHUD dismiss];
 
                 }

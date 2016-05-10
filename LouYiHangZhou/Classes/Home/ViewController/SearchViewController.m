@@ -157,10 +157,12 @@
             
             
         } Failure:^(NSError *error) {
-            NSLog(@"%@",error)
+            NSLog(@"%@",error);
+            
             [self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
 
         }];
+        
         
         
 
@@ -271,7 +273,7 @@
 
         
     } Failure:^(NSError *error) {
-        NSLog(@"%@",error)
+        NSLog(@"%@",error);
     }];
    
 

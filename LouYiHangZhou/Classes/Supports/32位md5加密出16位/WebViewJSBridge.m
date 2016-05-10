@@ -11,6 +11,7 @@
 #import "LogonVViewController.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "ProfileViewController.h"
+#import "ProfileViewController.h"
 
 #define JSBridgeName @"MallJSBridge"
 #define JSBridgeProtocol @"bridge://"
@@ -54,6 +55,25 @@
     NSLog(@"%@",str);
     
 }
+- (void)getApplyCode:(NSString *)callback
+{
+    NSString *str = [USER_DEFAULT objectForKey:@"app_autorizd_number"];
+    
+    if (str == nil) {
+        str = @"";
+    }
+    [self executeCallback:callback withArgs: @[str]];
+    NSLog(@"%@",str);
+
+}
+- (void)intentaddress:(NSString *)callback
+{
+    if ([self.openWebviewDelegate respondsToSelector:@selector(openAddAddress)]) {
+        [self.openWebviewDelegate openAddAddress];
+        
+    }
+    [self executeCallback:callback withArgs:nil];
+}
 - (void)showWaiting:(NSDictionary *)args
 {
     
@@ -61,10 +81,7 @@
     [SVProgressHUD showWithStatus:message];
     
 }
--(void)closeWebview
-{
-    
-}
+
 -(void)intentGoodsDetail:(id)goodsid
 {
     _openWebview = YES;
@@ -107,33 +124,25 @@
 }
 -(void)getUser:(NSString *)callback
 {
-    NSDictionary *dic = [USER_DEFAULT objectForKey:@"userimformation"];
-    NSLog(@"%@",dic);
-    if (dic != nil) {
-        dic = @{};
+    NSDictionary *dict = [USER_DEFAULT objectForKey:@"userimfor"];
+    if (dict == nil) {
+        dict = @{};
     }
-    NSString *jsonstring  = [self dictionaryToJson:dic];
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSString *jsonstring = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"%@------%@---------%@",jsonstring,jsonData,dict);
     [self executeCallback:callback withArgs:@[jsonstring]];
 }
 
-- (NSString*)dictionaryToJson:(NSDictionary *)dic
 
-{
-    
-    NSError *parseError = nil;
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
-    
-    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-}
 
 
 // 执行OC函数
 - (void)executeSelector:(NSString *)name args:(NSDictionary *)args callback:(NSString *)callback
 {
     
-    
+
     if ([name isEqualToString:@"getToken"]) {
         [self getToken:callback];
     }
@@ -145,6 +154,8 @@
         
     }else if ([name isEqualToString:@"getUser"])
     {
+        
+         
         [self getUser:callback];
     }else if ([name isEqualToString:@"intentGoodsDetail"])
     {
@@ -160,9 +171,16 @@
     }else if ([name isEqualToString:@"intentClassifyWeb"])
     {
         [self intentClassifyWeb:args];
+    }else if ([name isEqualToString:@"getApplyCode"])
+    {
+       [self getApplyCode:callback];
+    }else if ([name isEqualToString:@"intentaddress"])
+    {
+        [self intentaddress:callback];
     }
-
     [_superDelegate executeSelector:name args:args callback:callback];
+
+
 }
 
 // 执行Javascript回调函数

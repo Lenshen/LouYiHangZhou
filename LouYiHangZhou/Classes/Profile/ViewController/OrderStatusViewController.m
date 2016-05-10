@@ -10,8 +10,12 @@
 #import "ProfileViewController.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "ChangePassWordViewController.h"
+#import "WebViewJSBridge.h"
 
 @interface OrderStatusViewController ()
+@property (nonatomic, strong)WebViewJSBridge *bridge;
+@property (nonatomic, strong)UIWebView *webView;
+
 
 @end
 
@@ -22,23 +26,32 @@
     // Do any additional setup after loading the view.
     NSLog(@"%@",self.indexName);
     [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+
+    
+
     
 }
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
 {
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
+    _webView = [[UIWebView alloc]initWithFrame:webviewFrame];
+
+
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
    
     NSString *str3 = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
     
-  
     NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
     NSLog(@"%@",request1);
     
-    [webview loadRequest:request1];
+    [_webView loadRequest:request1];
+
+
     
-    [self.view addSubview:webview];
+    [self.view addSubview:_webView];
+
+    
     
 }
 
@@ -48,7 +61,6 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"订单详情";
-    
     
 }
 

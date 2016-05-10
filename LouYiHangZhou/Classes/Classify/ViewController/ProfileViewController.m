@@ -17,6 +17,7 @@
 #import "UIViewController+StoryboardFrom.h"
 #import "ReceptionTableViewController.h"
 #import "CollectTableViewController.h"
+#import "WebViewJSBridge.h"
 
 
 @interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UIWebViewDelegate>
@@ -51,7 +52,11 @@
 }
 
 
-
+//-(void)openAddAddress
+//{
+//    [self presentViewController:[ReceptionTableViewController instanceFromStoryboard] animated:YES completion:nil];
+//    
+//}
 -(void)pushLogonVViewController:(NSNotification *)notification
 {
     NSDictionary *dic = notification.userInfo;
@@ -72,6 +77,7 @@
 {
     return 4;
 }
+//aa
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ProfileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"profileCollectionCell" forIndexPath:indexPath];
@@ -121,6 +127,9 @@
     self.mobileNumbel.text = [USER_DEFAULT objectForKey:@"mobile"];
     self.headImage.layer.cornerRadius =  self.headImage.frame.size.width/2;
     self.headImage.layer.masksToBounds = YES;
+    
+    
+    self.tableView.contentOffset = CGPointMake(0, 0);
                   
     
     
@@ -228,7 +237,7 @@
 {
     NSArray *array = [NSArray arrayWithObjects:@"0",@"10",@"80",@"15",nil];
  
-        OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
+    OrderStatusViewController *order = [[OrderStatusViewController alloc]init];
     order.indexName = array[indexPath.row];
     if (isLogoin) {
         [self.navigationController pushViewController:order animated:YES];

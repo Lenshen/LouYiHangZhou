@@ -42,6 +42,7 @@
     
     [_webView setUserInteractionEnabled:YES];
     _webView.delegate = self;
+    _webView.scrollView.bounces = NO;
 
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
 
@@ -76,7 +77,7 @@
     if (_bridge.openWebview) {
         SearhDetailViewController *gooddetail = [[SearhDetailViewController alloc]init];
         gooddetail.hidesBottomBarWhenPushed = YES;
-        
+        gooddetail.indexName = goods_id;
         [self.navigationController pushViewController:gooddetail animated:YES];
         
     }

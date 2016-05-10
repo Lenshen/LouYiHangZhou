@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CollectTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *market_price;
+@property (weak, nonatomic) IBOutlet UILabel *goods_name;
+@property (weak, nonatomic) IBOutlet UILabel *sales_price;
+@property (weak, nonatomic) IBOutlet UIImageView *imageview;
 
 @end

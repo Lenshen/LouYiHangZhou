@@ -10,6 +10,7 @@
 #import "UIViewController+StoryboardFrom.h"
 #import "SearchViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
+#import "WebViewJSBridge.h"
 #define JSBridgeName @"MALLJSBridge"
 #define JSBridgeProtocol @"bridge://"
 
@@ -17,6 +18,7 @@
 @interface HomeViewController ()<UIWebViewDelegate>
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (nonatomic, weak) JSContext *jsContext;
+@property (nonatomic, strong) WebViewJSBridge *bridge;
 
 
 @end
@@ -28,10 +30,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
 
   
     
     [self setUpWebview:@"index2" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    self.webView.scrollView.bounces = NO;
+
     
 }
 -(void)viewDidDisappear:(BOOL)animated

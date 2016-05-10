@@ -55,6 +55,12 @@
 
 #define APP_CART_GETALL @"http://"TESTSERVERSAPI"/api/cart/getall"
 
+#define APP_FAVORITE_LIST @"http://"TESTSERVERSAPI"/api/favorite/list"
+
+#define APP_FAVORITE_REMOVE @"http://"TESTSERVERSAPI"/api/favorite/remove"
+
+
+
 
 
 

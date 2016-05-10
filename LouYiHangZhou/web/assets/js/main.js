@@ -136,6 +136,12 @@ var maps = {
 
 // app接口
 window.app = {
+	hasMothed: function(name) {
+		if (!window['MallJSBridge'] || !window['MallJSBridge'][name]) {
+			return false;
+		}
+		return true;
+	},
 	request: function(name, params, callback) {
 		if (!window['MallJSBridge']) {
 			return;
@@ -143,36 +149,97 @@ window.app = {
 		MallJSBridge.request(name, params, callback);
 	},
 	showWaiting: function(message) {
-		this.request('showWaiting', {message: message});
+		if (this.hasMothed('showWaiting')) {
+			MallJSBridge.showWaiting(message);
+		}
+		else {
+			this.request('showWaiting', {message: message});
+		}
 	},
 	hideWaiting: function() {
-		this.request('hideWaiting', {});
+		if (this.hasMothed('hideWaiting')) {
+			MallJSBridge.hideWaiting();
+		}
+		else {
+			this.request('hideWaiting', {});
+		}
 	},
 	getToken: function() {
 		var self = this;
 		if (this.token === undefined) {
-			this.request('getToken', {}, function(token) {
-				self.token = token;
-			});
+			if (this.hasMothed('getToken')) {
+				this.token = MallJSBridge.getToken();
+			}
+			else {
+				this.request('getToken', {}, function(token) {
+					self.token = token;
+				});
+			}
+		}
+
+		return this.token;
+	},
+	getApplyCode: function() {
+		var self = this;
+		if (this.applycode === undefined) {
+			if (this.hasMothed('getApplyCode')) {
+				this.applycode = MallJSBridge.getApplyCode();
+			}
+			else {
+				this.request('getApplyCode', {}, function(applycode) {
+					self.applycode = applycode;
+				});
+			}
 		}
 		
-		return this.token;
+		return this.applycode;
 	},
 	getUser: function() {
 		var self = this;
 		if (this.user === undefined) {
-			this.request('getUser', {}, function(user) {
-				self.user = user;
-			});
+			if (this.hasMothed('getUser')) {
+				this.user = MallJSBridge.getUser();
+			}
+			else {
+				this.request('getUser', {}, function(user) {
+					self.user = user;
+				});
+			}
 		}
 		
 		return this.user;
 	},
 	signin: function() {
-		this.request('signin', {});
+		if (this.hasMothed('signin')) {
+			MallJSBridge.signin();
+		}
+		else {
+			this.request('signin', {});
+		}
 	},
 	intentaddress: function() {
-		this.request('intentaddress', {});
+		if (this.hasMothed('intentaddress')) {
+			MallJSBridge.intentaddress();
+		}
+		else {
+			this.request('intentaddress', {});
+		}
+	},
+	intentGoodsDetail: function(id) {
+		if (this.hasMothed('intentGoodsDetail')) {
+			MallJSBridge.intentGoodsDetail(id);
+		}
+		else {
+			this.request('intentGoodsDetail', {id: id});
+		}
+	},
+	intentClassifyWeb: function(typeid, brandid) {
+		if (this.hasMothed('intentClassifyWeb')) {
+			MallJSBridge.intentClassifyWeb(typeid, brandid);
+		}
+		else {
+			this.request('intentClassifyWeb', {typeid: typeid, brandid: brandid});
+		}
 	},
 	// ajax: function(configs) {
 	// 	console.log(configs)
@@ -348,7 +415,7 @@ var api = {
 			type: 'GET',
 			url: this.domain + '/api/goods/get',
 			data: {
-				access_token: app.getToken(),
+				access_token: app.getToken() || app.getApplyCode(),
 				goods_id: id
 			}
 		});
@@ -619,7 +686,7 @@ var api = {
 			url: this.domain + '/api/goods/brandlist',
 			type: 'GET',
 			data: {
-				access_token: app.getToken(),
+				access_token: app.getToken() || app.getApplyCode(),
 				goodstype_id: id
 			}
 		});
@@ -641,7 +708,7 @@ var api = {
 			url: this.domain + '/api/goods/search',
 			type: 'POST',
 			data: $.extend({
-				access_token: app.getToken(),
+				access_token: app.getToken() || app.getApplyCode(),
 				keyword: '',
 				goods_type_id: '',
 				brand_id: '',
@@ -987,6 +1054,14 @@ $.extend(Slider.prototype, {
 
 $(window).on('load', function() {
 	if (navigator.userAgent.toLowerCase().indexOf('pc') >= 0) {
+		MallJSBridge = {
+			getToken: function() {
+				return '8237C82CC50EED569A494BEB4DDC46B0BB1EE821988413EF44B213FEC066E505596DD6A00921F225';
+			},
+			getApplyCode: function() {
+				return 100;
+			}
+		};
 		window.MallJSBridgeEvent = document.createEvent('Event'); 
 		window.MallJSBridgeEvent.initEvent('MallJSBridgeReady', false, false); 
 		document.dispatchEvent(window.MallJSBridgeEvent);

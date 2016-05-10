@@ -124,46 +124,33 @@ static CGFloat CELL_HEIGHT = 100;
 - (void)setModel:(WLZ_ShoppIngCarModel *)model
 {
     _model = model;
-    _selectBt.selected=model.isSelect;
-    if (_changeView.numberFD.text) {
-        self.choosedCount = [_changeView.numberFD.text integerValue];
-    }
-    else{
-        self.choosedCount =[model.count integerValue] ;
-    }
+//    _selectBt.selected=model.isSelect;
+//    if (_changeView.numberFD.text) {
+//        self.choosedCount = [_changeView.numberFD.text integerValue];
+//    }
+//    else{
+        self.choosedCount =[model.qty integerValue] ;
+//    }
     
     
     _shoppingImgView.layer.cornerRadius = 2;
     _shoppingImgView.layer.borderWidth = 1;
     _shoppingImgView.layer.borderColor = [UIColor colorFromHexRGB:@"e2e2e2"].CGColor;
-    [_shoppingImgView sd_setImageWithURL:[NSURL URLWithString:model.item_info.icon] placeholderImage:[UIImage imageNamed:@"default"]];
+    [_shoppingImgView sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:[UIImage imageNamed:@"default"]];
 
     
         
-        UIImage *level = [UIImage imageNamed:@"level2"];
-        if (model.item_info.type == 5) {
-            _spuImgView.image = [UIImage imageNamed:@"level3"];
-         //   _spuImgView.size = level.size;
-        } else if (model.item_info.type == 6) {
-          //  _spuImgView.size = level.size;
-            _spuImgView.image = level;
-        }
-        
-        
-        
-        if (![model.item_size isEqualToString:@"SINGLE"]) {
-            _sizeLab.text = [NSString stringWithFormat:@"规格:%@",model.item_size];
-        }
-        
-        _priceLab.text=[NSString stringWithFormat:@"￥%@",model.item_info.sale_price];
+
+    
+        _priceLab.text=[NSString stringWithFormat:@"￥%@",model.sale_price];
   
     
     
-    _title.text= model.item_info.full_name;
+    _title.text= model.goods_name;
     
     
         _selectBt.enabled=YES;
-        _changeView = [[WLZ_ChangeCountView alloc] initWithFrame:CGRectMake(_title.frame.origin.x, CGRectGetMaxY(_sizeLab.frame)+5, 160, 35) chooseCount:self.choosedCount totalCount: [model.item_info.stock_quantity integerValue]];
+        _changeView = [[WLZ_ChangeCountView alloc] initWithFrame:CGRectMake(_title.frame.origin.x, CGRectGetMaxY(_sizeLab.frame)+5, 160, 35) chooseCount:self.choosedCount totalCount: 100000];
         
         [_changeView.subButton addTarget:self action:@selector(subButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -188,10 +175,7 @@ static CGFloat CELL_HEIGHT = 100;
     }
     
     
-    if ([_model.item_info.stock_quantity integerValue]<self.choosedCount) {
-        self.choosedCount  = [_model.item_info.stock_quantity  intValue];
-        _changeView.addButton.enabled = NO;
-    }
+   
     else
     {
         _changeView.subButton.enabled = YES;
@@ -205,7 +189,7 @@ static CGFloat CELL_HEIGHT = 100;
     
     _changeView.numberFD.text=[NSString stringWithFormat:@"%zi",self.choosedCount];
     
-    _model.count = _changeView.numberFD.text;
+    _model.qty = _changeView.numberFD.text;
     
     _model.isSelect=_selectBt.selected;
     
@@ -230,10 +214,10 @@ static CGFloat CELL_HEIGHT = 100;
         return;
     }
     _selectBt.selected = !_selectBt.selected;
-    _model.isSelect = _selectBt.selected;
+//    _model.isSelect = _selectBt.selected;
     
     if (_changeView.numberFD.text!=nil) {
-        _model.count = _changeView.numberFD.text;
+        _model.qty = _changeView.numberFD.text;
     }
     
     [self.delegate singleClick:_model row:self.row];
@@ -260,9 +244,9 @@ static CGFloat CELL_HEIGHT = 100;
     }
     _changeView.numberFD.text=[NSString stringWithFormat:@"%zi",self.choosedCount];
     
-    _model.count = _changeView.numberFD.text;
+    _model.qty = _changeView.numberFD.text;
     
-    _model.isSelect=_selectBt.selected;
+//    _model.isSelect=_selectBt.selected;
     
     
     
