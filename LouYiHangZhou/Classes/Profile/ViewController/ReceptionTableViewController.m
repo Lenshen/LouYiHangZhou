@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) AddressModel *model;
 @property (nonatomic,strong)NSMutableArray *addressArrayM;
+@property (nonatomic, strong) UILabel *label;
 
 @end
 
@@ -65,12 +66,12 @@
         if (self.addressArrayM.count == 0 || self.addressArrayM == nil || [self.addressArrayM isKindOfClass:[NSNull class]]) {
             
            
-                UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(self.view.center.x-50, self.view.center.y-50, 100, 50)];
+                _label = [[UILabel alloc]initWithFrame:CGRectMake(self.view.center.x-50, self.view.center.y-50, 100, 50)];
           
-                label.text = @"暂无数据";
-                label.font =[UIFont systemFontOfSize:15];
-                label.textAlignment = NSTextAlignmentCenter;
-                [self.tableView addSubview:label];
+                _label.text = @"暂无数据";
+                _label.font =[UIFont systemFontOfSize:15];
+                _label.textAlignment = NSTextAlignmentCenter;
+                [self.tableView addSubview:_label];
 
                 
          
@@ -93,6 +94,9 @@
     self.title = @"收货地址";
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
+    
+    [_label removeFromSuperview];
+
     [self getAddress];
 
 //    NavigationViewController *nav = (NavigationViewController *)self.navigationController;

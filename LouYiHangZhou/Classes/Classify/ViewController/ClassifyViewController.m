@@ -64,13 +64,7 @@
     [self.view addSubview:_webView];
     
     
-    
-    //    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-    //    NSURL *baseURL = [NSURL fileURLWithPath:path1];
-    //    [_webView loadHTMLString:html baseURL:baseURL];
-    //    NSLog(@"%@ ",path);
-    //    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    //    NSLog(@"%@",html);
+
 }
 -(void)openGoodDetailWebviewWithString:(NSString *)goods_id
 {
@@ -85,8 +79,14 @@
 }
 -(void)openGoodsWebbiewWihtString:(NSString *)type_id brand_id:(NSString *)brand_id
 {
+    NSLog(@"%@========%@",type_id,brand_id);
+    
+    
+    
     ClassifyBrandViewController *brand = [[ClassifyBrandViewController alloc]init];
     brand.hidesBottomBarWhenPushed = YES;
+    brand._brandid = brand_id;
+    brand._typeid = type_id;
     [self.navigationController pushViewController:brand animated:YES];
     
     

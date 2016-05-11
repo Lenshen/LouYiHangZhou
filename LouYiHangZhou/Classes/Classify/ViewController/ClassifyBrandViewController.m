@@ -31,6 +31,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight/2)];
+//    _tableview.delegate = self;
+//    _tableview.dataSource = self;
+//   
+//    [self.view addSubview:_tableview];
     i = 0;
     // Do any additional setup after loading the view.
     _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -40,7 +45,7 @@
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
     
     
-    NSString *htmlStr = [NSString stringWithFormat:@"web/goods.html"];
+    NSString *htmlStr = [NSString stringWithFormat:@"web/goods.html?brandid=%@&typeid=%@",self._brandid,self._typeid];
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
     
     
@@ -59,36 +64,64 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    NSLog(@"%@---------%@",self._typeid,self._brandid);
+
     self.navigationController.navigationBarHidden = NO;
-//   self.title = @"品牌详情";
-    _headview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:18];
-    label.text = @"品牌详情";
+//    _headview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
+//    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 44)];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    label.font = [UIFont systemFontOfSize:18];
+    NSString *typeid = [NSString stringWithFormat:@"%@",self._typeid];
     
+    
+    if ([typeid isEqualToString:@"117"]) {
+        self.title = @"午后茶点";
 
-    label.textColor = [UIColor whiteColor];
-    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:18],};
+    }else if([typeid isEqualToString:@"118"])
+    {
+        self.title = @"魅力爆款";
+    }else if([typeid isEqualToString:@"119"])
+    {
+        self.title = @"恋爱小食";
+    }else if([typeid isEqualToString:@"120"])
+    {
+        self.title = @"妈咪天下";
+    }else if([typeid isEqualToString:@"121"])
+    {
+        self.title = @"缤纷礼盒";
+    }else if([typeid isEqualToString:@"122"])
+    {
+        self.title = @"海货归来";
+    }else if([typeid isEqualToString:@"123"])
+    {
+        self.title = @"全家分享";
+    }else if([typeid isEqualToString:@"124"])
+    {
+       self.title = @"猛兽专区";
+    }
     
-
-    CGSize textSize = [label.text boundingRectWithSize:CGSizeMake(100, 100) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
-
-    
-    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(_headview.center.x+textSize.width/2+2, _headview.center.y-5, 13, 10)];
-    imageview.backgroundColor = [UIColor clearColor];
-    imageview.image = [UIImage imageNamed:@"gray-drop-down"];
-    
-    
-    
-    _headview.backgroundColor = [UIColor clearColor];
-    UITapGestureRecognizer *singeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapchick)];
-    [_headview addGestureRecognizer:singeTap];
-    [_headview addSubview:label];
-    [_headview addSubview:imageview];
-
-    self.navigationItem.titleView = _headview;
-    
+//
+//    label.textColor = [UIColor whiteColor];
+//    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:18],};
+//    
+//
+//    CGSize textSize = [label.text boundingRectWithSize:CGSizeMake(100, 100) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
+//
+//    
+//    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(_headview.center.x+textSize.width/2+2, _headview.center.y-5, 13, 10)];
+//    imageview.backgroundColor = [UIColor clearColor];
+//    imageview.image = [UIImage imageNamed:@"gray-drop-down"];
+//    
+//    
+//    
+//    _headview.backgroundColor = [UIColor clearColor];
+//    UITapGestureRecognizer *singeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapchick)];
+//    [_headview addGestureRecognizer:singeTap];
+//    [_headview addSubview:label];
+////    [_headview addSubview:imageview];
+//
+//    self.navigationItem.titleView = _headview;
+//    
     
 }
 
@@ -100,10 +133,8 @@
     if (i%2 == 0) {
         _tableviewBool= YES;
         NSLog(@"yes----%ld",i%2);
-       _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight/2)];
-        _tableview.delegate = self;
-        _tableview.dataSource = self;
-        [self.view addSubview:_tableview];
+        _tableview.hidden = YES;
+     
     
         
 
@@ -125,9 +156,14 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ClassifyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClassifyTableViewCell" forIndexPath:indexPath];
+    
+    ClassifyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"classifyTableViewCell" ];
+    if (cell == nil) {
+         cell = [[ClassifyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"classifyTableViewCell"];
+    }
     
     cell.label.text = @"dddd";
+    
     return cell;
 }
 -(void)viewWillDisappear:(BOOL)animated

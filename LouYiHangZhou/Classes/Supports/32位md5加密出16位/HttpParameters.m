@@ -74,6 +74,8 @@
     NSDictionary *dic =  @{@"access_token":userToken,@"goods_id":goods_id};
     return dic;
 }
+
+
 +(NSDictionary *)get_favorite:(NSString *)userToken
 {
     NSDictionary *dic =  @{@"access_token":userToken};
@@ -92,6 +94,11 @@
 +(NSDictionary *)delete_address:(NSString *)userToken address_id:(NSString *)address_id;
 {
     NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"address_id":address_id};
+    return dic;
+}
++(NSDictionary *)delete_cart:(NSString *)userToken cart_id:(NSString *)cart_id;
+{
+    NSDictionary *dic =  @{@"token":userToken,@"cart_id":cart_id};
     return dic;
 }
 +(NSDictionary *)delete_collectionAddress_id:(NSString *)address_id;
@@ -132,6 +139,13 @@
     return dic;
     
 
+}
++(NSDictionary *)app_user_readMessage:(NSString *)_id
+{
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"user_token"],@"id":_id};
+    return dic;
+    
+    
 }
 +(NSDictionary *)app_user_getMessagesPageindex:(NSString *)pageindex
 {

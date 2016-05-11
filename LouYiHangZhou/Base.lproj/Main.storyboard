@@ -143,14 +143,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="weQ-pA-DPI" firstAttribute="leading" secondItem="WV3-oO-ate" secondAttribute="leading" id="6Rl-gI-9vU"/>
                             <constraint firstAttribute="trailing" secondItem="GQe-dr-vCC" secondAttribute="trailing" id="6pa-MQ-NRS"/>
                             <constraint firstItem="weQ-pA-DPI" firstAttribute="top" secondItem="bdE-fh-tf1" secondAttribute="bottom" constant="43" id="FMM-fd-J6X"/>
-                            <constraint firstItem="weQ-pA-DPI" firstAttribute="top" secondItem="WV3-oO-ate" secondAttribute="topMargin" constant="64" id="RMj-f9-9C4"/>
-                            <constraint firstItem="aqb-S8-lYx" firstAttribute="top" secondItem="weQ-pA-DPI" secondAttribute="bottom" id="at0-Jg-pEh"/>
+                            <constraint firstItem="weQ-pA-DPI" firstAttribute="leading" secondItem="WV3-oO-ate" secondAttribute="leading" id="L0P-xY-TaD"/>
+                            <constraint firstAttribute="trailing" secondItem="weQ-pA-DPI" secondAttribute="trailing" id="OYp-Db-X8Y"/>
+                            <constraint firstItem="weQ-pA-DPI" firstAttribute="top" secondItem="GQe-dr-vCC" secondAttribute="bottom" id="e3r-KT-ZTs"/>
                             <constraint firstItem="GQe-dr-vCC" firstAttribute="top" secondItem="WV3-oO-ate" secondAttribute="top" id="m4F-8t-Qid"/>
                             <constraint firstItem="GQe-dr-vCC" firstAttribute="leading" secondItem="WV3-oO-ate" secondAttribute="leading" id="ryL-Hr-1MS"/>
-                            <constraint firstAttribute="trailing" secondItem="weQ-pA-DPI" secondAttribute="trailing" id="xPx-Yn-TcG"/>
+                            <constraint firstAttribute="bottom" secondItem="weQ-pA-DPI" secondAttribute="bottom" id="ugZ-c6-lBH"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -1267,7 +1267,7 @@
                                     <constraint firstAttribute="width" constant="375" id="7Sa-Ym-I8f"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CollectTableViewController" id="bET-Gl-9vZ" customClass="CollectTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CollectTableViewCell" id="bET-Gl-9vZ" customClass="CollectTableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="375" height="107"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bET-Gl-9vZ" id="u0c-i5-9Ll">

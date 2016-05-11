@@ -25,6 +25,8 @@
 
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *carDataArrList;
+@property(nonatomic,strong)NSMutableArray *list;
+
 @property(nonatomic,strong)UIToolbar *toolbar;
 @property (nonatomic , strong) UIBarButtonItem *previousBarButton;
 @property (nonatomic , strong) UIImageView *islogoinImageView;
@@ -33,6 +35,7 @@
 @property(nonatomic,assign)BOOL isEdit;
 @property(nonatomic,strong)WLZ_ShoppingCartEndView *endView;
 @property(nonatomic,strong) WLZ_ShopViewModel *vm;
+@property(nonatomic,strong) WLZ_ShoppIngCarModel *model;
 
 @end
 
@@ -64,12 +67,12 @@
 
 //本来想着kvo写在 Controller里面 但是想尝试不同的方式 试试在viewModel 里面 ，感觉还是在Controller 里面更 好点
 
-- (void)numPrice
+- (void)numPrice:(NSArray *)array;
 {
     NSArray *lists =   [_endView.Lab.text componentsSeparatedByString:@"￥"];
     float num = 0.00;
     if (self.carDataArrList != nil && self.carDataArrList.count != 0) {
-        NSArray *list = [self.carDataArrList objectAtIndex:0];
+        NSArray *list = array;
         for (int i=0; i<list.count; i++) {
             WLZ_ShoppIngCarModel *model = [list objectAtIndex:i];
             float sale = [model.sale_price floatValue];
@@ -148,13 +151,13 @@
 - (UITableView *)tableView
 {
     if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APPScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, APPScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]-103) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.userInteractionEnabled=YES;
         _tableView.dataSource = self;
         _tableView.scrollsToTop=YES;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.backgroundColor = [UIColor colorFromHexRGB:@"e2e2e2"];
+//        _tableView.contentSize = CGSizeMake(kScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]+44);
     }
     return _tableView;
 }
@@ -277,28 +280,51 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        
-        NSMutableArray *list = [_carDataArrList objectAtIndex:1];
-        
-        
-        
-        WLZ_ShoppIngCarModel *model = [ list objectAtIndex:indexPath.row];
-        model.isSelect=NO;
-        [list removeObjectAtIndex:indexPath.row];
-        
-        if (list.count==1) {
+       
+        NSArray *array = _carDataArrList[0];
+        _list = [[NSMutableArray alloc]init];
+        for (NSInteger i = 0; i<array.count; i++) {
+            _model = array[i];
+            [_list addObject:_model];
+            NSLog(@"%@------%@----------%@------%@",_carDataArrList,_list,array,_model);
+
+
             
-            
-            [_carDataArrList removeObjectAtIndex:indexPath.section];
-            
+
         }
+        
+       
+        [_carDataArrList removeObjectAtIndex:indexPath.row];
+        [self deleteTableviewCell:indexPath.row];
+
+        [_list removeObjectAtIndex:indexPath.row];
+        
+        NSArray *muarray = [NSArray arrayWithArray:_list];
+        [self numPrice:muarray];
+        
+
+
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
         
         [_tableView reloadData];
         
     }
 }
 
-
+-(void)deleteTableviewCell:(NSInteger )index;
+{
+    
+     _model= self.list[index];
+    NSLog(@"%@-------%@",_model.cart_id,[USER_DEFAULT objectForKey:@"user_token"]);
+    
+    [BYSHttpTool POST:APP_CART_REMOVE Parameters:[HttpParameters delete_cart:[USER_DEFAULT objectForKey:@"user_token"] cart_id:_model.cart_id] Success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } Failure:^(NSError *error) {
+        
+    }];
+}
 
 -(void)dealloc
 {
@@ -312,62 +338,10 @@
 }
 
 
-- (void)keyboardWillShow:(NSNotification *)notif {
-    if (self.view.hidden == YES) {
-        return;
-    }
-    
-    CGRect rect = [[notif.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGFloat y = rect.origin.y;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    NSArray *subviews = [self.view subviews];
-    for (UIView *sub in subviews) {
-        CGFloat maxY = CGRectGetMaxY(sub.frame);
-        if ([sub isKindOfClass:[UITableView class]]) {
 
-                sub.frame = CGRectMake(0, 0, sub.frame.size.width, APPScreenHeight-_toolbar.frame.size.height-rect.size.height);
-                sub.center = CGPointMake(CGRectGetWidth(self.view.frame)/2.0, sub.frame.size.height/2);
 
-        }else{
-            if (maxY > y - 2) {
-                sub.center = CGPointMake(CGRectGetWidth(self.view.frame)/2.0, sub.center.y - maxY + y );
-            }
-        }
-    }
-    [UIView commitAnimations];
-}
 
-- (void)keyboardShow:(NSNotification *)notif {
-    if (self.view.hidden == YES) {
-        return;
-    }
-}
 
-- (void)keyboardWillHide:(NSNotification *)notif {
-    if (self.view.hidden == YES) {
-        return;
-    }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    NSArray *subviews = [self.view subviews];
-    for (UIView *sub in subviews) {
-        if (sub.center.y < CGRectGetHeight(self.view.frame)/2.0) {
-            sub.center = CGPointMake(CGRectGetWidth(self.view.frame)/2.0, CGRectGetHeight(self.view.frame)/2.0);
-        }
-    }
-      _toolbar.frame=CGRectMake(0, APPScreenHeight, APPScreenWidth, _toolbar.frame.size.height);
-    _endView.frame = CGRectMake(0, self.view.frame.size.height-_endView.frame.size.height, APPScreenWidth, _endView.frame.size.height);
-
-    self.tableView.frame=CGRectMake(0, 0, self.tableView.frame.size.width, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]);
-    [UIView commitAnimations];
-}
-
-- (void)keyboardHide:(NSNotification *)notif {
-    if (self.view.hidden == YES) {
-        return;
-    }
-}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -388,10 +362,10 @@
             [carDataArrList addObject:commonArry];
             NSLog(@"%@ ------------",carDataArrList);
             [tableView reloadData];
-            [waks numPrice];
+            [waks numPrice:carDataArrList[0]];
         } priceBlock:^{
             
-            [waks numPrice];
+            [waks numPrice:carDataArrList[0]];
         }];
         
         

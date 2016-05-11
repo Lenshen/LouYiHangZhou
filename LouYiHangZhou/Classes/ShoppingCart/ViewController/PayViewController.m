@@ -10,6 +10,7 @@
 #import "WebViewJSBridge.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "AddReceptionViewController.h"
+#import "SearhDetailViewController.h"
 @interface PayViewController ()<UIWebViewDelegate,OpenWebviewDelegate>
 @property (nonatomic ,strong)WebViewJSBridge *bridge;
 @property (nonatomic ,strong)UIWebView *webview;
@@ -23,13 +24,15 @@
     // Do any additional setup after loading the view.
   
 //      [self setUpWebview];
+//    self.edgesForExtendedLayout = YES;
+    
 }
 - (void)setUpWebview;
 {
     
          _webview = [[UIWebView alloc]initWithFrame:CGRectMake(0,64, self.view.frame.size.width, self.view.frame.size.height)];
+    _webview.delegate = self;
     _webview.scrollView.scrollEnabled = YES;
-//    _webview.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+66);
     
      
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
@@ -48,6 +51,40 @@
     NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     [_webview loadHTMLString:html baseURL:baseURL];
     [self.view addSubview:_webview];
+}
+
+
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    
+    NSString *url = [[request URL] absoluteString];
+    if ([url rangeOfString:@"id"].location != NSNotFound) {
+        NSLog(@"tiaozhuan");
+        NSArray *array = [url componentsSeparatedByString:@"?"];
+        
+        NSString *good_id = [array[1] substringFromIndex:3];
+
+        SearhDetailViewController *detail = [[SearhDetailViewController alloc]init];
+        
+        detail.indexName = good_id;
+        NSLog(@"%@======%@===========%@======%@",url,array,good_id,detail.indexName);
+
+        [self.navigationController pushViewController:detail animated:YES];
+        
+        
+
+        
+
+        
+    }else
+    {
+        NSLog(@"notiaozhuan");
+    }
+    
+    
+    
+    return YES;
 }
 
 -(void)openAddAddress

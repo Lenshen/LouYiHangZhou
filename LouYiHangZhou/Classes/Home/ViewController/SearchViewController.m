@@ -17,7 +17,7 @@
 
 #define ScreenWidth   [UIScreen mainScreen].bounds.size.width
 
-@interface SearchViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SearchViewController ()<UISearchBarDelegate,UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate,historyLableDelegeate>
 
 
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *searchDisplayController;
@@ -32,6 +32,7 @@
 @property (strong, nonatomic) NSArray *clearArray;
 @property (strong, nonatomic) HistoryLabel *history;
 @property (strong,nonatomic) SearchModel *model;
+@property (assign, nonatomic)NSInteger index;
 @end
 
 @implementation SearchViewController
@@ -39,13 +40,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.searchDisplayController.searchResultsTableView removeFromSuperview];
+//    [self setupMJRefreshHeader];
+
 
     // Do any additional setup after loading the view.
     [self dismissSearchBarBlackground];
+     self.searchDisplayController.searchResultsTableView.tableFooterView =  [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f,kScreenWidth, 0.001)];
+    self.searchDisplayController.searchResultsTableView.delegate = self;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.edgesForExtendedLayout = NO;
+
+    
+    [self setupMJRefreshHeader];
+    
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
-    self.automaticallyAdjustsScrollViewInsets =NO;
     _history = [[HistoryLabel alloc]initWithFrame:CGRectMake(0,70, ScreenWidth,0)];
-     _clearArray =   [NSArray arrayWithObjects:@"大家",@"你是什么",@"是不是呢",@"想要什么呢",@"吃大餐了哦哦哦",@"技术部的大牛",@"商场部的技术",@"全体人员注意了。开始了", nil];
+    
+    _history.historyDelegate = self;
+    
+     _clearArray =   [NSArray arrayWithObjects:@"A",@"你是什么",@"是不是呢",@"想要什么呢",@"吃大餐了哦哦哦",@"技术部的大牛",@"商场部的技术",@"全体人员注意了。开始了", nil];
+    
     _history.historyBackgroundColor = [UIColor colorWithRed:239/255.0 green:238/255.0 blue:244/255.0 alpha:1];
     _history.historySignalColor = [UIColor colorWithRed:202/255.0 green:202/255.0 blue:202/255.0 alpha:1];
     [_history setArrayTagWithLabelArray:_clearArray];
@@ -73,6 +87,22 @@
 
 
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+    [super viewWillAppear:YES];
+    _index = 0;
+
+}
+-(void)clickhandle:(UIButton *)sender
+{
+    NSString *str = _clearArray[sender.tag];
+    NSLog(@"%@",str);
+   [self.searchDisplayController setActive:YES animated:YES];
+
+    self.searchDisplayController.searchBar.text = str;
+    
+}
 -(void)clearHistory:(id)sender
 {
     _clearArray  = nil;
@@ -80,6 +110,7 @@
 
     
 }
+
 -(void)dismissSearchBarBlackground
 {
     self.searchDisplayController.searchBar.delegate = self;
@@ -102,10 +133,12 @@
 }
 - (void)setupMJRefreshHeader {
    
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    [self.tableView.mj_header beginRefreshing];
     
+
     self.searchDisplayController.searchResultsTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self  refreshingAction:@selector(LoadMoreData)];
+    self.searchDisplayController.searchResultsTableView.mj_footer.ignoredScrollViewContentInsetBottom = 20;
+    
+   
 }
 
 -(void)LoadMoreData
@@ -113,13 +146,12 @@
     
     //过滤数据
     if (self.searchStr) {
-        NSInteger i = 0;
-        i++;
-        NSLog(@"%ld",i);
-        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)i] page_size:@"10"] Success:^(id responseObject) {
+      
+        _index++;
+        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:self.searchStr page_index:[NSString stringWithFormat:@"%ld",(long)_index] page_size:@"10"] Success:^(id responseObject) {
             NSDictionary *dic = responseObject;
             _responseArray  = dic[@"data"];
-            NSLog(@"%@",_responseArray);
+            NSLog(@"%@－－－－－－%ld",_responseArray,(long)_index);
             if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
             {
                 
@@ -149,25 +181,14 @@
                 
             }
             
-            
-            
-            
-            
-            
-            
-            
-        } Failure:^(NSError *error) {
+            } Failure:^(NSError *error) {
             NSLog(@"%@",error);
             
             [self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
 
         }];
         
-        
-        
-
-        
-    }else
+        }else
         [self.searchDisplayController.searchResultsTableView.mj_footer endRefreshing];
  }
 
@@ -178,15 +199,21 @@
 
     [self.navigationController popViewControllerAnimated:YES];
     
+    
 }
 
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    
     if (tableView == self.searchDisplayController.searchResultsTableView)
     {
         
-         return [self.searchList count];
+        NSLog(@"%lu",_searchList.count);
         
-        
+        return [self.searchList count];
+
     }else
     {
        return  0;
@@ -224,8 +251,9 @@
     
 }
 
+
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-        NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", searchString];
+  
     if (self.searchList!= nil) {
         [self.searchList removeAllObjects];
     }
@@ -234,28 +262,33 @@
         NSDictionary *dic = responseObject;
         self.searchStr = searchString;
         _responseArray  = dic[@"data"];
-        NSLog(@"%@",_responseArray);
+        NSLog(@"%@=========%@",responseObject,_responseArray);
         if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
  {
      
            _dataList =[[NSMutableArray alloc]init];
 
-            if (_responseArray.count != 0) {
-                for (NSInteger i=0; i<_responseArray.count; i++) {
-                    NSDictionary *dic = _responseArray[i];
-                    _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
-                    
-                    
-                    
-                    [_dataList
-                     addObject:_model];
-                    NSLog(@"%@",_dataList);
-                    self.searchList= [NSMutableArray arrayWithArray:_dataList];
-                    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-                    [self.searchDisplayController.searchResultsTableView reloadData];
+        if (_responseArray.count != 0) {
+        for (NSInteger i=0; i<_responseArray.count; i++) {
+        NSDictionary *dic = _responseArray[i];
+        _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
+            
+        [_dataList addObject:_model];
+            
+        NSLog(@"%@",_dataList);
+            
+        self.searchList= [NSMutableArray arrayWithArray:_dataList];
+            
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+       
+            
+        [self.searchDisplayController.searchResultsTableView reloadData];
                 }
-                
-                
+            NSLog(@"%@",self.searchDisplayController.searchResultsTableView);
+          
+
+
+            
             }else
             {
                 NSLog(@"meishuju");
@@ -265,14 +298,7 @@
             
         }
         
-        
-
-       
-        
-        
-
-        
-    } Failure:^(NSError *error) {
+        } Failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
    
@@ -282,20 +308,28 @@
    
     return YES;
 }
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    [searchBar setShowsCancelButton:YES animated:YES];
-    
-    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
-        
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel =(UIButton *)view;
-            [cancel setTitle:@"取消" forState:UIControlStateNormal];
-            [cancel addTarget:self action:@selector(cancelbutton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        }
-    }
-  
+//-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+//    [searchBar setShowsCancelButton:YES animated:YES];
+//    
+//    for(UIView *view in  [[[self.searchDisplayController.searchBar subviews] objectAtIndex:0] subviews]) {
+//        
+//        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+//            UIButton * cancel =(UIButton *)view;
+//            [cancel setTitle:@"取消" forState:UIControlStateNormal];
+//            [cancel addTarget:self action:@selector(cancelbutton:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        }
+//    }
+//  
+//}
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
 }
+
+
 - (void)cancelbutton:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -304,9 +338,6 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     NSLog(@"搜索Begin");
     self.blackButton.enabled = NO;
-    self.searchDisplayController.searchResultsTableView.frame = self.view.frame;
-    [self setupMJRefreshHeader];
-
 
     
     return YES;
@@ -319,19 +350,14 @@
 
     return YES;
 }
+
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

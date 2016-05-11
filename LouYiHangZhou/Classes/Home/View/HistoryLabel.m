@@ -111,6 +111,8 @@
 }
 - (void)clickhandle:(UIButton *)sender
 {
-    
+    if ([self.historyDelegate respondsToSelector:@selector(clickhandle:)]) {
+        [self.historyDelegate clickhandle:sender];
+    }
 }
 @end

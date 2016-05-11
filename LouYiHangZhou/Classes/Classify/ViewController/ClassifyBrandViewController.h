@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ClassifyBrandViewController : UIViewController
+@property (nonatomic, strong)NSString *_typeid;
+@property (nonatomic, strong)NSString *_brandid;
+
+
 
 @end

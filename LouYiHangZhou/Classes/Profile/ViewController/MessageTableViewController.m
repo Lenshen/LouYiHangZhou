@@ -110,7 +110,17 @@
 {
     DatailMessageViewController *datail = [[DatailMessageViewController alloc]init];
       _model = _messageMArray[indexPath.row];
-    datail.labelText = _model.alert;
+    NSLog(@"%@",_model);
+    if (!_model.is_read || [_model.is_read isEqualToString:@"0"] ) {
+        [BYSHttpTool GET:APP_USER_READMESSAGE Parameters:[HttpParameters app_user_readMessage:_model._id] Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            
+        }];
+ 
+    }
+        datail.labelText = _model.alert;
     [self.navigationController pushViewController:datail animated:YES];
 
 }

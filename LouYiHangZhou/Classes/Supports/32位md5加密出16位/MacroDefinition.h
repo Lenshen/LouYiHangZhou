@@ -51,6 +51,9 @@
 
 #define APP_USER_GETMESSAGE  @"http://"TESTSERVERSAPI"/api/user/get_msg"
 
+#define APP_USER_READMESSAGE  @"http://"TESTSERVERSAPI"/api/user/read_msg"
+
+
 #define APP_USER_ADDINQUIRE  @"http://"TESTSERVERSAPI"/api/user/addinquire"
 
 #define APP_CART_GETALL @"http://"TESTSERVERSAPI"/api/cart/getall"
@@ -58,6 +61,8 @@
 #define APP_FAVORITE_LIST @"http://"TESTSERVERSAPI"/api/favorite/list"
 
 #define APP_FAVORITE_REMOVE @"http://"TESTSERVERSAPI"/api/favorite/remove"
+
+#define APP_CART_REMOVE @"http://"TESTSERVERSAPI"/api/cart/remove"
 
 
 

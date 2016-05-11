@@ -59,16 +59,16 @@ static CGFloat CELL_HEIGHT = 100;
 - (void)initCellView
 {
     
+//    
+//    UIImage *btimg = [UIImage imageNamed:@"ic_cb_normal.png"];
+//    UIImage *selectImg = [UIImage imageNamed:@"ic_cb_checked"];
     
-    UIImage *btimg = [UIImage imageNamed:@"ic_cb_normal.png"];
-    UIImage *selectImg = [UIImage imageNamed:@"ic_cb_checked"];
-    
-    _selectBt = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, btimg.size.width+20, CELL_HEIGHT)];
-    [_selectBt addTarget:self action:@selector(clickSelect:) forControlEvents:UIControlEventTouchUpInside];
-    [_selectBt setImage:btimg forState:UIControlStateNormal];
-    [_selectBt setImage:selectImg forState:UIControlStateSelected];
-    [self.contentView addSubview:_selectBt];
-    
+//    _selectBt = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, btimg.size.width+20, CELL_HEIGHT)];
+//    [_selectBt addTarget:self action:@selector(clickSelect:) forControlEvents:UIControlEventTouchUpInside];
+//    [_selectBt setImage:btimg forState:UIControlStateNormal];
+//    [_selectBt setImage:selectImg forState:UIControlStateSelected];
+//    [self.contentView addSubview:_selectBt];
+//    
     
     
     _shoppingImgView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_selectBt.frame)+7, 12, 70, 70)];
@@ -78,14 +78,15 @@ static CGFloat CELL_HEIGHT = 100;
     [_shoppingImgView addSubview:_spuImgView];
     
     
-    _title = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_shoppingImgView.frame)+10, 10, APPScreenWidth-CGRectGetMaxX(_shoppingImgView.frame)-15, 21)];
+    _title = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_shoppingImgView.frame)+10, 10, APPScreenWidth-CGRectGetMaxX(_shoppingImgView.frame)-15, 40)];
     _title.font=[UIFont systemFontOfSize:15];
+    _title.numberOfLines = 2;
     _title.textColor=[UIColor colorFromHexRGB:@"666666"];
     
     [self.contentView addSubview:_title];
     
     
-    _sizeLab = [[UILabel alloc] initWithFrame:CGRectMake(_title.frame.origin.x, CGRectGetMaxY(_title.frame), 200, 17)];
+    _sizeLab = [[UILabel alloc] initWithFrame:CGRectMake(_title.frame.origin.x, CGRectGetMaxY(_title.frame)-20, 200, 34)];
     _sizeLab.font=[UIFont systemFontOfSize:12];
     _sizeLab.textColor=[UIColor colorFromHexRGB:@"666666"];
     [self.contentView addSubview:_sizeLab];
@@ -96,8 +97,8 @@ static CGFloat CELL_HEIGHT = 100;
     
     _priceLab = [[UILabel alloc]initWithFrame:CGRectMake(APPScreenWidth-18-100, CGRectGetMaxY(_sizeLab.frame)+5+5, 100, 17)];
     _priceLab.textAlignment=NSTextAlignmentRight;
-    _priceLab.textColor=[UIColor colorFromHexRGB:@"666666"];
-    _priceLab.font=[UIFont systemFontOfSize:14];
+    _priceLab.textColor=[UIColor redColor];
+    _priceLab.font=[UIFont systemFontOfSize:20];
     [self.contentView addSubview:_priceLab];
     
     
@@ -146,7 +147,7 @@ static CGFloat CELL_HEIGHT = 100;
   
     
     
-    _title.text= model.goods_name;
+       _title.text= model.goods_name;
     
     
         _selectBt.enabled=YES;
@@ -246,7 +247,7 @@ static CGFloat CELL_HEIGHT = 100;
     
     _model.qty = _changeView.numberFD.text;
     
-//    _model.isSelect=_selectBt.selected;
+    _model.isSelect=_selectBt.selected;
     
     
     

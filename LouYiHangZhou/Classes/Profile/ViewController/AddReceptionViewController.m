@@ -88,7 +88,11 @@
 }
 - (IBAction)getCity:(id)sender {
     
+    [_address resignFirstResponder];
+    [_mobile resignFirstResponder];
+    [_full_name resignFirstResponder];
     
+
     AddressPickView *addressPickView = [AddressPickView shareInstance];
     [self.view addSubview:addressPickView];
     addressPickView.block = ^(NSString *province,NSString *city,NSString *town){
