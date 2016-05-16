@@ -65,7 +65,7 @@
 		</section>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥{{goodsAmount + shippingAmount - couponAmount}}</b><!-- <small>共 2 件商品</small> --><a class="btn" href="javascript:;" @click="clearing();">去结算</a>
+			<b class="price">￥{{goodsAmount + shippingAmount - couponAmount}}</b><!-- <small>共 2 件商品</small> --><a class="btn" href="javascript:;" @click="clearing();">提交订单</a>
 		</footer>
 
 		<div class="dialogChoose" style="display:none;">
@@ -179,7 +179,7 @@
 						Toast('请选择支付方式！');
 						return;
 					}
-
+					app.showWaiting('请稍候...');
 					api.orderSubmit({
 						full_name: vm.address.full_name,
 						province: vm.address.province,
@@ -193,11 +193,17 @@
 						shipping_id: vm.vmShipping
 					}).done(function(response) {
 						if (response.success) {
+							app.intentOrderDetail(response.data);
+							// api.getPayConfig().done(function() {
+								
+							// });
 							// location.replace('orders.html');
 						}
 						else {
 							Toast(response.message);
 						}
+					}).always(function() {
+						app.hideWaiting();
 					});
 				},
 
@@ -207,12 +213,9 @@
 
 		page.push(function() {
 			
-			alert('Token: ' + app.getToken());
-
 			vm.$watch('address', function() {
 				vm.shippingFee();
 			})
-
 
 			api.payment().done(function(response) {
 				if (response.success) {

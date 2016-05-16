@@ -11,6 +11,7 @@
 #import "UIViewController+StoryboardFrom.h"
 #import "AddReceptionViewController.h"
 #import "SearhDetailViewController.h"
+#import "PayTwoViewController.h"
 @interface PayViewController ()<UIWebViewDelegate,OpenWebviewDelegate>
 @property (nonatomic ,strong)WebViewJSBridge *bridge;
 @property (nonatomic ,strong)UIWebView *webview;
@@ -21,16 +22,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
   
-//      [self setUpWebview];
-//    self.edgesForExtendedLayout = YES;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
     
 }
 - (void)setUpWebview;
 {
     
-         _webview = [[UIWebView alloc]initWithFrame:CGRectMake(0,64, self.view.frame.size.width, self.view.frame.size.height)];
+    _webview = [[UIWebView alloc]initWithFrame:CGRectMake(0,64, self.view.frame.size.width, self.view.frame.size.height-64)];
     _webview.delegate = self;
     _webview.scrollView.scrollEnabled = YES;
     
@@ -54,7 +54,13 @@
 }
 
 
-
+-(void)openOrderDetial:(NSString *)order_id
+{
+    
+    PayTwoViewController *paytwo = [[PayTwoViewController alloc]init];
+    paytwo.indexName = order_id;
+    [self.navigationController pushViewController:paytwo animated:YES];
+}
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     
@@ -97,7 +103,7 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
-    self.title = @"结算";
+    self.title = @"订单详情";
     self.automaticallyAdjustsScrollViewInsets = NO
     ;
    

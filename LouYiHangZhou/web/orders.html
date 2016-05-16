@@ -13,7 +13,7 @@
 			<div :class="{'selected': status == 0}" @click="changeStatus(0);">全部</div>
 			<div :class="{'selected': status == 10}" @click="changeStatus(10);">待支付</div>
 			<div :class="{'selected': status == 80}" @click="changeStatus(80);">待收货</div>
-			<div :class="{'selected': status == 15}" @click="changeStatus(15);">待评价</div>
+			<!-- <div :class="{'selected': status == 15}" @click="changeStatus(15);">待评价</div> -->
 			<div :class="{'selected': status == 100}" @click="changeStatus(100);">已完成</div>
 		</nav>
 		<section class="item" v-for="order in orders">
@@ -26,13 +26,13 @@
 			<div class="buttom">
 				<p>共 {{order.order_goods.length}} 件商品&#12288;商品金额：{{order.payment_amount}}<span class="fr">{{order.create_time | substring '10')}}</span></p>
 				<div class="bdt-x button">
-					<a href="" class="button-black" v-if="order.status_id == 10">取消订单</a>
-					<a href="" class="button-black" v-if="order.status_id == 10 || order.status_id == 200 || order.status_id == 100">重新下单</a>
-					<a href="" class="button-black" v-if="order.status_id == 10">去支付</a>
-					<a href="" class="button-black" v-if="order.status_id == 80">查看物流</a>
-					<a href="" class="button-black" v-if="order.status_id == 80">确认收货</a>
-					<a href="/comment.html?id={{order.order_id}}" class="button-black" v-if="order.status_id == 15">去评价</a>
-					<a href="" class="button-black" v-if="order.status_id == 15 || order.status_id == 35 || order.status_id == 200 || order.status_id == 100">删除订单</a>
+					<a class="button-black" v-if="order.status_id == 10" @click="orderCancel(order.order_id);">取消订单</a>
+					<a class="button-black" v-if="order.status_id == 10 || order.status_id == 200 || order.status_id == 100">重新下单</a>
+					<a class="button-black" v-if="order.status_id == 10" @click="orderPay(order.payment_amount, order.order_goods, order.order_id);">去支付</a>
+					<a class="button-black" v-if="order.status_id == 80">查看物流</a>
+					<a class="button-black" v-if="order.status_id == 80" @click="orderReceived(order.order_id);">确认收货</a>
+					<a href="comment.html?id={{order.order_id}}" class="button-black" v-if="order.status_id == 15">去评价</a>
+					<a class="button-black" v-if="order.status_id == 15 || order.status_id == 35 || order.status_id == 200 || order.status_id == 100" @click="orderDel(order.order_id);">删除订单</a>
 				</div>
 			</div>
 		</section>
@@ -72,6 +72,62 @@
 						vm.ajax.abort();
 					}
 					getOrders();
+				},
+				orderReceived: function(id) {
+					app.showWaiting('操作中...');
+					api.orderReceived(id).done(function(response) {
+						if (response.success) {
+							Toast('操作成功');
+						}
+						else {
+							Toast('操作失败');
+						}
+					}).always(function() {
+						app.hideWaiting();
+					});
+				},
+				orderCancel: function(id) {
+					app.showWaiting('取消中...');
+					api.orderCancel(id).done(function(response) {
+						if (response.success) {
+							Toast('操作成功');
+						}
+						else {
+							Toast('操作失败');
+						}
+					}).always(function() {
+						app.hideWaiting();
+					});
+				},
+				orderDel: function(id) {
+					app.showWaiting('删除中...');
+					api.orderDel(id).done(function(response) {
+						if (response.success) {
+							Toast('操作成功');
+						}
+						else {
+							Toast('操作失败');
+						}
+					}).always(function() {
+						app.hideWaiting();
+					});
+				},
+				orderPay: function(amount, orderGoods, id) {
+					var name = orderGoods[0].goods_name + (orderGoods.length > 1 ?  '等多件' : '');
+					app.showWaiting('操作中...');
+					api.orderPay(id).done(function(response) {
+						if (response.success) {
+							
+							api.getPayConfig().done(function(response) {
+								app.payMoney(response.data.partner_id, response.data.key, response.data.account, name, name, amount, id)
+							});
+						}
+						else {
+							Toast('操作失败');
+						}
+					}).always(function() {
+						app.hideWaiting();
+					});
 				}
 			}
 		});

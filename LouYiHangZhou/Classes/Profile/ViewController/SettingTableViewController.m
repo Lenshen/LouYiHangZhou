@@ -68,10 +68,7 @@
         } Failure:^(NSError *error) {
             
         }];
-        [USER_DEFAULT removeObjectForKey:@"avatar"];
-        [USER_DEFAULT removeObjectForKey:@"mobile"];
-        [USER_DEFAULT removeObjectForKey:@"sex"];
-        [USER_DEFAULT removeObjectForKey:@"birth"];
+       
         [USER_DEFAULT removeObjectForKey:@"user_token"];
         
     }
@@ -91,6 +88,8 @@
                            NSString *path = [cachPath stringByAppendingPathComponent:p];
                            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
                                [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+                               [USER_DEFAULT removeObjectForKey:@"myArray"];
+                              ;
                            }
                        }
                        [self performSelectorOnMainThread:@selector(clearCacheSuccess) withObject:nil waitUntilDone:YES];});

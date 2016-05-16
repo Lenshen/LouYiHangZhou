@@ -241,6 +241,32 @@ window.app = {
 			this.request('intentClassifyWeb', {typeid: typeid, brandid: brandid});
 		}
 	},
+	intentOrderDetail: function(id) {
+		if (this.hasMothed('intentOrderDetail')) {
+			MallJSBridge.intentOrderDetail(id);
+		}
+		else {
+			this.request('intentOrderDetail', {id: id});
+		}
+	},
+	// 商户PID、商户私钥、商户收款账号、商品名、商品描述、商品价格，订单id
+	payMoney: function(partner, rsa_private, seller, goods_name, goods_description, goods_price, order_id) {
+		if (this.hasMothed('payMoney')) {
+			MallJSBridge.payMoney(partner, rsa_private, seller, goods_name, goods_description, goods_price, order_id);
+		}
+		else {
+			this.request('payMoney', {
+				partner: partner,
+				rsa_private: rsa_private,
+				seller: seller,
+				goods_name: goods_name,
+				goods_description: goods_description,
+				goods_price: goods_price,
+				order_id: order_id
+			});
+		}
+	},
+
 	// ajax: function(configs) {
 	// 	console.log(configs)
 	// 	return new Ajax(configs);
@@ -662,7 +688,7 @@ var api = {
 			url: this.domain + '/api/space/link',
 			type: 'GET',
 			data: {
-				access_token: app.getToken(),
+				access_token: app.getToken() || app.getApplyCode(),
 				code: code
 			}
 		});
@@ -674,7 +700,7 @@ var api = {
 			url: this.domain + '/api/space/goods',
 			type: 'GET',
 			data: {
-				access_token: app.getToken(),
+				access_token: app.getToken() || app.getApplyCode(),
 				code: code
 			}
 		});
@@ -707,6 +733,7 @@ var api = {
 		return this.ajax({
 			url: this.domain + '/api/goods/search',
 			type: 'POST',
+			cache: false,
 			data: $.extend({
 				access_token: app.getToken() || app.getApplyCode(),
 				keyword: '',
@@ -770,6 +797,66 @@ var api = {
 				star: 0,
 				content: ''
 			}, options)
+		});
+	},
+	orderReceived: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/received',
+			type: 'POST',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+	},
+	orderCancel: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/cancel',
+			type: 'POST',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+	},
+	orderDel: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/cancel',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+	},
+	orderPay: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/pay',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+	},
+	getPayConfig: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/config/getalipay',
+			type: 'GET',
+			data: {
+				access_token: app.getApplyCode()
+			}
+		});
+	},
+	getQueryExpress: function(code, name) {
+		return this.ajax({
+			url: this.domain + '/api/order/queryexpress',
+			type: 'GET',
+			data: {
+				access_token: app.getApplyCode(),
+				post_code: code,
+				company: name
+			}
 		});
 	}
 }
@@ -1050,16 +1137,24 @@ $.extend(Slider.prototype, {
 	}
 
 });
+function initBridge() {
 
+    window.MallJSBridgeEvent = document.createEvent('Event'); 
+    window.MallJSBridgeEvent.initEvent('MallJSBridgeReady', false, false); 
+    document.dispatchEvent(window.MallJSBridgeEvent);
+}
 
 $(window).on('load', function() {
 	if (navigator.userAgent.toLowerCase().indexOf('pc') >= 0) {
 		MallJSBridge = {
 			getToken: function() {
-				return '8237C82CC50EED569A494BEB4DDC46B0BB1EE821988413EF44B213FEC066E505596DD6A00921F225';
+				return '687C090431AF1ABBC85AD593943388B0762BAB34586F1A7D8BE07449CBA94B362F0CEACC1E29D715F7C3BAB3D9A646ED';
 			},
 			getApplyCode: function() {
 				return 100;
+			},
+			intentClassifyWeb: function() {
+				
 			}
 		};
 		window.MallJSBridgeEvent = document.createEvent('Event'); 

@@ -25,8 +25,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"%@",self.indexName);
-    [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
-    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+   
+
 
     
 
@@ -34,22 +34,23 @@
 }
 -(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
 {
-    _webView = [[UIWebView alloc]initWithFrame:webviewFrame];
-
+ _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
 
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
    
     NSString *str3 = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
+    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
     
     NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
     NSLog(@"%@",request1);
     
-    [_webView loadRequest:request1];
+    [self.webView loadRequest:request1];
 
 
     
-    [self.view addSubview:_webView];
+    [self.view addSubview:self.webView];
 
     
     
@@ -60,8 +61,8 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
-    self.title = @"订单详情";
-    
+    self.title = @"订单状态";
+    [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

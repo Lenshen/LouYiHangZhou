@@ -71,6 +71,7 @@
     
     _button.titleLabel.font = [UIFont systemFontOfSize:15.0f];
 
+    _button.layer.cornerRadius = 2;
     
     
     [_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

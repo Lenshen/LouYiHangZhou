@@ -164,4 +164,14 @@
     
 }
 
++(NSDictionary *)app_get_version
+{
+    
+    NSDictionary *dic =  @{@"access_token":[USER_DEFAULT objectForKey:@"app_autorizd_number"],@"plat_num":@"2"};
+    return dic;
+    
+    
+}
+
+
 @end

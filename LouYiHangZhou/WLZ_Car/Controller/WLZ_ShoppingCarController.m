@@ -17,6 +17,8 @@
 #import "HomeViewController.h"
 #import "UIViewController+StoryboardFrom.h"
 #import "LogonVViewController.h"
+
+
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
 {
     BOOL isLogoin;
@@ -73,12 +75,16 @@
     float num = 0.00;
     if (self.carDataArrList != nil && self.carDataArrList.count != 0) {
         NSArray *list = array;
-        for (int i=0; i<list.count; i++) {
-            WLZ_ShoppIngCarModel *model = [list objectAtIndex:i];
+        for (int i = 0; i < list.count; i++) {
+            WLZ_ShoppIngCarModel *model = list[i];
             float sale = [model.sale_price floatValue];
             NSInteger count = [model.qty floatValue];
-            
-            num = count*sale + num;
+            NSLog(@"%@",model.qty);
+       
+           
+                num = count*sale + num;
+
+        
             NSLog(@"count=====%ld  ======%.2f",count,num);
             
             
@@ -90,7 +96,7 @@
 
     }
 
-    }
+}
 
 
 -(WLZ_ShoppingCartEndView *)endView
@@ -109,29 +115,12 @@
 
 - (void)clickRightBT:(UIButton *)bt
 {
-    if(bt.tag==19)
-    {
-        //删除
-        for (int i = 0; i<_carDataArrList.count; i++) {
-            NSMutableArray *arry = [_carDataArrList objectAtIndex:i];
-            for (int j=0 ; j<arry.count-1; j++) {
-                WLZ_ShoppIngCarModel *model = [ arry objectAtIndex:j];
-                if (model.isSelect==YES) {
-                    [arry removeObjectAtIndex:j];
-                    continue;
-                }
-            }
-            if (arry.count<=1) {
-                [_carDataArrList removeObjectAtIndex:i];
-            }
-        }
-        [_tableView reloadData];
-    }
-    else if (bt.tag==18)
+  if (bt.tag==18)
     {
         PayViewController *pay = [[PayViewController alloc]init];
         pay.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:pay animated:YES];
+        
         
     }
     
@@ -139,14 +128,7 @@
     
 }
 
-//
-//- (NSMutableArray *)carDataArrList
-//{
-//    if (!_carDataArrList) {
-//        _carDataArrList = [NSMutableArray array];
-//    }
-//    return _carDataArrList;
-//}
+
 
 - (UITableView *)tableView
 {
@@ -181,10 +163,12 @@
     if (self.carDataArrList.count == 0) {
         [self.tableView removeFromSuperview];
         [self.endView removeFromSuperview];
+        [_isnilImageView removeFromSuperview];
 
         if (isLogoin) {
             
             _isnilImageView= [[UIImageView alloc]initWithFrame:self.view.frame];
+            _isnilImageView.tag = 1000;
             UIImage *image = [UIImage imageNamed:@"img_cart_null"];
             _isnilImageView.image = image;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeTabbaritem)];
@@ -236,7 +220,7 @@
         cell.delegate=self;
     }
     if (self.carDataArrList.count>0) {
-        NSArray *list = [self.carDataArrList objectAtIndex:indexPath.section];
+        NSArray *list = self.carDataArrList;
         cell.row = indexPath.row+1;
         [cell setModel:[list objectAtIndex:indexPath.row]];
         cell.selectionStyle= UITableViewCellSelectionStyleNone;
@@ -281,25 +265,12 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
        
-        NSArray *array = _carDataArrList[0];
-        _list = [[NSMutableArray alloc]init];
-        for (NSInteger i = 0; i<array.count; i++) {
-            _model = array[i];
-            [_list addObject:_model];
-            NSLog(@"%@------%@----------%@------%@",_carDataArrList,_list,array,_model);
+        [self deleteTableviewCell:indexPath.row :_carDataArrList];
 
-
-            
-
-        }
-        
-       
         [_carDataArrList removeObjectAtIndex:indexPath.row];
-        [self deleteTableviewCell:indexPath.row];
 
-        [_list removeObjectAtIndex:indexPath.row];
         
-        NSArray *muarray = [NSArray arrayWithArray:_list];
+        NSArray *muarray = [NSArray arrayWithArray:_carDataArrList];
         [self numPrice:muarray];
         
 
@@ -312,10 +283,10 @@
     }
 }
 
--(void)deleteTableviewCell:(NSInteger )index;
+-(void)deleteTableviewCell:(NSInteger )index :(NSMutableArray *)carDataArr;
 {
     
-     _model= self.list[index];
+     _model= carDataArr[index];
     NSLog(@"%@-------%@",_model.cart_id,[USER_DEFAULT objectForKey:@"user_token"]);
     
     [BYSHttpTool POST:APP_CART_REMOVE Parameters:[HttpParameters delete_cart:[USER_DEFAULT objectForKey:@"user_token"] cart_id:_model.cart_id] Success:^(id responseObject) {
@@ -356,16 +327,20 @@
         NSLog(@"%@",_carDataArrList);
         
         __weak typeof (WLZ_ShoppingCarController) *waks = self;
-        __weak typeof (NSMutableArray)* carDataArrList =self.carDataArrList;
+        __block NSArray* carDataArrList ;
         __weak typeof (UITableView ) *tableView = self.tableView;
         [_vm getShopData:^(NSArray *commonArry) {
-            [carDataArrList addObject:commonArry];
             NSLog(@"%@ ------------",carDataArrList);
-            [tableView reloadData];
-            [waks numPrice:carDataArrList[0]];
+            carDataArrList = commonArry;
+            [self carDataArrList:carDataArrList :tableView];
+            [waks numPrice:carDataArrList];
         } priceBlock:^{
+            NSLog(@"%@",_carDataArrList);
+            if (_carDataArrList.count != 0) {
+                [waks numPrice:_carDataArrList];
+
+            }
             
-            [waks numPrice:carDataArrList[0]];
         }];
         
         
@@ -389,6 +364,16 @@
    
     
     
+}
+- (NSMutableArray *)carDataArrList :(NSArray *)array :(UITableView *)tableview
+{
+    
+        _carDataArrList = [NSMutableArray arrayWithArray:array];
+        
+        [tableview reloadData];
+
+ 
+    return _carDataArrList;
 }
 -(void)loginEvent
 {

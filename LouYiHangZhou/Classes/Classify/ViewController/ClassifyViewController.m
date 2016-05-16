@@ -12,7 +12,10 @@
 #import "ClassifyBrandViewController.h"
 #define JSBridgeName @"MallJSBridge"
 #define JSBridgeProtocol @"bridge://"
+
 @interface ClassifyViewController ()<UIWebViewDelegate,OpenWebviewDelegate>
+{
+}
 @property (nonatomic, strong)UIWebView *webView;
 @property (nonatomic, strong)WebViewJSBridge *bridge;
 
@@ -24,11 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setUPWebView];
-    NSString *str = [USER_DEFAULT objectForKey:@"user_token"];
-    NSLog(@"%@",str);
-    
 
+    
 
     
 }
@@ -103,10 +103,15 @@
 
     return YES;
 }
-//-(void)webViewDidFinishLoad:(UIWebView *)webView
-//{
-//    _webView stringByEvaluatingJavaScriptFromString:<#(nonnull NSString *)#>
-//}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self setUPWebView];
+    
+    
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -11,6 +11,7 @@
 #import "MJExtension.h"
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
+#import "SVProgressHUD.h"
 @implementation WLZ_ShopViewModel
 
 //
@@ -28,10 +29,10 @@
 //    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
 //    NSMutableDictionary *strategyDic = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     _strategyDic = [NSMutableDictionary dictionary];
-    
+    [SVProgressHUD show];
     [BYSHttpTool GET:APP_CART_GETALL Parameters:[HttpParameters app_cart_getall] Success:^(id responseObject) {
         NSLog(@"%@",responseObject);
-   
+        [SVProgressHUD dismiss];
         NSArray *commonList = [[NSArray alloc]init];
         commonList = responseObject[@"data"];
         
@@ -44,7 +45,7 @@
             WLZ_ShoppIngCarModel *model = [WLZ_ShoppIngCarModel mj_objectWithKeyValues:[commonList objectAtIndex:i]];
             model.vm =self;
             model.type=1;
-//            model.isSelect=YES;
+            model.isSelect= YES;
             [commonMuList addObject:model];
             shopDataBlock(commonMuList);
 
@@ -60,6 +61,8 @@
         
     } Failure:^(NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+
     }];
     
     
@@ -111,7 +114,41 @@
     }
 }
 
-
+-(void)clickAllBT:(NSMutableArray *)carDataArrList bt:(UIButton *)bt
+{
+    
+    
+    
+    bt.selected = !bt.selected;
+    
+    for (int i =0; i<carDataArrList.count; i++) {
+        NSArray *dataList = [carDataArrList objectAtIndex:i];
+        NSMutableDictionary *dic = [dataList lastObject];
+        for (int j=0; j<dataList.count-1; j++) {
+            WLZ_ShoppIngCarModel *model = (WLZ_ShoppIngCarModel *)[dataList objectAtIndex:j];
+            if (model.type==1 && bt.tag==100) {
+                if (bt.selected) {
+                    [dic setObject:@"YES" forKey:@"checked"];
+                }
+                else
+                {
+                    [dic setObject:@"NO" forKey:@"checked"];
+                }
+                
+            }
+            else if(model.type==2 &&bt.tag==101)
+            {
+                if (bt.selected) {
+                    [dic setObject:@"YES" forKey:@"checked"];
+                }
+                else
+                {
+                    [dic setObject:@"NO" forKey:@"checked"];
+                          }
+        }
+    }
+}
+}
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context

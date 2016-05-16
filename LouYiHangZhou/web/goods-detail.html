@@ -63,14 +63,12 @@
 				{{goods.comment_times}} 个评价<span class="icons icon-arrow"></span>
 			</a>
 		</section>
-		<section class="recommend">
+		<section class="recommend" v-if="recommend.length">
 			<header>
 				<h3>为您推荐</h3>
 			</header>
 			<ul>
-				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
-				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
-				<li><a href="" class="img"><img src="assets/img/goods2.jpg" alt=""></a><h4 class="clamp1">台湾进口SODA热单品</h4><p>￥110.9</p></li>
+				<li v-for="item in recommend" @click="goDetail(item.goods_id)"><a class="img"><img src="{{item.image}}" alt=""></a><h4 class="clamp1">{{item.goods_name}}</h4><p>￥{{item.sales_price}}</p></li>
 			</ul>
 		</section>
 		<div class="mod-order-footer-holder"></div>
@@ -90,7 +88,8 @@
 		var vm = new Vue({
 			el: '#vue-view',
 			data: {
-				goods: {}
+				goods: {},
+				recommend: []
 			},
 			methods: {
 				doFavorite: function() {
@@ -140,6 +139,9 @@
 					}
 
 					return stars.join('');
+				},
+				goDetail: function(id) {
+					app.intentGoodsDetail(id);
 				},
 				cartAdd: function(id) {
 
@@ -193,6 +195,11 @@
 				if (response.success) {
 					vm.goods = response.data;
 				}
+			});
+
+			// 为您推荐
+			api.spaceGoods('recommend').done(function(response) {
+				vm.recommend = response.data;
 			});
 
 			// api.favoriteExist(params.search.id).done(function(response) {

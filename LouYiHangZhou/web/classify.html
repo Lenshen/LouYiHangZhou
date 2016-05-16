@@ -55,14 +55,14 @@
 					<div v-for="item in brands" data-id="{{item.id}}">{{item.name}}</div>
 				</div>
 				<div class="list">
-					<ul>
+					<ul id="list-ul">
 						<li v-for="item in goods" data-id="{{item.goods_id}}" @click="goDetail(item.goods_id);">
 							<div class="img"><img src="{{item.image || 'assets/img/placeholder-goods.png'}}" alt=""></div>
 							<p>{{item.goods_name}}</p></a>
 						</li>
 					</ul>
 					<div class="clear-text" v-show="loading">加载中...</div>
-					<div class="clear-text" v-show="last">已经是最后一页了...</div>
+					<div class="clear-text" v-show="last && !loading">已经是最后一页了...</div>
 				</div>
 			</div>
 		</div>
@@ -95,6 +95,9 @@
 				href: function(id) {
 					this.typeid = id;
 					getBrandlist();
+					this.pageindex = 1;
+					this.last = false;
+					this.loading = false;
 					this.getGoods();
 					$('.content').scrollTop(0)
 				},
@@ -102,7 +105,7 @@
 					
 					this.brandid = id;
 					// this.pageindex = 1;
-					app.intentClassifyWeb(this.typeid, this.brandid);
+					app.intentClassifyWeb(this.typeid + '', this.brandid);
 				},
 				getGoods: function() {
 					if (this.last || this.loading) {
@@ -110,7 +113,7 @@
 					}
 					this.loading = true;
 					api.search({
-						typeid: this.typeid,
+						goods_type_id: this.typeid,
 						page_index: this.pageindex,
 						page_size: this.pagesize
 					}).done(function(response) {
@@ -119,6 +122,7 @@
 							return;
 						}
 						if (vm.pageindex == 1) {
+							vm.goods = [];
 							vm.goods = response.data;
 						}
 						else {

@@ -20,7 +20,15 @@
 
 + (instancetype)bridgeForWebView:(UIWebView *)webView withSuperDelegate:(id)superDelegate
 {
-    WebViewJSBridge *bridge = [self new];
+    
+    static WebViewJSBridge *bridge = nil;
+    static dispatch_once_t token;
+    dispatch_once(&token,
+                  ^{
+                     bridge = [self new];
+
+                      
+                  });
     [bridge initBridge:webView withSuperDelegate:superDelegate];
     return bridge;
 }
@@ -44,6 +52,16 @@
 
 }
 
+
+-(void)payMoney:(NSDictionary *)args
+{
+    if ([self.openWebviewDelegate respondsToSelector:@selector(payMoney:)]) {
+        [self.openWebviewDelegate payMoney:args];
+
+        
+    }
+
+}
 - (void)getToken:(NSString *)callback
 {
     NSString *str = [USER_DEFAULT objectForKey:@"user_token"];
@@ -76,12 +94,26 @@
 }
 - (void)showWaiting:(NSDictionary *)args
 {
+    NSLog(@"%@",args);
     
     NSString *message = [args objectForKey:@"message"];
+
     [SVProgressHUD showWithStatus:message];
+
     
 }
+-(void)intentOrderDetail:(NSDictionary *)args
+{
+  
+    NSLog(@"%@",args);
+    if ([self.openWebviewDelegate respondsToSelector:@selector(openAddAddress)]) {
+        
+        NSString *order_id = args[@"id"];
+        [self.openWebviewDelegate openOrderDetial:order_id];
+        
+    }
 
+}
 -(void)intentGoodsDetail:(id)goodsid
 {
     _openWebview = YES;
@@ -147,10 +179,12 @@
         [self getToken:callback];
     }
     else if ([name isEqualToString:@"showWaiting"]) {
-        [self showWaiting:args  ];
+        
+//        [self showWaiting:args  ];
+        
     }else if ([name isEqualToString:@"hideWaiting"])
     {
-        [self closeWebview];
+//        [self hideWaiting];
         
     }else if ([name isEqualToString:@"getUser"])
     {
@@ -177,7 +211,24 @@
     }else if ([name isEqualToString:@"intentaddress"])
     {
         [self intentaddress:callback];
+    }else if ([name isEqualToString:@"payMoney"])
+    {
+        
+        [self payMoney:args];
+        NSLog(@"%@",args);
+        
+
+
+        
+    }else if ([name isEqualToString:@"intentOrderDetail"])
+        
+    {
+        
+        NSLog(@"intentOrde");
+        [self intentOrderDetail:args];
+        
     }
+        
     [_superDelegate executeSelector:name args:args callback:callback];
 
 

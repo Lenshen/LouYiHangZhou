@@ -27,9 +27,8 @@
 @property (strong,nonatomic) NSString *searchStr;
 @property (strong,nonatomic) NSMutableArray  *searchList;
 @property (strong,nonatomic) NSMutableArray  *finallyMArry;
-
+@property (strong,nonatomic) NSMutableArray *searTXT;
 @property (weak, nonatomic) IBOutlet UIButton *blackButton;
-@property (strong, nonatomic) NSArray *clearArray;
 @property (strong, nonatomic) HistoryLabel *history;
 @property (strong,nonatomic) SearchModel *model;
 @property (assign, nonatomic)NSInteger index;
@@ -54,30 +53,7 @@
     [self setupMJRefreshHeader];
     
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
-    _history = [[HistoryLabel alloc]initWithFrame:CGRectMake(0,70, ScreenWidth,0)];
     
-    _history.historyDelegate = self;
-    
-     _clearArray =   [NSArray arrayWithObjects:@"A",@"你是什么",@"是不是呢",@"想要什么呢",@"吃大餐了哦哦哦",@"技术部的大牛",@"商场部的技术",@"全体人员注意了。开始了", nil];
-    
-    _history.historyBackgroundColor = [UIColor colorWithRed:239/255.0 green:238/255.0 blue:244/255.0 alpha:1];
-    _history.historySignalColor = [UIColor colorWithRed:202/255.0 green:202/255.0 blue:202/255.0 alpha:1];
-    [_history setArrayTagWithLabelArray:_clearArray];
-    [self.tableView addSubview:_history];
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(ScreenWidth/2.0 - 75 ,_history.frame.origin.y+_history.frame.size.height+40, 150, 30);
-    [button.layer setBorderWidth:0.5];
-
-    button.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
-    [button addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-
-
-    [button setTitle:@"清除历史纪录" forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.tableView addSubview:button];
     
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
@@ -92,23 +68,36 @@
     
     [super viewWillAppear:YES];
     _index = 0;
+    
+    if([USER_DEFAULT objectForKey:@"user_token"]) {
+        [self setupHistoryView];
+
+    }
 
 }
 -(void)clickhandle:(UIButton *)sender
 {
-    NSString *str = _clearArray[sender.tag];
+    NSString *str = _searTXT[sender.tag];
     NSLog(@"%@",str);
    [self.searchDisplayController setActive:YES animated:YES];
-
+   
     self.searchDisplayController.searchBar.text = str;
+    
+    [self changeCancelButtonText];
     
 }
 -(void)clearHistory:(id)sender
 {
-    _clearArray  = nil;
+    [USER_DEFAULT removeObjectForKey:@"myArray"];
     [_history removeFromSuperview];
 
     
+}
+
+-(void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+    [tableView setContentInset:UIEdgeInsetsZero];
+    [tableView setScrollIndicatorInsets:UIEdgeInsetsZero];
 }
 
 -(void)dismissSearchBarBlackground
@@ -258,70 +247,129 @@
         [self.searchList removeAllObjects];
     }
     //过滤数据
-    [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:searchString page_index:@"0" page_size:@"10"] Success:^(id responseObject) {
-        NSDictionary *dic = responseObject;
-        self.searchStr = searchString;
-        _responseArray  = dic[@"data"];
-        NSLog(@"%@=========%@",responseObject,_responseArray);
-        if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
- {
-     
-           _dataList =[[NSMutableArray alloc]init];
-
-        if (_responseArray.count != 0) {
-        for (NSInteger i=0; i<_responseArray.count; i++) {
-        NSDictionary *dic = _responseArray[i];
-        _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
+    if (searchString.length != 0) {
+        
+        [BYSHttpTool POST:APP_GOOD_SEARCH Parameters:[HttpParameters search_goods:searchString page_index:@"0" page_size:@"10"] Success:^(id responseObject) {
             
-        [_dataList addObject:_model];
-            
-        NSLog(@"%@",_dataList);
-            
-        self.searchList= [NSMutableArray arrayWithArray:_dataList];
-            
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-       
-            
-        [self.searchDisplayController.searchResultsTableView reloadData];
-                }
-            NSLog(@"%@",self.searchDisplayController.searchResultsTableView);
-          
-
-
-            
-            }else
+            NSDictionary *dic = responseObject;
+            self.searchStr = searchString;
+            _responseArray  = dic[@"data"];
+            NSLog(@"%@=========%@",responseObject,_responseArray);
+            if (_responseArray != nil && ![_responseArray isKindOfClass:[NSNull class]] && _responseArray.count != 0)
             {
-                NSLog(@"meishuju");
+                
+                _dataList =[[NSMutableArray alloc]init];
+                
+                if (_responseArray.count != 0) {
+                    for (NSInteger i=0; i<_responseArray.count; i++) {
+                        NSDictionary *dic = _responseArray[i];
+                        _model = [[SearchModel alloc]initWithDictionary:dic error:nil];
+                        
+                        [_dataList addObject:_model];
+                        
+                        NSLog(@"%@",_dataList);
+                        
+                        self.searchList= [NSMutableArray arrayWithArray:_dataList];
+                        
+                        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+                        
+                        
+                        [self.searchDisplayController.searchResultsTableView reloadData];
+                    }
+                    NSLog(@"%@",self.searchDisplayController.searchResultsTableView);
+                    
+                    
+                    
+                    
+                }else
+                {
+                    NSLog(@"meishuju");
+                    
+                }
+                
                 
             }
-
             
-        }
-        
         } Failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
-   
+            NSLog(@"%@",error);
+        }];
+        
 
+        
+    }
+    
     
     //刷新表格
    
     return YES;
 }
-//-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-//    [searchBar setShowsCancelButton:YES animated:YES];
-//    
-//    for(UIView *view in  [[[self.searchDisplayController.searchBar subviews] objectAtIndex:0] subviews]) {
-//        
-//        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-//            UIButton * cancel =(UIButton *)view;
-//            [cancel setTitle:@"取消" forState:UIControlStateNormal];
-//            [cancel addTarget:self action:@selector(cancelbutton:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        }
-//    }
-//  
-//}
+-(NSMutableArray *)searTXT
+{
+    if (_searTXT==nil) {
+        _searTXT = [[NSMutableArray alloc]init];
+    }
+    return _searTXT;
+}
+
+-(void)SearchText :(NSString *)seaTxt
+{
+    //读取数组NSArray类型的数据
+    // NSArray --> NSMutableArray
+    NSArray *myArray = [USER_DEFAULT arrayForKey:@"myArray"];
+    _searTXT = [myArray mutableCopy];
+    
+
+    [self searTXT];
+    
+    if (seaTxt.length != 0 ) {
+        
+        [_searTXT addObject:seaTxt];
+
+    }
+    if(_searTXT.count > 5)
+    {
+        [_searTXT removeObjectAtIndex:0];
+    }
+    //将上述数据全部存储到NSUserDefaults中
+   
+    [USER_DEFAULT setObject:_searTXT forKey:@"myArray"];
+   
+    NSLog(@"myArray======%@------%@-------%@",_searTXT,seaTxt,myArray);
+
+
+}
+-(void)readNSUserDefaults
+{
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    //读取数组NSArray类型的数据
+    NSArray *myArray = [userDefaultes arrayForKey:@"myArray"];
+    NSLog(@"myArray======%@",myArray);
+}
+
+
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
+    [self changeCancelButtonText];
+  
+}
+
+-(void)changeCancelButtonText
+{
+    for(UIView *view in  [[[self.searchDisplayController.searchBar subviews] objectAtIndex:0] subviews]) {
+        
+        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton * cancel =(UIButton *)view;
+            [cancel setTitle:@"取消" forState:UIControlStateNormal];
+            [cancel addTarget:self action:@selector(cancelbutton:) forControlEvents:UIControlEventTouchUpInside];
+          
+            [cancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.searchDisplayController.searchBar.tintColor = [UIColor whiteColor];
+            
+        }
+    }
+}
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -345,13 +393,43 @@
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
     NSLog(@"搜索End");
     self.blackButton.enabled = YES;
+    NSLog(@"%@",searchBar.text);
+    [self SearchText:searchBar.text];
 
 
 
     return YES;
 }
 
+- (void) setupHistoryView
+{
+    _history = [[HistoryLabel alloc]initWithFrame:CGRectMake(0,70, ScreenWidth,0)];
+    
+    _history.historyDelegate = self;
+    
+    
+    NSArray *myArray = [USER_DEFAULT arrayForKey:@"myArray"];
+    _searTXT = [myArray mutableCopy];
+    _history.historyBackgroundColor = [UIColor colorWithRed:239/255.0 green:238/255.0 blue:244/255.0 alpha:1];
+    _history.historySignalColor = [UIColor colorWithRed:202/255.0 green:202/255.0 blue:202/255.0 alpha:1];
+    [_history setArrayTagWithLabelArray:_searTXT];
+    [self.tableView addSubview:_history];
+    
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(ScreenWidth/2.0 - 75 ,_history.frame.origin.y+_history.frame.size.height+40, 150, 30);
+    [button.layer setBorderWidth:0.5];
+    
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    [button addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"清除历史纪录" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [self.tableView addSubview:button];
+    
+    
+    
 
+}
 
 
 - (void)didReceiveMemoryWarning {

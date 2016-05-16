@@ -64,6 +64,9 @@
 
 #define APP_CART_REMOVE @"http://"TESTSERVERSAPI"/api/cart/remove"
 
+#define APP_GET_VERSION @"http://"TESTSERVERSAPI"/api/config/version"
+
+
 
 
 

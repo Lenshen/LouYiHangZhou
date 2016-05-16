@@ -10,6 +10,5 @@
 
 @interface ClassifyViewController : UIViewController
 
-- (void)getToken:(NSString *)callback;
 
 @end

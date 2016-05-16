@@ -25,7 +25,7 @@
 					<div class="label"><span class="icons icon-location"></span>收货地址：</div><div class="flex">{{order.province}}{{order.city}}{{order.area}}{{order.address}}</div>
 				</div>
 				<div class="box">
-					<div class="label"><span class="icons icon-truck"></span>物流信息：</div><div class="flex">{{order.ship_name}}</div><span class="icons icon-arrow"></span>
+					<div class="label"><span class="icons icon-truck"></span>物流信息：</div><div class="flex" @click="shippingView(order.shipping_code, order.shipping_name);">{{order.shipping_name}}</div><span class="icons icon-arrow"></span>
 				</div>
 			</div>
 		</section>
@@ -57,7 +57,7 @@
 		</div>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥{{order.payment_amount}}</b><small>共 {{order.order_goods.length}} 件商品</small><a class="btn" href="javascript:;" v-if="order.status_id == 10">去支付</a>
+			<b class="price">￥{{order.payment_amount}}</b><small>共 {{order.order_goods.length}} 件商品</small><a class="btn" href="javascript:;" @click="pay();" v-if="order.status_id == 10">去支付</a>
 		</footer>
 	</div>
 
@@ -72,6 +72,17 @@
 			el: '#vue-view',
 			data: {
 				order: {}
+			},
+			methods: {
+				pay: function() {
+					var name = this.order.order_goods[0].goods_name + (this.order.order_goods.length > 1 ?  '等多件' : '');
+					api.getPayConfig().done(function(response) {
+						app.payMoney(response.data.partner_id, response.data.key, response.data.account, name, name, vm.order.payment_amount, vm.order.order_id)
+					});
+				},
+				shippingView: function(code, name) {
+					api.getQueryExpress(code, name);
+				}
 			}
 		});
 

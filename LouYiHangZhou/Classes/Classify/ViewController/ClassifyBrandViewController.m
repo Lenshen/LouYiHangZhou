@@ -31,6 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
 //    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight/2)];
 //    _tableview.delegate = self;
 //    _tableview.dataSource = self;
@@ -38,10 +39,14 @@
 //    [self.view addSubview:_tableview];
     i = 0;
     // Do any additional setup after loading the view.
+   }
+
+- (void)setUpWebview
+{
     _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
-//    _webView.delegate = self;
-
+    //    _webView.delegate = self;
+    
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
     
     
@@ -60,10 +65,12 @@
     
     [self.webView loadRequest:request1];
     [self.view addSubview:_webView];
+
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    [self setUpWebview];
     NSLog(@"%@---------%@",self._typeid,self._brandid);
 
     self.navigationController.navigationBarHidden = NO;

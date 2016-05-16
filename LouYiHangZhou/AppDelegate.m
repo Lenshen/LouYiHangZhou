@@ -12,7 +12,9 @@
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #import "JPUSHService.h"
-#define JPUSH @"658ca7514482fdd33fda4f13"
+#import <AlipaySDK/AlipaySDK.h>
+#import "NSString+MD5.h"
+#define JPUSH @"074100e7a8356cde541deaea"
 @interface AppDelegate ()
 
 @end
@@ -25,6 +27,7 @@
    [UIApplication sharedApplication].statusBarHidden = NO;
   
     [self getApptokenAndClientIP];
+    [self vesionUpdate];
 
     
     
@@ -42,6 +45,34 @@
     [JPUSHService setAlias:@"15961237169" callbackSelector:nil object:nil];
 
     return YES;
+    
+}
+
+- (void)vesionUpdate
+{
+    [BYSHttpTool GET:APP_GET_VERSION Parameters:[HttpParameters
+                                                 app_get_version] Success:^(id responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        NSString *version = [[[NSBundle mainBundle]infoDictionary]objectForKey:@"CFBundleShortVersionString"];
+        NSString *updateVersion = responseObject[@"data"][@"plat_form"] ;
+        
+        double currentVersion = [version doubleValue];
+        double updataVersion = [updateVersion doubleValue];
+        
+        if (currentVersion < updataVersion) {
+            NSString *updateStr = @"有新版本可以跟新";
+            [updateStr alertAndViewcontroller:self.window.rootViewController];
+        }
+    
+        NSLog(@"%f-----%f",currentVersion,updataVersion);
+        
+    } Failure:^(NSError *error) {
+        
+    }];
+    
+  
+    
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -144,6 +175,32 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+        }];
+    }
+    return YES;
+}
+
+// NOTE: 9.0以后使用新API接口
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+        }];
+    }
+    return YES;
 }
 
 @end

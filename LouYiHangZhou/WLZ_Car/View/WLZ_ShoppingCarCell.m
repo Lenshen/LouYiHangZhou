@@ -51,6 +51,7 @@ static CGFloat CELL_HEIGHT = 100;
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
+        
         _tableView = tableView;
         [self initCellView];
     }
@@ -125,13 +126,13 @@ static CGFloat CELL_HEIGHT = 100;
 - (void)setModel:(WLZ_ShoppIngCarModel *)model
 {
     _model = model;
-//    _selectBt.selected=model.isSelect;
-//    if (_changeView.numberFD.text) {
-//        self.choosedCount = [_changeView.numberFD.text integerValue];
-//    }
-//    else{
+    _selectBt.selected=model.isSelect;
+    if (_changeView.numberFD.text) {
+        self.choosedCount = [_changeView.numberFD.text integerValue];
+    }
+    else{
         self.choosedCount =[model.qty integerValue] ;
-//    }
+    }
     
     
     _shoppingImgView.layer.cornerRadius = 2;
@@ -210,12 +211,12 @@ static CGFloat CELL_HEIGHT = 100;
 {
     
     
-    //  _selectBt.selected = !_selectBt.selected;
+//     _selectBt.selected = !_selectBt.selected;
     if (!_soldoutLab.hidden && !self.isEdit) {
         return;
     }
     _selectBt.selected = !_selectBt.selected;
-//    _model.isSelect = _selectBt.selected;
+   _model.isSelect = _selectBt.selected;
     
     if (_changeView.numberFD.text!=nil) {
         _model.qty = _changeView.numberFD.text;

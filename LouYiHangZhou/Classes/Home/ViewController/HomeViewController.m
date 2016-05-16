@@ -11,11 +11,12 @@
 #import "SearchViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "WebViewJSBridge.h"
+#import "SearhDetailViewController.h"
 #define JSBridgeName @"MALLJSBridge"
 #define JSBridgeProtocol @"bridge://"
 
 
-@interface HomeViewController ()<UIWebViewDelegate>
+@interface HomeViewController ()<UIWebViewDelegate,WebViewJSBridgeDelegate>
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (nonatomic, weak) JSContext *jsContext;
 @property (nonatomic, strong) WebViewJSBridge *bridge;
@@ -30,12 +31,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
 
-  
-    
-    [self setUpWebview:@"index2" CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
-    self.webView.scrollView.bounces = NO;
+
+
+    self.webView.scrollView.bounces = YES;
 
     
 }
@@ -53,50 +52,82 @@
     
 
 }
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    // 禁用用户选择
-    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
-    
-    // 禁用长按弹出框
-    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
-}
 
 
 
--(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame;
+
+
+-(void)setUPWebView
 {
-    _webView = [[UIWebView alloc]initWithFrame:webviewFrame];
-//    NSString *str = [[NSBundle mainBundle] bundlePath];
+    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    
+    [_webView setUserInteractionEnabled:YES];
     _webView.delegate = self;
+    _webView.scrollView.bounces = NO;
     
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-    NSURL *baseURL = [NSURL fileURLWithPath:path1];
     
-//    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
-    NSString *str = [NSString stringWithFormat:@"web/%@.html",htmlName];
-    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str];
 
-    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [_webView loadHTMLString:html baseURL:baseURL];
-//    NSURL *url = [NSURL URLWithString:@"http://lmmm0013.gotoip55.com/Bridge/bridge.html"];
-    _webView.scalesPageToFit = NO;
-//    _webView.scrollView.scrollEnabled = no
-//    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+        _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+        
+ 
     
+    NSString *htmlStr = [NSString stringWithFormat:@"web/index2.html"];
+    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
+    
+    
+    
+    
+    NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+    NSLog(@"%@",request1);
+    
+    [self.webView loadRequest:request1];
     [self.view addSubview:_webView];
-
+    
+    
     
 }
-
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+  
+    NSString *url = [[request URL] absoluteString];
+    if ([url rangeOfString:@"id"].location != NSNotFound) {
+        NSLog(@"tiaozhuan");
+        NSArray *array = [url componentsSeparatedByString:@"?"];
+        
+        NSString *good_id = [array[1] substringFromIndex:3];
+        
+        SearhDetailViewController *detail = [[SearhDetailViewController alloc]init];
+        
+        detail.indexName = good_id;
+        NSLog(@"%@======%@===========%@======%@",url,array,good_id,detail.indexName);
+        
+        [self.navigationController pushViewController:detail animated:YES];
+        
+        
+        
+        
+        
+        
+    }else
+    {
+        NSLog(@"notiaozhuan");
+    }
+    
+    
+    
+    return YES;
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    [self setUPWebView];
 
   
 
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

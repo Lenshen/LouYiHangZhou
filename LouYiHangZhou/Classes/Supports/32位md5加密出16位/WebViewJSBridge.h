@@ -14,6 +14,8 @@
 - (void)openGoodDetailWebviewWithString:(NSString *)goods_id;
 - (void)openGoodsWebbiewWihtString:(NSString *)type_id brand_id:(NSString *)brand_id;
 -(void)openAddAddress;
+-(void)openOrderDetial:(NSString *)order_id;
+-(void)payMoney:(NSDictionary *)dic;
 
 
 @end

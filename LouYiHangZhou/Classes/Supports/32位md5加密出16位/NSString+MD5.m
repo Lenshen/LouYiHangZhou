@@ -5,6 +5,7 @@
 //  Created by 远深 on 16/4/5.
 //  Copyright © 2016年 Luo Yi TECHNOLOGY. All rights reserved.
 //
+#define STOREAPPID @"1080182980"
 
 #import "NSString+MD5.h"
 #import <CommonCrypto/CommonCrypto.h>
@@ -54,6 +55,28 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:action];
+    [viewcontroller presentViewController:alert animated:YES completion:nil];
+}
+
+
+
+-(void)alertAndViewcontroller:(UIViewController *)viewcontroller;
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:self message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"立即前往" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/us/app/id%@?ls=1&mt=8", STOREAPPID]];
+        [[UIApplication sharedApplication] openURL:url];
+
+    } ];
+    
+    [alert addAction:action];
+    
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:action1];
+    
+    
     [viewcontroller presentViewController:alert animated:YES completion:nil];
 }
 

@@ -15,7 +15,7 @@
 				<div class="flex">
 					<h3><a href="goods-detail.html?id={{item.goods_id}}">{{item.goods_name}}</a></h3>
 					<div class="tags">
-						<span class="tag" v-for="tag in item.sku_name.split(',')">{{tag}}</span>
+						<span class="tag" v-for="tag in skuName(item.sku_name)">{{tag}}</span>
 					</div>
 					<div class="box">
 						<div class="flex price">￥<span id="goods-{{item.goods_id}}">{{item.total}}</span></div>
@@ -57,6 +57,10 @@
 						count += this.total;
 					});
 					return count;
+				},
+				skuName: function(sku) {
+					var sku = sku.replace(/;$/, '');
+					return sku.split(';');
 				},
 				minus: function(event, id, price) {
 					var $target = $(event.target),

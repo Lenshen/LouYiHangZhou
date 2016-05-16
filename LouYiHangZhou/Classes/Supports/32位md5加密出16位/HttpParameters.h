@@ -43,8 +43,12 @@
 +(NSDictionary *)app_cart_getall;
 
 +(NSDictionary *)delete_collectionAddress_id:(NSString *)address_id;
+
 +(NSDictionary *)delete_cart:(NSString *)userToken cart_id:(NSString *)cart_id;
+
 +(NSDictionary *)app_user_readMessage:(NSString *)_id;
+
++(NSDictionary *)app_get_version;
 
 
 @end
