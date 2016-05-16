@@ -171,6 +171,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     CollectTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CollectTableViewCell" forIndexPath:indexPath];
     _model = _modelmutoArray[indexPath.row];
     NSString *salePrice = [NSString stringWithFormat:@"¥%@", _model.sales_price];

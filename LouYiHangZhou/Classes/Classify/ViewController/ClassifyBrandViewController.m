@@ -67,10 +67,19 @@
     [self.view addSubview:_webView];
 
 }
+
+
+#pragma mark viewWillAppear
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [self setUpWebview];
+    if (!_webView) {
+        [self setUpWebview];
+        
+    }else
+    {
+        return;
+    }
     NSLog(@"%@---------%@",self._typeid,self._brandid);
 
     self.navigationController.navigationBarHidden = NO;

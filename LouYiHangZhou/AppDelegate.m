@@ -27,7 +27,6 @@
    [UIApplication sharedApplication].statusBarHidden = NO;
   
     [self getApptokenAndClientIP];
-    [self vesionUpdate];
 
     
     
@@ -48,32 +47,7 @@
     
 }
 
-- (void)vesionUpdate
-{
-    [BYSHttpTool GET:APP_GET_VERSION Parameters:[HttpParameters
-                                                 app_get_version] Success:^(id responseObject) {
-        
-        NSLog(@"%@",responseObject);
-        NSString *version = [[[NSBundle mainBundle]infoDictionary]objectForKey:@"CFBundleShortVersionString"];
-        NSString *updateVersion = responseObject[@"data"][@"plat_form"] ;
-        
-        double currentVersion = [version doubleValue];
-        double updataVersion = [updateVersion doubleValue];
-        
-        if (currentVersion < updataVersion) {
-            NSString *updateStr = @"有新版本可以跟新";
-            [updateStr alertAndViewcontroller:self.window.rootViewController];
-        }
-    
-        NSLog(@"%f-----%f",currentVersion,updataVersion);
-        
-    } Failure:^(NSError *error) {
-        
-    }];
-    
-  
-    
-}
+
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     

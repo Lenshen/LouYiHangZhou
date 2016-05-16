@@ -11,6 +11,7 @@
 
 @interface SearhDetailViewController ()<UIWebViewDelegate>
 @property (nonatomic, strong)WebViewJSBridge *bridge;
+@property (nonatomic, strong)UIWebView *webview;
 
 
 
@@ -21,8 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSLog(@"%@",self.indexName);
-    [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     
 }
@@ -33,23 +32,52 @@
     // 禁用长按弹出框
     [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
 }
--(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
+-(void)updateWebview:(NSString *)htmlName
 {
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:webviewFrame];
-    webview.delegate = self;
-    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?id=%@",htmlName];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
+        
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        NSLog(@"%@",request1);
+        
+        
+        [_webview loadRequest:request1];
+
+    });
+   
+}
+-(void)setUpWebview:(NSString *)htmlName
+{
     
-    NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?id=%@",htmlName];
-    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
     
-    _bridge = [WebViewJSBridge bridgeForWebView:webview withSuperDelegate:self];
-    NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
-    NSLog(@"%@",request1);
+    _webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _webview.delegate = self;
+
+
     
-    
-    [webview loadRequest:request1];
-    
-    [self.view addSubview:webview];
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    dispatch_async(queue, ^{
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?id=%@",htmlName];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
+        
+        _bridge = [WebViewJSBridge bridgeForWebView:_webview withSuperDelegate:self];
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        NSLog(@"%@",request1);
+        
+        
+        [_webview loadRequest:request1];
+        dispatch_queue_t mainqueue = dispatch_get_main_queue();
+    dispatch_async(mainqueue, ^{
+          [self.view addSubview:_webview];
+    });
+      
+    });
+
     
 }
 
@@ -59,6 +87,13 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"商品详情";
+    if (!_webview) {
+        [self setUpWebview:self.indexName];
+
+    }else
+    {
+        [self updateWebview:self.indexName];
+    }
     
     
 }
@@ -72,6 +107,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    _webview = nil;
     
 }
 

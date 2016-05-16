@@ -1396,7 +1396,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gWY-HC-gcp">
                                         <rect key="frame" x="127" y="32" width="107" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -2067,21 +2067,13 @@
                                     <constraint firstAttribute="trailing" secondItem="8Gk-fG-3lL" secondAttribute="trailing" constant="8" id="iiv-9n-BdH"/>
                                 </constraints>
                             </view>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FQX-Nh-hNA">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="yz4-qd-r1H" secondAttribute="trailing" id="79E-Xz-Dqr"/>
-                            <constraint firstItem="FQX-Nh-hNA" firstAttribute="leading" secondItem="5ds-2g-Dmi" secondAttribute="leading" id="A2K-Lc-BQR"/>
-                            <constraint firstItem="FQX-Nh-hNA" firstAttribute="top" secondItem="yz4-qd-r1H" secondAttribute="bottom" id="AKH-d0-kLV"/>
-                            <constraint firstItem="M3q-Cf-LHe" firstAttribute="top" secondItem="FQX-Nh-hNA" secondAttribute="bottom" id="Pq8-qb-4qp"/>
                             <constraint firstAttribute="bottom" secondItem="yz4-qd-r1H" secondAttribute="bottom" constant="603" id="STr-4o-4Mh"/>
                             <constraint firstItem="yz4-qd-r1H" firstAttribute="top" secondItem="5ds-2g-Dmi" secondAttribute="top" id="hwZ-2d-tD2"/>
                             <constraint firstItem="yz4-qd-r1H" firstAttribute="leading" secondItem="5ds-2g-Dmi" secondAttribute="leading" id="sjZ-Mr-d4C"/>
-                            <constraint firstAttribute="trailing" secondItem="FQX-Nh-hNA" secondAttribute="trailing" id="u7X-mq-egS"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -2091,9 +2083,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="首页" id="RGg-bP-Eo1"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <connections>
-                        <outlet property="webView" destination="FQX-Nh-hNA" id="7yk-xU-LKv"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3S-kj-NSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

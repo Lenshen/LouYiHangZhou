@@ -17,7 +17,7 @@
 
 
 @interface HomeViewController ()<UIWebViewDelegate,WebViewJSBridgeDelegate>
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) UIWebView *webView;
 @property (nonatomic, weak) JSContext *jsContext;
 @property (nonatomic, strong) WebViewJSBridge *bridge;
 
@@ -34,7 +34,6 @@
 
 
 
-    self.webView.scrollView.bounces = YES;
 
     
 }
@@ -56,7 +55,33 @@
 
 
 
+-(void)updateWebview
+{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        
+        _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+        
+        
+        
+        NSString *htmlStr = [NSString stringWithFormat:@"web/index2.html"];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
+        
+        
+        
+        
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        
+        [self.webView loadRequest:request1];
+        
+        NSLog(@"%@",[NSThread currentThread]);
+        
 
+    });
+   
+}
 -(void)setUPWebView
 {
     _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
@@ -64,25 +89,30 @@
     [_webView setUserInteractionEnabled:YES];
     _webView.delegate = self;
     _webView.scrollView.bounces = NO;
-    
-    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    
-
+ 
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        
         _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
         
- 
-    
-    NSString *htmlStr = [NSString stringWithFormat:@"web/index2.html"];
-    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
-    
-    
-    
-    
-    NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
-    NSLog(@"%@",request1);
-    
-    [self.webView loadRequest:request1];
-    [self.view addSubview:_webView];
+        
+        
+        NSString *htmlStr = [NSString stringWithFormat:@"web/index2.html"];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
+        
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        
+        [self.webView loadRequest:request1];
+        NSLog(@"%@",[NSThread currentThread]);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.view addSubview:_webView];
+
+        });
+    });
+   
     
     
     
@@ -92,7 +122,6 @@
   
     NSString *url = [[request URL] absoluteString];
     if ([url rangeOfString:@"id"].location != NSNotFound) {
-        NSLog(@"tiaozhuan");
         NSArray *array = [url componentsSeparatedByString:@"?"];
         
         NSString *good_id = [array[1] substringFromIndex:3];
@@ -100,7 +129,6 @@
         SearhDetailViewController *detail = [[SearhDetailViewController alloc]init];
         
         detail.indexName = good_id;
-        NSLog(@"%@======%@===========%@======%@",url,array,good_id,detail.indexName);
         
         [self.navigationController pushViewController:detail animated:YES];
         
@@ -122,7 +150,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    [self setUPWebView];
+    
+    if (!_webView) {
+        [self setUPWebView];
+
+    }else
+    {
+        [self updateWebview];
+    }
 
   
 
@@ -131,6 +166,8 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.webView = nil;
+
 }
 
 /*
