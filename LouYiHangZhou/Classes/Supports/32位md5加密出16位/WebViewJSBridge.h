@@ -43,8 +43,6 @@
 - (void)showWaiting:(NSDictionary *)args ;
 -(void)hideWaiting;
 -(void)getUser:(NSString *)callback;
--(void)openWebview:(NSURL *)url;
--(void)closeWebview;
 -(void)signin;
 @end
 

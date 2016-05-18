@@ -29,24 +29,14 @@
 		<a class="title-bar" href="">
 			<h3 class="limited">限时特卖</h3>
 			<!-- 剩余的秒数 -->
-			<div class="timed">特卖倒计时 <b id="timespan" time="10"></b></div>
+			<div class="timed">特卖倒计时 <b id="timespan"></b></div>
 		</a>
 		<section class="mod-limited">
 			<div class="body">
-				<a class="item" href="">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-					<p>台湾进口SODA单品</p>
-					<b>￥110.9</b>
-				</a>
-				<a class="item" href="">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-					<p>台湾进口SODA单品</p>
-					<b>￥110.9</b>
-				</a>
-				<a class="item" href="">
-					<div class="img"><img src="assets/img/goods2.jpg" alt=""></div>
-					<p>台湾进口SODA单品</p>
-					<b>￥110.9</b>
+				<a class="item" href="goods-detail.html?id={{goods.goods_id}}" v-for="goods in limited">
+					<div class="img"><img src="{{goods.image}}" alt=""></div>
+					<p>{{goods.goods_name}}</p>
+					<b>￥{{goods.sales_price}}</b>
 				</a>
 			</div>
 			<div class="top">
@@ -60,18 +50,16 @@
 		</section>
 		<div class="space10"></div>
 		<header>
-			<a class="title-bar" href="">
+			<a class="title-bar">
 				<h3 class="sales">精品特卖</h3>
-				<div class="icon-arrow"></div>
 			</a>
 		</header>
 		<section class="mod-hotlist">
 			<a href="goods-detail.html?id={{item.goods_id}}" v-for="item in boutique"><img src="{{item.image}}"></a>
 		</section>
 		<header>
-			<a class="title-bar" href="">
+			<a class="title-bar">
 				<h3 class="hot">进口热销</h3>
-				<div class="icon-arrow"></div>
 			</a>
 		</header>
 		<section class="mod-hotlist">
@@ -89,6 +77,7 @@
 			data: {
 				boutique: [],
 				imported: [],
+				limited: [],
 				titles: []
 			},
 			methods: {
@@ -129,18 +118,51 @@
 			api.spaceGoods('index_2').done(function(response) {
 				vm.imported = response.data;
 			});
-			// 限时抢购
-			api.spaceGoods('index_0').done(function(response) {
-				console.log(response)
-			});
-		})
-	</script>
+		});
+		var error = 0;
+		function renderLimited(response) {
+			var endDateTime = response.data[0].end_time.replace(/T/, ' ');
+				var endTime = new Date(endDateTime);
+				var timestamp = endTime.getTime();
+				
+				var second = parseInt((timestamp - new Date().getTime()) / 1000);
+				vm.limited = response.data;
 
-	<script>
-		(function() {
+				countdown(second);
+		}
+
+		var code = '';
+		var interval = null;
+
+		var limited1 = page.push(function() {
+			if (error > 3) {
+				return;
+			}
+
+			error += 1;
+
+			code = code == 'index_0' ? 'index_3': 'index_0';
+			// 限时抢购
+			api.spaceGoods(code).done(function(response) {
+
+				if (!response.data.length) {
+					return;
+				}
+				var endDateTime = response.data[0].end_time.replace(/T/, ' ');
+				var endTime = new Date(endDateTime);
+				var timestamp = endTime.getTime();
+				// console.log(new Date().getTime())
+				if (timestamp <= new Date().getTime()) {
+					limited1();
+				}
+				renderLimited(response);
+			});
+		});
+
+		function countdown(second) {
 			var $time = $('#timespan');
-			var time = parseInt($time.attr('time'));
-			var interval = null;
+			var time = parseInt($time.attr('time')) || parseInt(second);
+			clearInterval(interval);
 
 			var rendertime = function(seconed) {
 				var h = parseInt(seconed / 3600);
@@ -165,10 +187,13 @@
 			}, 1000);
 
 			var theend = function() {
+				limited1();
 				// alert('倒计时结束');
 			};
 
-		}) ();
+		}
+
 	</script>
+
 </body>
 </html>

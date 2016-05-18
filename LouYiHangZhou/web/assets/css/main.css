@@ -212,7 +212,7 @@ body { background: #f3f3f3;}
 
 .mod-limited { position: relative; background: #fff;}
 .mod-limited .body { display: -webkit-box; margin: 0 10px; padding: 0 0 10px; border-bottom: 1px solid #ccc;}
-.mod-limited .body .item { display: block; -webkit-box-flex: 1; text-align: center; position: relative; border-right: 1px solid #cccccc;}
+.mod-limited .body .item { display: block; width: 33.33%; text-align: center; position: relative; border-right: 1px solid #cccccc;}
 .mod-limited .body .item .img { display: inline-block; width: 98px; height: 98px;}
 .mod-limited .body .item .img img { width: 100%; height: 100%;}
 .mod-limited .body .item:last-child { border-right: none;}

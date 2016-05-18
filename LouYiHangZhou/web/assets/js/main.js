@@ -819,9 +819,19 @@ var api = {
 			}
 		});
 	},
+	orderReadd: function(id) {
+		return this.ajax({
+			url: this.domain + '/api/order/readd',
+			type: 'GET',
+			data: {
+				access_token: app.getToken(),
+				order_id: id
+			}
+		});
+	},
 	orderDel: function(id) {
 		return this.ajax({
-			url: this.domain + '/api/order/cancel',
+			url: this.domain + '/api/order/del',
 			type: 'GET',
 			data: {
 				access_token: app.getToken(),
@@ -1148,13 +1158,19 @@ $(window).on('load', function() {
 	if (navigator.userAgent.toLowerCase().indexOf('pc') >= 0) {
 		MallJSBridge = {
 			getToken: function() {
-				return '687C090431AF1ABBC85AD593943388B0762BAB34586F1A7D8BE07449CBA94B362F0CEACC1E29D715F7C3BAB3D9A646ED';
+				return '687C090431AF1ABBC85AD593943388B0959F08AC8C050D3D0875D31419ACF18A8335386D09684851D0A6D75C91607D35';
 			},
 			getApplyCode: function() {
 				return 100;
 			},
 			intentClassifyWeb: function() {
 				
+			},
+			showWaiting: function() {
+
+			},
+			hideWaiting: function() {
+
 			}
 		};
 		window.MallJSBridgeEvent = document.createEvent('Event'); 

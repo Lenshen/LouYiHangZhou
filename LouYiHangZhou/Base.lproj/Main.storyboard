@@ -256,7 +256,10 @@
                                         <constraint firstAttribute="width" constant="90" id="Kj7-nA-w6n"/>
                                         <constraint firstAttribute="height" constant="30" id="iAy-de-ATB"/>
                                     </constraints>
-                                    <state key="normal" title="点击登陆"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" title="点击登陆">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
                                     <connections>
                                         <segue destination="pEF-Rh-7E1" kind="push" id="K7h-RI-3sg"/>
                                     </connections>
@@ -583,14 +586,14 @@
                                     <segue destination="2ez-mf-2RQ" kind="push" id="kXp-84-4Zp"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="123456" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sxt-SS-W8U">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入不少于6位数的密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sxt-SS-W8U">
                                 <rect key="frame" x="45" y="170" width="229" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="5wN-bQ-unG"/>
                                     <constraint firstAttribute="width" constant="229" id="wvV-of-5Bb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rsj-nO-dws">
                                 <rect key="frame" x="10" y="242" width="355" height="40"/>
@@ -615,7 +618,7 @@
                                     <segue destination="H2c-D5-8NF" kind="push" id="bPO-8O-7nI"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="15961237169" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uet-ex-qKa">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Uet-ex-qKa">
                                 <rect key="frame" x="45" y="113" width="229" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="KfU-uv-HGc"/>
@@ -1839,14 +1842,14 @@
                                     <constraint firstAttribute="height" constant="1" id="xrJ-PN-ovd"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQY-Ru-bph">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入6位数的密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQY-Ru-bph">
                                 <rect key="frame" x="73" y="200" width="229" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="229" id="avv-R1-QaW"/>
                                     <constraint firstAttribute="height" constant="30" id="xs3-lt-Ucn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入验证码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wg8-7t-44e">
                                 <rect key="frame" x="73" y="145" width="229" height="30"/>
@@ -2153,7 +2156,7 @@
                                     <constraint firstAttribute="height" constant="30" id="ZPW-iU-4fh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入旧密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="byz-Du-oW3">
                                 <rect key="frame" x="73" y="146" width="229" height="30"/>

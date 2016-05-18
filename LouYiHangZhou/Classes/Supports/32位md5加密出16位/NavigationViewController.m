@@ -39,6 +39,7 @@
 }
 
 -(void)setAlph{
+    
     if (_changing == NO) {
         _changing = YES;
         if (_alphaView.alpha == 0.0 ) {

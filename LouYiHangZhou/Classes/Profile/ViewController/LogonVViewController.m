@@ -45,7 +45,6 @@
 
 {
     _passwordTF.enabled = NO;
-    _passwordTF.keyboardType = UIKeyboardTypePhonePad;
     _userName.keyboardType = UIKeyboardTypePhonePad;
     
     
@@ -83,72 +82,82 @@
 }
 - (IBAction)logoEvent:(id)sender {
     
-    [SVProgressHUD showWithStatus:@"请稍等...."];
     [_userName resignFirstResponder];
     [_passwordTF resignFirstResponder];
 
-    [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject)
-{
+    if (_passwordTF.text.length >= 6) {
         
-        NSLog(@"%@",responseObject);
-        
-        if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
-{
-            
-            [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
-            
-    [BYSHttpTool GET:APP_USER_GET Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
-        
-                NSLog(@"%@",responseObject);
-        
-                [self.navigationController popToRootViewControllerAnimated:YES];
-        
-                NSDictionary *dic = responseObject[@"data"];
-                _useModel = [[UserImformationModel alloc]initWithDictionary:dic error:nil];
-        
-                [USER_DEFAULT setObject:_useModel.mobile forKey:@"mobile"];
-                [USER_DEFAULT setObject:_useModel.sex forKey:@"sex"];
-                [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
-                [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
-                [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
-        
-                NSDictionary *userdic = @{@"user_name":[USER_DEFAULT objectForKey:@"mobile"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"]};
-        
-                [USER_DEFAULT setObject:userdic forKey:@"userimfor"];
-                [SVProgressHUD dismiss];
+        [SVProgressHUD showWithStatus:@"请稍等...."];
 
-                }
-             Failure:^(NSError *error) {
-                 NSLog(@"%@",error);
-                [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];
-                
-                    
-                    
-                    
-            }];
-            
-}
-        if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]])
+        [BYSHttpTool GET:APP_USER_API Parameters:[HttpParameters user_autoSendMobiel:_userName.text password:_passwordTF.text] Success:^(id responseObject)
         {
+            
+            NSLog(@"%@",responseObject);
+            
+            if (responseObject[@"data"] != nil && ![responseObject[@"data"]  isKindOfClass:[NSNull class]])
             {
-               NSString *message = responseObject[@"message"];
-                [message alert:message viewcontroller:self];
-                [SVProgressHUD dismiss];
-
+                
+                [USER_DEFAULT setObject:responseObject[@"data"] forKey:@"user_token"];
+                
+                [BYSHttpTool GET:APP_USER_GET Parameters:[HttpParameters app_get_userImformation:nil] Success:^(id responseObject) {
+                    
+                    NSLog(@"%@",responseObject);
+                    
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    
+                    NSDictionary *dic = responseObject[@"data"];
+                    _useModel = [[UserImformationModel alloc]initWithDictionary:dic error:nil];
+                    
+                    [USER_DEFAULT setObject:_useModel.mobile forKey:@"mobile"];
+                    [USER_DEFAULT setObject:_useModel.sex forKey:@"sex"];
+                    [USER_DEFAULT setObject:_useModel.birth forKey:@"birth"];
+                    [USER_DEFAULT setObject:_useModel.user_id forKey:@"user_id"];
+                    [USER_DEFAULT setObject:_useModel.avatar forKey:@"avatar"];
+                    
+                    NSDictionary *userdic = @{@"user_name":[USER_DEFAULT objectForKey:@"mobile"],@"user_id":[USER_DEFAULT objectForKey:@"user_id"]};
+                    
+                    [USER_DEFAULT setObject:userdic forKey:@"userimfor"];
+                    [SVProgressHUD dismiss];
+                    
+                }
+                         Failure:^(NSError *error) {
+                             NSLog(@"%@",error);
+                             [SVProgressHUD showErrorWithStatus:@"请稍候重试..."];
+                             
+                             
+                             
+                             
+                         }];
+                
             }
-        }
+            if (responseObject[@"message"] != nil && ![responseObject[@"message"]  isKindOfClass:[NSNull class]])
+            {
+                {
+                    NSString *message = responseObject[@"message"];
+                    [message alert:message viewcontroller:self];
+                    [SVProgressHUD dismiss];
+                    
+                }
+            }
+            
+            
+            
+            
+            
+        } Failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            [SVProgressHUD dismiss];
+            
+            
+        }];
+
         
-            
-            
-            
-      
-    } Failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        [SVProgressHUD dismiss];
-
-
-    }];
-   
+    }else
+    {
+        NSString *alertStr = @"请输入密码,或用户名";
+        [alertStr alert:alertStr viewcontroller:self];
+    }
+    
 
 }
 

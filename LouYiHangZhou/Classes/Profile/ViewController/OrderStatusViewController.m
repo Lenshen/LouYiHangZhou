@@ -12,7 +12,7 @@
 #import "ChangePassWordViewController.h"
 #import "WebViewJSBridge.h"
 
-@interface OrderStatusViewController ()
+@interface OrderStatusViewController ()<UIWebViewDelegate>
 @property (nonatomic, strong)WebViewJSBridge *bridge;
 @property (nonatomic, strong)UIWebView *webView;
 
@@ -32,25 +32,50 @@
 
     
 }
--(void)setUpWebview:(NSString *)htmlName CGRectMakeForWebview:(CGRect)webviewFrame
+
+-(void)updateWebview:(NSString *)htmlName
 {
- _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
-
     NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-   
+    
     NSString *str3 = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
-    _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
-
+    
     NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
     
     NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
     NSLog(@"%@",request1);
     
-    [self.webView loadRequest:request1];
+    [_webView loadRequest:request1];
+}
+-(void)setUpWebview:(NSString *)htmlName
+{
+  _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    _webView.delegate = self;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        
+        _bridge = [WebViewJSBridge bridgeForWebView:_webView withSuperDelegate:self];
+        
+        
+        
+         NSString *htmlStr = [NSString stringWithFormat:@"web/orders.html?status=%@",htmlName];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:htmlStr];
+        
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        
+        [self.webView loadRequest:request1];
+        NSLog(@"%@",[NSThread currentThread]);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.view addSubview:_webView];
+            
+        });
+    });
+    
 
 
     
-    [self.view addSubview:self.webView];
 
     
     
@@ -62,7 +87,13 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"订单状态";
-    [self setUpWebview:self.indexName CGRectMakeForWebview:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    if (!_webView) {
+        [self setUpWebview:self.indexName];
+
+    }else
+    {
+        [self updateWebview:self.indexName];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -74,7 +105,9 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    _webView = nil;
 }
+
 
 /*
 #pragma mark - Navigation

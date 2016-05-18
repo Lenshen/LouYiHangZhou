@@ -7,9 +7,11 @@
 //
 
 #import "CouponViewController.h"
+#import "WebViewJSBridge.h"
 
-@interface CouponViewController ()
-
+@interface CouponViewController ()<WebViewJSBridgeDelegate,UIWebViewDelegate>
+@property (nonatomic ,strong)WebViewJSBridge *bridge;
+@property (nonatomic ,strong)UIWebView *webview;
 @end
 
 @implementation CouponViewController
@@ -21,22 +23,42 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
-    
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:self.view.frame];
-    //    NSString *str = [[NSBundle mainBundle] bundlePath];
-    NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-    NSString *path1 = [mainBundleDirectory  stringByAppendingPathComponent:@"web"];
-    NSURL *baseURL = [NSURL fileURLWithPath:path1];
-    
-    //    NSString *path = [[NSBundle mainBundle] pathForResource:htmlName ofType:@"html"];
-    NSString *path = [mainBundleDirectory stringByAppendingPathComponent:@"web/coupon.html"];
-    NSLog(@"%@ %@",path1,path);
-    
-    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [webview loadHTMLString:html baseURL:baseURL];
-    [self.view addSubview:webview];
+    [self setUpWebview];
+   
     
 }
+
+- (void)setUpWebview;
+{
+    
+    _webview = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _webview.delegate = self;
+    
+    
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    dispatch_async(queue, ^{
+        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
+        
+        NSString *str3 = [NSString stringWithFormat:@"web/coupon.html"];
+        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
+        
+        _bridge = [WebViewJSBridge bridgeForWebView:_webview withSuperDelegate:self];
+        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
+        NSLog(@"%@",request1);
+        
+        
+        [_webview loadRequest:request1];
+        dispatch_queue_t mainqueue = dispatch_get_main_queue();
+        dispatch_async(mainqueue, ^{
+            [self.view addSubview:_webview];
+        });
+        
+    });
+    
+
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = YES;

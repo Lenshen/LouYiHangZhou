@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ClassifyTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *label;
-@property (weak, nonatomic) IBOutlet UIImageView *imageview;
+@property (strong, nonatomic) UIImageView *imageview;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

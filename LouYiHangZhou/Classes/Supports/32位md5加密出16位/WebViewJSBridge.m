@@ -53,6 +53,8 @@
 }
 
 
+#pragma mark 实现内容
+//
 -(void)payMoney:(NSDictionary *)args
 {
     if ([self.openWebviewDelegate respondsToSelector:@selector(payMoney:)]) {
@@ -154,6 +156,8 @@
     
     
 }
+
+//
 -(void)getUser:(NSString *)callback
 {
     NSDictionary *dict = [USER_DEFAULT objectForKey:@"userimfor"];
@@ -196,9 +200,6 @@
 //        NSURL *url = [NSURL URLWithString:callback];
         
         [self intentGoodsDetail:args];
-    }else if ([name isEqualToString:@"closeWebview"])
-    {
-        [self closeWebview];
     }else if ([name isEqualToString:@"signin"])
     {
         [self signin];
@@ -346,12 +347,14 @@
 - (NSString *)encodeURIComponent:(NSString *)string
 {
     static NSString * const kLegalCharactersToBeEscaped = @"!*'();:@&=+$,/?%#[]";
-    return (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)string, NULL, (__bridge CFStringRef)kLegalCharactersToBeEscaped, kCFStringEncodingUTF8);
+    return [kLegalCharactersToBeEscaped stringByRemovingPercentEncoding];
+    
 }
 
 - (NSString *)decodeURIComponent:(NSString *)string
 {
-    return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)string, CFSTR(""), kCFStringEncodingUTF8);
+//    return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)string, CFSTR(""), kCFStringEncodingUTF8);
+    return [string stringByRemovingPercentEncoding];
 }
 
 

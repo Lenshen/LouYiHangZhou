@@ -31,6 +31,7 @@
     
     
     _mobileTF.delegate = self;
+    _mobileTF.keyboardType = UIKeyboardTypePhonePad;
     _codeTF.delegate = self;
     _passwordTF.delegate = self;
     [_mobileTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];

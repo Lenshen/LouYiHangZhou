@@ -31,6 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setUPWebView];
 
 
 
@@ -151,13 +152,10 @@
 {
     [super viewWillAppear:YES];
     
-    if (!_webView) {
-        [self setUPWebView];
 
-    }else
-    {
+
         [self updateWebview];
-    }
+  
 
   
 

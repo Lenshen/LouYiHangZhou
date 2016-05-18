@@ -28,7 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    
+  
 
     
 }
@@ -111,7 +111,7 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     
-    NSString *url = [[request URL] absoluteString];
+//    NSString *url = [[request URL] absoluteString];
   
 
     
@@ -130,6 +130,7 @@
         [self updateWebview];
     }
     
+   
     
 }
 - (void)didReceiveMemoryWarning {

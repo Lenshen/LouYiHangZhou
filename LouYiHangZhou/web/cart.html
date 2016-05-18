@@ -56,7 +56,7 @@
 					$.each(this.list, function() {
 						count += this.total;
 					});
-					return count;
+					return count.toFixed(2);
 				},
 				skuName: function(sku) {
 					var sku = sku.replace(/;$/, '');
