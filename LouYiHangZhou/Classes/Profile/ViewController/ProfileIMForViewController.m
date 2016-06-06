@@ -15,7 +15,9 @@
 #import "BYSHttpTool.h"
 #import "HttpParameters.h"
 #import "SVProgressHUD.h"
-
+#import "NSString+MD5.h"
+#import <CommonCrypto/CommonCryptor.h>
+#define LocalStr_None @""
 
 
 @interface ProfileIMForViewController ()<UIPickerViewDataSource,UIPickerViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -63,7 +65,7 @@
     self.headImage.layer.cornerRadius = 33;
     self.headImage.layer.masksToBounds = YES;
 
-    
+
 
    
     [self getDateDataSource];
@@ -87,6 +89,7 @@
 }
 #pragma mark dianji
 - (IBAction)sureAdd:(id)sender {
+//    [self getdata];
     [SVProgressHUD showWithStatus:@"正在上传请稍等...."];
     if (self.imageStr) {
         [BYSHttpTool POST:APP_USER_UNLOAD_AVATAR Parameters:[HttpParameters uploadAvatar:_imageStr] Success:^(id responseObject) {
@@ -130,6 +133,48 @@
 
 
 }
+
+
+//- (void)getdata
+//{
+//    NSDictionary *jsondic = @{@"ShipperCode":@"STO",@"LogisticCode":@"3308347602249",@"AppKey":@"0f242821-3d28-431e-8890-005549ae2dfb"};
+//
+//    NSData *jsondata = [NSJSONSerialization dataWithJSONObject:jsondic options:NSJSONWritingPrettyPrinted error:nil];
+//    
+//
+//    NSString *jsonstring = [[NSString alloc]initWithData:jsondata encoding:NSUTF8StringEncoding];
+//
+//
+////    NSString *baseString1 = @"0f242821-3d28-431e-8890-005549ae2dfb";
+//
+////    NSString *baseString = [jsonstring stringByAppendingString:baseString1];
+//
+//
+//
+//    NSString *haveBaseString = [jsonstring md5];
+////    NSData *data = [haveBaseString dataUsingEncoding:NSUTF8StringEncoding];
+//    NSData *base64 = [jsondata base64EncodedDataWithOptions:0];
+//    NSString *utf8base = [[NSString alloc]initWithData:base64 encoding:NSUTF8StringEncoding];
+//    NSLog(@"%@----%@",haveBaseString,utf8base);
+//
+//    NSDictionary *dic = @{@"EBusinessID":@"1257984",@"RequestType":@"1002",@"RequestData":jsonstring,@"DataType":@"2",@"DataSign":@"Y2NmZmU5OGI3MjI2OWNiZTIwOWQyZDAxNzU5YjM4OWM="
+//};
+//    
+//
+//    [BYSHttpTool POST:@"http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx" Parameters:dic Success:^(id responseObject) {
+//        NSLog(@"%@",responseObject);
+//
+//
+//
+//    } Failure:^(NSError *error) {
+//        NSLog(@"%@",error);
+//        [SVProgressHUD showErrorWithStatus:@"缺少参数"];
+//    }];
+//
+//
+//}
+
+
 
 - (IBAction)black:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -451,5 +496,9 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+}
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 @end

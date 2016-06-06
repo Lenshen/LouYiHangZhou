@@ -18,8 +18,8 @@
 #import "ReceptionTableViewController.h"
 #import "CollectTableViewController.h"
 #import "WebViewJSBridge.h"
-
-
+#import "OrderDetailViewController.h"
+#import "SettingTableViewController.h"
 @interface ProfileViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UIWebViewDelegate>
 {
     BOOL isLogoin;
@@ -210,8 +210,9 @@
     
     if (indexPath.row == 3 && indexPath.section == 0 && isLogoin)
     {
-        CouponViewController *coupon = [[CouponViewController alloc]init];
-        coupon.hidesBottomBarWhenPushed = YES;
+//        CouponViewController *coupon = [[CouponViewController alloc]init];
+//        coupon.hidesBottomBarWhenPushed = YES;
+        OrderDetailViewController *coupon = [[OrderDetailViewController alloc]init];
         [self.navigationController pushViewController:coupon animated:YES];
     }else if(indexPath.row == 3 && indexPath.section == 0 )
     {
@@ -267,7 +268,20 @@
         return 100;
     
 }
+- (IBAction)settingPush:(id)sender {
+    if (isLogoin) {
+        
+        [self.navigationController pushViewController:[SettingTableViewController instanceFromStoryboard] animated:YES];
+    }else
+    {
+        [self.navigationController pushViewController:[LogonVViewController instanceFromStoryboard] animated:YES];
+    }
+    
+}
 
-
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 @end

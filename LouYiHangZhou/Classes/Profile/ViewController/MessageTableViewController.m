@@ -203,9 +203,9 @@
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"我的消息";
-    
+    [SVProgressHUD show];
     [BYSHttpTool GET:APP_USER_GETMESSAGE Parameters:[HttpParameters app_user_getMessagesPageindex:@"1"] Success:^(id responseObject) {
-        
+        [SVProgressHUD dismiss];
         NSLog(@"%@",responseObject);
         _messageMArray = [NSMutableArray array];
         NSArray *array  = responseObject[@"data"];
@@ -229,6 +229,10 @@
         
     }];
     
+}
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

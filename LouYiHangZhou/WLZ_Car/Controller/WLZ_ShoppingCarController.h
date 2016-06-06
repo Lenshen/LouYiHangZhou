@@ -16,7 +16,18 @@
 
 #import "WLZ_ShoppingCarCell.h"
 #import "WLZ_ShoppingCartEndView.h"
+
+
+
 @interface WLZ_ShoppingCarController : UIViewController
 #define APPScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define APPScreenWidth [[UIScreen mainScreen] bounds].size.width
+
+typedef  NS_ENUM(NSInteger,calculateEnum)
+{
+    subButtonPressed,
+    addButtonPressed
+    
+};
+@property (nonatomic, assign)calculateEnum calculateType;
 @end

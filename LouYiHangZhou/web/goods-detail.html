@@ -28,7 +28,7 @@
 			</div>
 		</section> -->
 		<div class="goods-img">
-			<img src="{{goods.middle_image}}" width="100%" alt="">
+			<img src="{{goods.original_image}}" width="100%" alt="">
 		</div>
 		<section class="section goods-header">
 			<header id="vueHeader" class="box">
@@ -41,9 +41,9 @@
 				<strong>￥{{goods.sale_price}}</strong>
 			</div>
 			<!-- <div class="box prices">
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
-				<div class="flex"><small>2 个起批</small><b>￥110.9</b></div>
+				<div class="flex" v-show="goods.price1_min_number"><small>{{goods.price1_min_number}} 个起批</small><b>￥{{goods.price1}}</b></div>
+				<div class="flex" v-show="goods.price2_min_number"><small>{{goods.price2_min_number}} 个起批</small><b>￥{{goods.price2}}</b></div>
+				<div class="flex" v-show="goods.price3_min_number"><small>{{goods.price3_min_number}} 个起批</small><b>￥{{goods.price3}}</b></div>
 			</div> -->
 		</section>
 		<section class="section goods-production box">

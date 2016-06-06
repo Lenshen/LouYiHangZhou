@@ -28,7 +28,7 @@
 				<div class="cell icon"><span class="icons icon-truck"></span>配送方式</div><div class="cell r"><select v-model="vmShipping" dir="rtl" @change="changeShipping();"><option v-for="ship in shippings" :value="ship.shipping_id">{{ship.shipping_name}}</option></select></div>
 			</div>
 			<div class="row">
-				<div class="cell icon"><span class="icons icon-coupon"></span>优惠券</div><div class="cell r"><select v-model="vmCoupon" dir="rtl" @change="changeCoupon();"><option v-for="coupon in coupons" :value="coupon.code" amount="{{coupon.amount}}">{{Math.floor(coupon.amount)}}元优惠券</option></select></div>
+				<div class="cell icon"><span class="icons icon-coupon"></span>优惠券</div><div class="cell r"><select v-model="vmCoupon" dir="rtl" @change="changeCoupon();"><option value="">不使用优惠券</option><option v-for="coupon in coupons" :value="coupon.code" amount="{{coupon.amount}}">{{Math.floor(coupon.amount)}}元优惠券</option></select></div>
 			</div>
 		</section>
 		<section class="section mod-table">

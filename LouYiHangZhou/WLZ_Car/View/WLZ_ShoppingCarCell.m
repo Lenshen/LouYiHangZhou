@@ -23,6 +23,7 @@ static CGFloat CELL_HEIGHT = 100;
 @property(nonatomic,strong)WLZ_ChangeCountView *changeView;
 @property(nonatomic,strong)UILabel *priceLab;
 @property(nonatomic,strong)UILabel *sizeLab;
+@property(nonatomic,strong)WLZ_ShoppingCarController *shoppingController;
 
 @property(nonatomic,assign)CGRect tableVieFrame;
 
@@ -32,7 +33,14 @@ static CGFloat CELL_HEIGHT = 100;
 @end
 
 @implementation WLZ_ShoppingCarCell
-
+- (WLZ_ShoppingCarController *)shoppingController
+{
+    if (_shoppingController) {
+        _shoppingController = [[WLZ_ShoppingCarController alloc]init]
+        ;
+    }
+    return _shoppingController;
+}
 
 - (void)prepareForReuse
 {
@@ -194,8 +202,12 @@ static CGFloat CELL_HEIGHT = 100;
     _model.qty = _changeView.numberFD.text;
     
     _model.isSelect=_selectBt.selected;
+
+    self.shoppingController.calculateType = addButtonPressed;
     
-    
+    if ([self.delegate respondsToSelector:@selector(chickButton)]) {
+        [self.delegate chickButton];
+    }
     
     
     
@@ -249,6 +261,9 @@ static CGFloat CELL_HEIGHT = 100;
     _model.qty = _changeView.numberFD.text;
     
     _model.isSelect=_selectBt.selected;
+
+    self.shoppingController.calculateType = subButtonPressed;
+
     
     
     

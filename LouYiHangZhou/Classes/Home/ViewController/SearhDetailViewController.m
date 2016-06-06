@@ -8,8 +8,9 @@
 
 #import "SearhDetailViewController.h"
 #import "WebViewJSBridge.h"
+#import "CommentListViewController.h"
 
-@interface SearhDetailViewController ()<UIWebViewDelegate>
+@interface SearhDetailViewController ()<UIWebViewDelegate,OpenWebviewDelegate>
 @property (nonatomic, strong)WebViewJSBridge *bridge;
 @property (nonatomic, strong)UIWebView *webview;
 
@@ -22,33 +23,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
     
 }
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    // 禁用用户选择
-    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
-    
-    // 禁用长按弹出框
-    [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
-}
--(void)updateWebview:(NSString *)htmlName
-{
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
-        
-        NSString *str3 = [NSString stringWithFormat:@"web/goods-detail.html?id=%@",htmlName];
-        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
-        
-        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
-        NSLog(@"%@",request1);
-        
-        
-        [_webview loadRequest:request1];
 
-    });
-   
-}
+
 -(void)setUpWebview:(NSString *)htmlName
 {
     
@@ -66,10 +46,10 @@
         NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
         
         _bridge = [WebViewJSBridge bridgeForWebView:_webview withSuperDelegate:self];
+        _bridge.openWebviewDelegate = self;
         NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
         NSLog(@"%@",request1);
-        
-        
+      
         [_webview loadRequest:request1];
         dispatch_queue_t mainqueue = dispatch_get_main_queue();
     dispatch_async(mainqueue, ^{
@@ -80,45 +60,77 @@
 
     
 }
-
+-(void)openGoodDetailWebviewWithString:(NSString *)goods_id
+{
+    
+    SearhDetailViewController *gooddetail = [[SearhDetailViewController alloc]init];
+    gooddetail.hidesBottomBarWhenPushed = YES;
+    gooddetail.indexName = goods_id;
+    [self.navigationController pushViewController:gooddetail animated:YES];
+    
+    
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = NO;
     self.title = @"商品详情";
-    if (!_webview) {
-        [self setUpWebview:self.indexName];
 
+    [self setUpWebview:self.indexName];
+   
+    
+}
+
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    
+    NSString *url = [[request URL] absoluteString];
+    NSLog(@"%@",url);
+    if ([url rangeOfString:@"list"].location != NSNotFound) {
+        NSArray *array = [url componentsSeparatedByString:@"?"];
+        
+        NSString *good_id = [array[1] substringFromIndex:3];
+        if (good_id.length != 0) {
+            CommentListViewController *detail = [[CommentListViewController alloc]init];
+            
+            detail.commentIndexName = good_id;
+            
+            [self.navigationController pushViewController:detail animated:YES];
+            
+        }
+    
+        
+        
+        
+        
+        
     }else
     {
-        [self updateWebview:self.indexName];
+        NSLog(@"notiaozhuan");
     }
     
     
+    
+    return YES;
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 
 {
     self.navigationController.navigationBarHidden = YES;
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
     _webview = nil;
     
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
-*/
 
 @end

@@ -8,7 +8,7 @@
 
 #ifndef MacroDefinition_h
 #define MacroDefinition_h
-#define TESTSERVERSAPI  @"192.168.0.103:8078"
+#define TESTSERVERSAPI  @"139.196.232.200:8080"
 
 //-------------------获取设备大小-------------------------
 //NavBar高度
@@ -65,6 +65,13 @@
 #define APP_CART_REMOVE @"http://"TESTSERVERSAPI"/api/cart/remove"
 
 #define APP_GET_VERSION @"http://"TESTSERVERSAPI"/api/config/version"
+
+#define APP_CHANGE_GoodsCounts @"http://"TESTSERVERSAPI"/api/cart/add"
+
+#define APP_GOODPRICE_UPDATE @"http://"TESTSERVERSAPI"/api/cart/update"
+
+
+
 
 
 

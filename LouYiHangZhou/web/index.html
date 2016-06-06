@@ -11,18 +11,12 @@
 	<div id="vue-view">
 		<section id="busSliderWraper" class="bus-slider-wraper bus-slider-wraper-loading">
 			<div id="busSlider" class="bus-slider">
-				<a class="bus-slider-cell" href="javascript:;">
-					<img src="assets/img/banner.jpg">
-				</a>
-				<a class="bus-slider-cell" href="javascript:;">
-					<img src="assets/img/banner.jpg">
-				</a>
-				<a class="bus-slider-cell" href="javascript:;">
-					<img src="assets/img/banner.jpg">
+				<a class="bus-slider-cell" @click="bannerClick(item.url)" v-for="item in banner">
+					<img src="{{item.image}}">
 				</a>
 			</div>
 			<div id="busSliderControl" class="bus-slider-control">
-				<em></em><em></em><em></em>
+				<em v-for="item in banner"></em>
 			</div>
 		</section>
 		<section class="mod-classify">
@@ -66,18 +60,30 @@
 	<script src="assets/js/lib/vue.min.js"></script>
 	<script src="assets/js/main.js"></script>
 	<script>
-		var slider = new Slider();
 		var vm = new Vue({
 			el: '#vue-view',
 			data: {
 				boutique: [],
-				imported: []
+				imported: [],
+				banner: []
 			},
 			methods: {
-
+				bannerClick: function(url) {
+					alert(url)
+				}
 			}
 		});
 		page.push(function() {
+
+			// banner
+			api.spaceGoods('index_2').done(function(response) {
+				vm.banner = response.data;
+
+				vm.$nextTick(function() {
+					var slider = new Slider();
+				});
+			});
+
 			// 精品特卖
 			api.spaceGoods('index_1').done(function(response) {
 				vm.boutique = response.data;

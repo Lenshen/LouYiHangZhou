@@ -167,8 +167,8 @@
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSString *jsonstring = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog(@"%@------%@---------%@",jsonstring,jsonData,dict);
-    [self executeCallback:callback withArgs:@[jsonstring]];
+
+   [self executeCallback:callback withArgs:@[jsonstring]];
 }
 
 
@@ -228,6 +228,12 @@
         NSLog(@"intentOrde");
         [self intentOrderDetail:args];
         
+    }else if ([name isEqualToString:@"openCyleWebview"])
+    {
+        
+        
+        
+        
     }
         
     [_superDelegate executeSelector:name args:args callback:callback];
@@ -271,7 +277,6 @@
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"WebViewJSBridge" ofType:@"js"];
 //        LOG(@"filePath: %@", filePath);
         NSString *fileContent = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-        NSLog(@"%@",fileContent);
         NSString *JSScript = [NSString stringWithFormat:fileContent, JSBridgeName, JSBridgeProtocol];
 //        LOG(@"JSScript: %@", JSScript);
         [webView stringByEvaluatingJavaScriptFromString:JSScript];
@@ -301,8 +306,7 @@
         
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
             NSDictionary *args = [json objectForKey:@"args"];
-            NSLog(@"args-------%@",[json objectForKey:@"name"]);
-            
+
             [self converters:[json objectForKey:@"type"] name:[json objectForKey:@"name"] args:args callback:[json objectForKey:@"callback"]];
             
         }

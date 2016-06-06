@@ -168,6 +168,15 @@
     
     [super viewWillDisappear:YES];
     self.navigationController.navigationBarHidden = YES;
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound){
+        
+        //用户点击了返回按钮
+         [self.navigationController popToRootViewControllerAnimated:YES];
+
+        
+    }
+    
+    [super viewWillDisappear:animated];
     
 }
 - (void)didReceiveMemoryWarning {

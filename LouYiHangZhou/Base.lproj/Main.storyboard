@@ -239,17 +239,6 @@
                                         <outlet property="delegate" destination="pAx-yt-8Mw" id="8lt-qB-STM"/>
                                     </connections>
                                 </collectionView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0c-ng-I37">
-                                    <rect key="frame" x="327" y="22" width="29" height="29"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="29.5" id="AoE-oR-I6d"/>
-                                        <constraint firstAttribute="width" constant="29" id="Z2Y-23-LD5"/>
-                                    </constraints>
-                                    <state key="normal" backgroundImage="设置"/>
-                                    <connections>
-                                        <segue destination="XDy-cm-XdC" kind="push" id="4Y2-Cx-Acq"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vs6-UB-zKZ">
                                     <rect key="frame" x="142" y="53" width="90" height="30"/>
                                     <constraints>
@@ -317,6 +306,17 @@
                                         <constraint firstItem="aBW-Pb-hyO" firstAttribute="centerX" secondItem="aYt-Vh-mls" secondAttribute="centerX" id="bks-eR-QH7"/>
                                     </constraints>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0c-ng-I37">
+                                    <rect key="frame" x="327" y="22" width="29" height="29"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="29.5" id="AoE-oR-I6d"/>
+                                        <constraint firstAttribute="width" constant="29" id="Z2Y-23-LD5"/>
+                                    </constraints>
+                                    <state key="normal" backgroundImage="设置"/>
+                                    <connections>
+                                        <action selector="settingPush:" destination="pAx-yt-8Mw" eventType="touchUpInside" id="Qbe-Ox-hIv"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -490,7 +490,7 @@
                                                         <constraint firstAttribute="width" constant="20" id="yjP-O3-f8P"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="400-800-67672" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCd-6m-ajV">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0512-66195826" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCd-6m-ajV">
                                                     <rect key="frame" x="250" y="16" width="111" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="Yqa-DT-0aa"/>
@@ -1164,7 +1164,7 @@
                                                     <rect key="frame" x="0.0" y="91" width="375" height="5"/>
                                                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="            安徽省决定发的沙发uaknfa可怜的身份" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3b-A7-xQT">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3b-A7-xQT">
                                                     <rect key="frame" x="10" y="29" width="325" height="59"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="59" id="utg-tn-6i0"/>
@@ -2453,7 +2453,7 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="顾台湾 i 肉日推荐我居然听完我 i 如同局外人进退无路客人给我......" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="znX-vL-xkM">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="znX-vL-xkM">
                                             <rect key="frame" x="38" y="39" width="329" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="329" id="7Eh-4h-Tth"/>

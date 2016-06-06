@@ -173,5 +173,23 @@
     
 }
 
++(NSDictionary *)app_change_goodsGoods_id:(NSString *)goods_id qty:(NSString *)qty
+{
+
+    NSDictionary *dic =  @{@"token":[USER_DEFAULT objectForKey:@"user_token"] ,@"goods_id":goods_id,@"qty":qty};
+    return dic;
+
+
+}
+
++(NSDictionary *)app__goodsPrice_update:(NSString *)cart_id qty:(NSString *)qty
+{
+
+    NSDictionary *dic =  @{@"token":[USER_DEFAULT objectForKey:@"user_token"] ,@"cart_id":cart_id,@"qty":qty};
+    return dic;
+    
+    
+}
+
 
 @end

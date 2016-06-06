@@ -33,5 +33,6 @@
 @protocol WLZ_ShoppingCarCellDelegate <NSObject>
 
 -(void)singleClick:(WLZ_ShoppIngCarModel *)models row:(NSInteger )row;
+- (void)chickButton;
 
 @end

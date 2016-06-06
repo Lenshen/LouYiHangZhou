@@ -57,7 +57,7 @@
 
 -(void)setUPWebView
 {
-    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-44)];
     
     [_webView setUserInteractionEnabled:YES];
     _webView.delegate = self;
@@ -142,7 +142,10 @@
 
 
 
-
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 /*
 #pragma mark - Navigation

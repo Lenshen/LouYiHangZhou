@@ -41,6 +41,7 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:YES];
+
     
   
 }
@@ -85,7 +86,7 @@
 }
 -(void)setUPWebView
 {
-    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64-44)];
     
     [_webView setUserInteractionEnabled:YES];
     _webView.delegate = self;
@@ -126,21 +127,24 @@
         NSArray *array = [url componentsSeparatedByString:@"?"];
         
         NSString *good_id = [array[1] substringFromIndex:3];
+        if (good_id.length != 0) {
+            SearhDetailViewController *detail = [[SearhDetailViewController alloc]init];
+            detail.hidesBottomBarWhenPushed = YES;
+            detail.indexName = good_id;
+            
+            [self.navigationController pushViewController:detail animated:YES];
+
+        }
         
-        SearhDetailViewController *detail = [[SearhDetailViewController alloc]init];
-        
-        detail.indexName = good_id;
-        
-        [self.navigationController pushViewController:detail animated:YES];
-        
-        
-        
+
+
         
         
         
     }else
     {
         NSLog(@"notiaozhuan");
+
     }
     
     
@@ -155,16 +159,22 @@
 
 
         [self updateWebview];
-  
+
 
   
 
+}
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     self.webView = nil;
+    _bridge = nil;
+    _webView.delegate = nil;
 
 }
 

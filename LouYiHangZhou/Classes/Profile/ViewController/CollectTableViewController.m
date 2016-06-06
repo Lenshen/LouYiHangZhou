@@ -122,17 +122,12 @@
     
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self deleteTableviewCell:indexPath.row];
-
         [self.modelmutoArray removeObjectAtIndex:indexPath.row];
-        
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-        [tableView reloadData];
-        
     }
 }
 
@@ -210,6 +205,10 @@
     [super viewWillDisappear:YES];
     self.navigationController.navigationBarHidden = YES;
     
+}
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 /*
 // Override to support conditional editing of the table view.

@@ -10,6 +10,8 @@
 #import "AFNetworking.h"
 
 @implementation BYSHttpTool
+
+
 +(void)GET:(NSString *)URLString Parameters:(id)parameters Success:(void (^)(id))success Failure:(void (^)(NSError *))failure
 {
     
@@ -41,7 +43,7 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
         mgr.requestSerializer.timeoutInterval = 30;
-        mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/css",nil];
+        mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/css",@"text/plain",nil];
         [mgr POST:URLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             if (success) {

@@ -201,5 +201,9 @@
 {
     return @"删除";
 }
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 @end

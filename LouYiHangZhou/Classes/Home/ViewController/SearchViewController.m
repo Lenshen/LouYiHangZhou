@@ -334,7 +334,6 @@
    
     [USER_DEFAULT setObject:_searTXT forKey:@"myArray"];
    
-    NSLog(@"myArray======%@------%@-------%@",_searTXT,seaTxt,myArray);
 
 
 }
@@ -343,7 +342,6 @@
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     //读取数组NSArray类型的数据
     NSArray *myArray = [userDefaultes arrayForKey:@"myArray"];
-    NSLog(@"myArray======%@",myArray);
 }
 
 
@@ -436,6 +434,9 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 @end

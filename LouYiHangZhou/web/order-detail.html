@@ -39,7 +39,7 @@
 					<a href="goods-detail.html?id={{goods.goods_id}}"><h3>{{goods.goods_name}}</h3></a>
 					<div class="box">
 						<div class="flex">
-							<span class="tag" v-for="sku in goods.sku_name.split(',')">{{sku}}</span>
+							<span class="tag" v-for="sku in skuName(goods.sku_name)">{{sku}}</span>
 						</div>
 						<div class="price tar">
 							<b>￥{{goods.total}}</b>
@@ -50,14 +50,14 @@
 			</div>
 		</section>
 		<div class="section total">
-			<p>订单金额：<span>￥{{order.total_amount}}</span></p>
+			<p>订单金额：<span>￥{{order.payment_amount}}</span></p>
 			<p>配送费用：<span>￥{{order.ship_amount}}</span></p>
 			<p>优惠减免：<span>￥{{order.coupon_amount}}</span></p>
-			<p>实付金额：<span class="red">￥{{order.payment_amount}}</span></p>
+			<p>实付金额：<span class="red">￥{{order.total_amount}}</span></p>
 		</div>
 		<div class="mod-order-footer-holder"></div>
 		<footer class="mod-order-footer">
-			<b class="price">￥{{order.payment_amount}}</b><small>共 {{order.order_goods.length}} 件商品</small><a class="btn" href="javascript:;" @click="pay();" v-if="order.status_id == 10">去支付</a>
+			<b class="price">￥{{order.total_amount}}</b><small>共 {{order.order_goods.length}} 件商品</small><a class="btn" href="javascript:;" @click="pay();" v-if="order.status_id == 10">去支付</a>
 		</footer>
 	</div>
 
@@ -74,6 +74,10 @@
 				order: {}
 			},
 			methods: {
+				skuName: function(sku) {
+					var sku = sku.replace(/;$/, '');
+					return sku.split(';');
+				},
 				pay: function() {
 					var name = this.order.order_goods[0].goods_name + (this.order.order_goods.length > 1 ?  '等多件' : '');
 					api.getPayConfig().done(function(response) {

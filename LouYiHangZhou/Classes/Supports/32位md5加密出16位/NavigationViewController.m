@@ -18,7 +18,8 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    
+    self.interactivePopGestureRecognizer.enabled = NO;
+
     self.navigationBar.barTintColor = [UIColor redColor];
     
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
@@ -59,6 +60,10 @@
     }
     
     
+}
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

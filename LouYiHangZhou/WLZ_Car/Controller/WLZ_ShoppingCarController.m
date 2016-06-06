@@ -22,6 +22,7 @@
 @interface WLZ_ShoppingCarController () <UITableViewDataSource,UITableViewDelegate,WLZ_ShoppingCarCellDelegate,WLZ_ShoppingCartEndViewDelegate>
 {
     BOOL isLogoin;
+   
 }
 
 
@@ -38,6 +39,11 @@
 @property(nonatomic,strong)WLZ_ShoppingCartEndView *endView;
 @property(nonatomic,strong) WLZ_ShopViewModel *vm;
 @property(nonatomic,strong) WLZ_ShoppIngCarModel *model;
+@property (nonatomic, assign) NSInteger price;
+@property (nonatomic, assign) NSInteger qty;
+@property (nonatomic, strong) NSString *cart_id;
+
+
 
 @end
 
@@ -68,30 +74,46 @@
 
 
 //本来想着kvo写在 Controller里面 但是想尝试不同的方式 试试在viewModel 里面 ，感觉还是在Controller 里面更 好点
-
+- (void)chickButton
+{
+    self.calculateType = addButtonPressed;
+}
 - (void)numPrice:(NSArray *)array;
 {
+
+    if (_calculateType == subButtonPressed) {
+        NSLog(@"jian");
+    }else if(_calculateType == addButtonPressed)
+    {
+        NSLog(@"jia");
+    }
     NSArray *lists =   [_endView.Lab.text componentsSeparatedByString:@"￥"];
     float num = 0.00;
+
+
     if (self.carDataArrList != nil && self.carDataArrList.count != 0) {
         NSArray *list = array;
         for (int i = 0; i < list.count; i++) {
             WLZ_ShoppIngCarModel *model = list[i];
+
             float sale = [model.sale_price floatValue];
-            NSInteger count = [model.qty floatValue];
+            self.cart_id = model.cart_id;
+            self.qty =[model.qty floatValue];
+
             NSLog(@"%@",model.qty);
        
            
-                num = count*sale + num;
+            num = self.qty*sale + num;
 
-        
-            NSLog(@"count=====%ld  ======%.2f",count,num);
-            
-            
+
+
+
             
             
         }
         _endView.Lab.text = [NSString stringWithFormat:@"%@￥%.2f",lists[0],num];
+        self.price = num;
+
 
 
     }
@@ -117,10 +139,23 @@
 {
   if (bt.tag==18)
     {
-        PayViewController *pay = [[PayViewController alloc]init];
-        pay.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:pay animated:YES];
-        
+        NSString *qty = [NSString stringWithFormat:@"%ld",self.qty];
+
+        [BYSHttpTool POST:APP_GOODPRICE_UPDATE Parameters:[HttpParameters  app__goodsPrice_update:self.cart_id qty:qty] Success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+
+            PayViewController *pay = [[PayViewController alloc]init];
+            pay.hidesBottomBarWhenPushed = YES;
+
+            [self.navigationController pushViewController:pay animated:YES];
+
+
+        } Failure:^(NSError *error) {
+
+            NSLog(@"%@",error);
+
+        }];
+
         
     }
     
@@ -139,7 +174,6 @@
         _tableView.dataSource = self;
         _tableView.scrollsToTop=YES;
         _tableView.backgroundColor = [UIColor colorFromHexRGB:@"e2e2e2"];
-//        _tableView.contentSize = CGSizeMake(kScreenWidth, APPScreenHeight-[WLZ_ShoppingCartEndView getViewHeight]+44);
     }
     return _tableView;
 }
@@ -154,7 +188,20 @@
         self.endView.hidden=NO;
     }
 }
+- (void) getGoodNilImage
+{
+    self.islogoinImageView.image =[UIImage imageNamed:@"img_cart_null"];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeTabbaritem)];
+    [self.islogoinImageView addGestureRecognizer:tap];
+}
+- (void) getNoLogoinImage
+{
 
+    self.islogoinImageView.image = [UIImage imageNamed:@"img_no_login"];
+    UITapGestureRecognizer *singeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(loginEvent)];
+
+    [self.islogoinImageView addGestureRecognizer:singeTap];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -163,23 +210,15 @@
     if (self.carDataArrList.count == 0) {
         [self.tableView removeFromSuperview];
         [self.endView removeFromSuperview];
-        [_isnilImageView removeFromSuperview];
 
         if (isLogoin) {
-            
-            _isnilImageView= [[UIImageView alloc]initWithFrame:self.view.frame];
-            _isnilImageView.tag = 1000;
-            UIImage *image = [UIImage imageNamed:@"img_cart_null"];
-            _isnilImageView.image = image;
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeTabbaritem)];
-            _isnilImageView.userInteractionEnabled = YES;
-            [_isnilImageView addGestureRecognizer:tap];
-            [self.view addSubview:_isnilImageView];
-            
+
+            [self getGoodNilImage];
+
 
         }else
         {
-            self.isnilImageView.hidden = YES ;
+
 
         }
         
@@ -317,54 +356,69 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+
+
+
     self.navigationController.navigationBarHidden = NO;
     self.title = @"购物车";
     [super viewWillAppear:YES];
     isLogoin = [USER_DEFAULT objectForKey:@"user_token"];
 
     if (isLogoin) {
-        _carDataArrList = [NSMutableArray array];
-        NSLog(@"%@",_carDataArrList);
-        
-        __weak typeof (WLZ_ShoppingCarController) *waks = self;
-        __block NSArray* carDataArrList ;
-        __weak typeof (UITableView ) *tableView = self.tableView;
-        [_vm getShopData:^(NSArray *commonArry) {
-            NSLog(@"%@ ------------",carDataArrList);
-            carDataArrList = commonArry;
-            [self carDataArrList:carDataArrList :tableView];
-            [waks numPrice:carDataArrList];
-        } priceBlock:^{
-            NSLog(@"%@",_carDataArrList);
-            if (_carDataArrList.count != 0) {
-                [waks numPrice:_carDataArrList];
+       [self getData];
 
-            }
-            
-        }];
-        
-        
-        [self.tableView reloadData];
-        [self.islogoinImageView removeFromSuperview];
-        
         
 
     }else
     {
-        _islogoinImageView= [[UIImageView alloc]initWithFrame:self.view.frame];
-        _islogoinImageView.image = [UIImage imageNamed:@"img_no_login"];
-        UITapGestureRecognizer *singeTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(loginEvent)];
-        _islogoinImageView.userInteractionEnabled = YES;
-
-        [_islogoinImageView addGestureRecognizer:singeTap];
-        [_isnilImageView removeFromSuperview];
-        [self.view addSubview:_islogoinImageView];
+        [self getNoLogoinImage];
     }
     
    
     
     
 }
+- (UIImageView *)islogoinImageView
+{
+    if (!_islogoinImageView) {
+        _islogoinImageView = [[UIImageView alloc]initWithFrame:self.view.frame];
+        _islogoinImageView.userInteractionEnabled = YES;
+        [self.view addSubview:_islogoinImageView];
+
+
+    }
+    return _islogoinImageView;
+}
+
+- (void)getData
+{
+    _carDataArrList = [NSMutableArray array];
+    NSLog(@"%@",_carDataArrList);
+
+    __weak typeof (WLZ_ShoppingCarController) *waks = self;
+    __block NSArray* carDataArrList ;
+    __weak typeof (UITableView ) *tableView = self.tableView;
+    [_vm getShopData:^(NSArray *commonArry) {
+        NSLog(@"%@ ------------",carDataArrList);
+        carDataArrList = commonArry;
+        [self carDataArrList:carDataArrList :tableView];
+
+        [waks numPrice:carDataArrList];
+
+    } priceBlock:^{
+        NSLog(@"%@",_carDataArrList);
+        if (_carDataArrList.count != 0) {
+            [waks numPrice:_carDataArrList];
+
+        }
+
+    }];
+
+
+    [self.tableView reloadData];
+
+}
+
 - (NSMutableArray *)carDataArrList :(NSArray *)array :(UITableView *)tableview
 {
     

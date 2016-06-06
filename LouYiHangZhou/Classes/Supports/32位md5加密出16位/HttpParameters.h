@@ -50,5 +50,8 @@
 
 +(NSDictionary *)app_get_version;
 
++(NSDictionary *)app_change_goodsGoods_id:(NSString *)goods_id qty:(NSString *)qty;
+
++(NSDictionary *)app__goodsPrice_update:(NSString *)cart_id qty:(NSString *)qty;
 
 @end

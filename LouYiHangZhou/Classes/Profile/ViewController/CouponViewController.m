@@ -38,17 +38,15 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
     dispatch_async(queue, ^{
-        NSString *mainBundleDirectory = [[NSBundle mainBundle] bundlePath];
         
-        NSString *str3 = [NSString stringWithFormat:@"web/coupon.html"];
-        NSString *path = [mainBundleDirectory stringByAppendingPathComponent:str3];
+
+        NSString *mainbounld = [[NSBundle mainBundle]bundlePath];
+        NSString *pathstr = @"/web/coupon.html";
+        NSString *path = [mainbounld stringByAppendingString:pathstr];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]];
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+        [_webview loadRequest:request];
         
-        _bridge = [WebViewJSBridge bridgeForWebView:_webview withSuperDelegate:self];
-        NSURLRequest *request1 = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"file://%@",[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]]]];
-        NSLog(@"%@",request1);
-        
-        
-        [_webview loadRequest:request1];
         dispatch_queue_t mainqueue = dispatch_get_main_queue();
         dispatch_async(mainqueue, ^{
             [self.view addSubview:_webview];
@@ -58,7 +56,10 @@
     
 
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 -(void)viewWillDisappear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = YES;
@@ -70,14 +71,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

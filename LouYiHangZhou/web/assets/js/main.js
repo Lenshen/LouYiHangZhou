@@ -429,7 +429,7 @@ var page = {
 
 var api = {
 	// domain: 'http://192.168.0.103:7021',
-	domain: 'http://192.168.0.103:8078',
+	domain: 'http://139.196.232.200:8080',
 	ajax: function(conf) {
 		return $.ajax(conf).fail(function(response) {
 			// console.error(this + Mustache.render('{{url}}\nStatus: {{status}}', this, response));
@@ -1171,6 +1171,9 @@ $(window).on('load', function() {
 			},
 			hideWaiting: function() {
 
+			},
+			getUser: function() {
+				return {};
 			}
 		};
 		window.MallJSBridgeEvent = document.createEvent('Event'); 
