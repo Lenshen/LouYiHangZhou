@@ -11,6 +11,7 @@
 @interface BYSHttpTool : NSObject
 
 //add
+//add
 
 +(void)GET:(NSString *)URLString Parameters:(id)parameters Success:(void (^) (id responseObject))success Failure:(void (^) (NSError *error))failure;
 +(void)POST:(NSString *)URLString Parameters:(id)parameters Success:(void (^) (id responseObject))success Failure:(void (^) (NSError *error))failure;
